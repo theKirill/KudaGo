@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".MainActivity">
+
+    <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinator_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:minHeight="50dp"
+                android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="50dp"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    android:fitsSystemWindows="true">
+                <include
+                        layout="@layout/toolbar"
+                        android:id="@+id/mainToolbar" android:layout_height="match_parent"
+                        android:layout_width="match_parent"/>
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+                android:id="@+id/frame_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical">
+
+             <!-- <include layout="@layout/card_view"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"/>-->
+            </android.support.v7.widget.RecyclerView>
+
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <RelativeLayout
+            android:id="@+id/relative_layout"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/image_no_connection"
+                android:src="@drawable/ic_no_connection"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColorNoConnectionMain"
+                android:layout_below="@+id/image_no_connection"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26dp"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:text="@string/noConnectionMain"
+        />
+    </RelativeLayout>
+
+</FrameLayout>
