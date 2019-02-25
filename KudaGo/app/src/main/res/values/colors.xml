@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="textColorNoConnectionMain">#D9000000</color>
     <color name="textColorCityMain">#E62D37</color>
+    <color name="colorBackgroundCardview">#FFFFFF</color>
+    <color name="colorBackgroundMain">#808080</color>
 </resources>

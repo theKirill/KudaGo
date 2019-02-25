@@ -45,11 +45,12 @@
                     android:id="@+id/recyclerViewMain"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:scrollbars="vertical">
 
-             <!-- <include layout="@layout/card_view"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>-->
+                <!-- <include layout="@layout/card_view"
+                   android:layout_height="match_parent"
+                   android:layout_width="match_parent"/>-->
             </android.support.v7.widget.RecyclerView>
 
         </FrameLayout>
@@ -62,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/image_no_connection"
                 android:src="@drawable/ic_no_connection"
                 android:layout_centerInParent="true"
