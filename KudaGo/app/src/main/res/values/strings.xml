@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">KudaGo</string>
     <string name="noConnectionMain">Ошибка загрузки данных, проверьте соединение с Интернетом</string>
-    <string name="noConnectionBottom">Невозможно загрузить данные, проверьте соединение с интернетом</string>
+    <string name="noConnectionBottom">Невозможно загрузить данные, проверьте соединение с Интернетом.</string>
     <string name="textCityBegin">Москва</string>
     <string name="kudaGo">Куда сходить</string>
 </resources>

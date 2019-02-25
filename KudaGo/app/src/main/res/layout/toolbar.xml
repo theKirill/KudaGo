@@ -8,7 +8,7 @@
         android:fitsSystemWindows="true"
         app:layout_collapseMode="pin"
         android:id="@+id/toolbar"
-        tools:context=".MainActivity">
+        tools:context=".activities.MainActivity">
 
     <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

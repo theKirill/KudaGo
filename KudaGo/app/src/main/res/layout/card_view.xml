@@ -11,8 +11,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/textColorCityMain"
-            app:cardBackgroundColor="@color/colorBackgroundCardview"
-            app:cardCornerRadius="20dp">
+            app:cardBackgroundColor="@color/colorBackgroundCardView"
+            app:cardCornerRadius="20dp" android:onClick="cardOnClick">
 
         <RelativeLayout
                 android:layout_width="match_parent"
@@ -35,7 +35,9 @@
                     android:layout_marginTop="8dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
-                    android:textAllCaps="true" android:autoLink="web|none"/>
+                    android:textAllCaps="true"
+                    android:autoLink="web|none"
+                    style="@style/ForMainText"/>
 
             <TextView
                     android:id="@+id/textDescriptionEvent"
@@ -47,7 +49,9 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     tools:text="Первый фестиваль LiveFest на курорте Роза Хутор собрал перспективные музыкальные"
-                    android:autoLink="all" android:maxLines="2"/>
+                    android:autoLink="all"
+                    android:maxLines="2"
+                    style="@style/ForMainText" android:ellipsize="end"/>
 
             <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/imageIcLocation"
@@ -56,17 +60,17 @@
                     android:layout_below="@+id/textDescriptionEvent"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_location_on_black_24dp"/>
+                    android:src="@drawable/ic_location"/>
 
             <TextView
                     android:id="@+id/textLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
                     android:layout_marginStart="48dp"
                     android:layout_below="@+id/textDescriptionEvent"
                     android:layout_marginTop="8dp"
                     tools:text="ЦПКиО им. Горького"
+                    style="@style/ForOtherText"
             />
 
             <android.support.v7.widget.AppCompatImageView
@@ -76,17 +80,17 @@
                     android:layout_below="@+id/imageIcLocation"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_today_black_24dp"/>
+                    android:src="@drawable/ic_today"/>
 
             <TextView
                     android:id="@+id/textDay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
                     android:layout_marginStart="48dp"
                     android:layout_below="@+id/textLocation"
                     android:layout_marginTop="14dp"
                     tools:text="10-11 августа"
+                    style="@style/ForOtherText"
             />
 
             <android.support.v7.widget.AppCompatImageView
@@ -96,18 +100,20 @@
                     android:layout_below="@+id/imageIcDay"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginBottom="16dp"
                     android:src="@drawable/ic_attach_money"/>
 
             <TextView
                     android:id="@+id/textPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
                     android:layout_marginStart="48dp"
                     android:layout_below="@+id/textDay"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="14dp"
                     tools:text="1 200 - 1 500 Р"
+                    style="@style/ForOtherText"
             />
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

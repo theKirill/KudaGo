@@ -4,13 +4,13 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".MainActivity">
+             tools:context=".activities.MainActivity">
 
     <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
@@ -29,11 +29,14 @@
                     android:fitsSystemWindows="true">
                 <include
                         layout="@layout/toolbar"
-                        android:id="@+id/mainToolbar" android:layout_height="match_parent"
+                        android:id="@+id/mainToolbar"
+                        android:layout_height="match_parent"
                         android:layout_width="match_parent"/>
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"/>
 
         <FrameLayout
                 android:id="@+id/frame_container"
@@ -47,10 +50,6 @@
                     android:layout_height="match_parent"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                     android:scrollbars="vertical">
-
-                <!-- <include layout="@layout/card_view"
-                   android:layout_height="match_parent"
-                   android:layout_width="match_parent"/>-->
             </android.support.v7.widget.RecyclerView>
 
         </FrameLayout>
@@ -59,7 +58,7 @@
 
     <RelativeLayout
             android:id="@+id/relative_layout"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -67,18 +66,18 @@
                 android:id="@+id/image_no_connection"
                 android:src="@drawable/ic_no_connection"
                 android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="96dp"
+                android:layout_height="96dp"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColorNoConnectionMain"
                 android:layout_below="@+id/image_no_connection"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="26dp"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:text="@string/noConnectionMain"
+                style="@style/ForMainText"
         />
     </RelativeLayout>
 
