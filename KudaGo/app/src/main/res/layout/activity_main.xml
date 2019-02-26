@@ -6,37 +6,142 @@
              android:layout_height="match_parent"
              tools:context=".activities.MainActivity">
 
-    <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/coordinator_layout"
+    <!--<LinearLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+       <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar_main"
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:minHeight="56dp"
+                android:visibility="visible"
+                android:fitsSystemWindows="true">
+
+            <include
+                    android:id="@+id/mainToolbar"
+                    layout="@layout/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <android.support.design.widget.AppBarLayout
+                    android:id="@+id/appbar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true">
+
+                <android.support.design.widget.CollapsingToolbarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap">
+
+                    <TextView android:id="@+id/textKudaGo"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:text="@string/kudaGo"
+                              style="@style/ForMainText"
+                              android:textSize="30sp"
+                              android:textStyle="bold"
+                              android:gravity="center_vertical"
+                              android:layout_marginStart="16dp"/>
+
+                </android.support.design.widget.CollapsingToolbarLayout>
+
+
+            </android.support.design.widget.AppBarLayout>
+
+            <FrameLayout
+                    android:id="@+id/frame_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerViewMain"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorTransparent"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        android:scrollbars="vertical">
+                </android.support.v7.widget.RecyclerView>
+
+            </FrameLayout>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>-->
+    <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
             android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
-                android:layout_height="75dp"
-                android:minHeight="50dp"
-                android:fitsSystemWindows="true">
+                android:layout_height="80dp"
+                android:minHeight="70dp"
+                android:background="@color/colorWhite">
 
-            <android.support.design.widget.CollapsingToolbarLayout
+            <include
+                    layout="@layout/toolbar"
+                    android:id="@+id/mainToolbar"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    app:layout_collapseMode="pin"
+                    android:layout_marginTop="21dp"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
+            <!--      <android.support.design.widget.CollapsingToolbarLayout
                     android:id="@+id/collapsing_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:minHeight="50dp"
+                    android:minHeight="10dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
                     android:fitsSystemWindows="true">
-                <include
-                        layout="@layout/toolbar"
-                        android:id="@+id/mainToolbar"
-                        android:layout_height="match_parent"
-                        android:layout_width="match_parent"/>
-            </android.support.design.widget.CollapsingToolbarLayout>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>-->
 
         </android.support.design.widget.AppBarLayout>
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <!--   <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed"
+                    android:layout_marginTop="80dp"
+                    android:fitsSystemWindows="true">
+                <TextView android:id="@+id/textKudaGo"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="@string/kudaGo"
+                          style="@style/ForMainText"
+                          android:textSize="30sp"
+                          android:textStyle="bold"
+                          android:gravity="center_vertical"
+                          android:layout_marginStart="16dp"/>
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>-->
 
         <FrameLayout
                 android:id="@+id/frame_container"
@@ -44,13 +149,20 @@
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerViewMain"
+            <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    android:scrollbars="vertical">
-            </android.support.v7.widget.RecyclerView>
+                    android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recyclerViewMain"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                        android:scrollbars="vertical">
+                </android.support.v7.widget.RecyclerView>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
 
         </FrameLayout>
 
@@ -58,7 +170,7 @@
 
     <RelativeLayout
             android:id="@+id/relative_layout"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -79,6 +191,20 @@
                 android:text="@string/noConnectionMain"
                 style="@style/ForMainText"
         />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/relative_layout_pBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible">
+
+        <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/loader_progress"
+                android:layout_centerInParent="true" android:visibility="visible"/>
     </RelativeLayout>
 
 </FrameLayout>

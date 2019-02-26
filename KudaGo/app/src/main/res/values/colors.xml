@@ -4,8 +4,11 @@
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#D81B60</color>
     <color name="textColorMain">#D9000000</color>
-    <color name="textColorCityMain">#E62D37</color>
-    <color name="colorBackgroundCardView">#FFFFFF</color>
+    <color name="textColorOther">#99000000</color>
+    <color name="textColorRed">#E62D37</color>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colorBackgroundMain">#808080</color>
     <color name="colorError">#F5E53E39</color>
+    <color name="colorTransparent">@android:color/transparent</color>
+    <color name="colorPage">#E62D37</color>
 </resources>

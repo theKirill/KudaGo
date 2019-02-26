@@ -1,21 +1,13 @@
 package com.yanyushkin.kudago.models
 
-class Event {
-    private var name: String = ""
-    private var description: String = ""
-    private var location: String = ""
-    private var day: String = ""
-    private var price: String = ""
-    private var idEventImage: Int = -1
-
-    constructor(name: String, description: String, location: String, day: String, price: String, idEventImage: Int) {
-        this.name = name
-        this.description = description
-        this.location = location
-        this.day = day
-        this.price = price
-        this.idEventImage = idEventImage
-    }
+class Event(
+    private var name: String,
+    private var description: String,
+    private var location: String,
+    private var day: String,
+    private var price: String,
+    private var idEventImage: Int
+) {
 
     val nameInfo: String
         get() = name

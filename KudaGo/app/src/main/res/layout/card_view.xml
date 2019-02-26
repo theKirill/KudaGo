@@ -2,120 +2,154 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
         xmlns:tools="http://schemas.android.com/tools"
-        android:padding="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorWhite"
+>
 
-    <android.support.v7.widget.CardView
-            android:id="@+id/cv"
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:id="@+id/container_for_textview">
+
+        <TextView android:id="@+id/textKudaGo"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:text="@string/kudaGo"
+                  style="@style/ForMainText"
+                  android:textSize="30sp"
+                  android:textStyle="bold"
+                  android:gravity="center_vertical"
+                  android:layout_marginStart="16dp"
+                  android:layout_marginTop="16dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/textColorCityMain"
-            app:cardBackgroundColor="@color/colorBackgroundCardView"
-            app:cardCornerRadius="20dp" android:onClick="cardOnClick">
+            android:layout_weight="1"
+            android:id="@+id/container_for_cardview"
+            android:paddingTop="16dp">
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
+                android:id="@+id/cvEvent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:onClick="cardOnClick">
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/imageEventPhoto"
+            <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:src="@drawable/ic_photo_camera_black_24dp"/>
+                    android:layout_height="wrap_content">
 
-            <TextView
-                    android:id="@+id/textNameEvent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="МУЗЫКАЛЬНЫЙ ФЕСТИВАЛЬ LIVEFEST SUMMER"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_below="@+id/imageEventPhoto"
-                    android:layout_marginTop="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:textAllCaps="true"
-                    android:autoLink="web|none"
-                    style="@style/ForMainText"/>
+                <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/imagePhotoEvent"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:src="@drawable/ic_photo_camera_black_24dp"
+                        android:scaleType="centerCrop"/>
 
-            <TextView
-                    android:id="@+id/textDescriptionEvent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textNameEvent"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    tools:text="Первый фестиваль LiveFest на курорте Роза Хутор собрал перспективные музыкальные"
-                    android:autoLink="all"
-                    android:maxLines="2"
-                    style="@style/ForMainText" android:ellipsize="end"/>
+                <TextView
+                        android:id="@+id/textNameEvent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="МУЗЫКАЛЬНЫЙ ФЕСТИВАЛЬ LIVEFEST SUMMER"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/imagePhotoEvent"
+                        android:layout_marginTop="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textAllCaps="true"
+                        android:autoLink="web|none"
+                        style="@style/ForMainText"/>
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/imageIcLocation"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_below="@+id/textDescriptionEvent"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_location"/>
+                <TextView
+                        android:id="@+id/textDescriptionEvent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textNameEvent"
+                        android:textSize="14sp"
+                        android:layout_marginTop="8dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        tools:text="Первый фестиваль LiveFest на курорте Роза Хутор собрал перспективные музыкальные"
+                        android:autoLink="all"
+                        android:maxLines="2"
+                        style="@style/ForMainText"
+                        android:ellipsize="end"/>
 
-            <TextView
-                    android:id="@+id/textLocation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_below="@+id/textDescriptionEvent"
-                    android:layout_marginTop="8dp"
-                    tools:text="ЦПКиО им. Горького"
-                    style="@style/ForOtherText"
-            />
+                <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/imageIcLocation"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_below="@+id/textDescriptionEvent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_location"/>
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/imageIcDay"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_below="@+id/imageIcLocation"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_today"/>
+                <TextView
+                        android:id="@+id/textLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textDescriptionEvent"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="8dp"
+                        tools:text="ЦПКиО им. Горького"
+                        style="@style/ForOtherText"/>
 
-            <TextView
-                    android:id="@+id/textDay"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_below="@+id/textLocation"
-                    android:layout_marginTop="14dp"
-                    tools:text="10-11 августа"
-                    style="@style/ForOtherText"
-            />
+                <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/imageIcDay"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_below="@+id/imageIcLocation"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:src="@drawable/ic_today"/>
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/imageIcPrice"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_below="@+id/imageIcDay"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:src="@drawable/ic_attach_money"/>
+                <TextView
+                        android:id="@+id/textDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textLocation"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="14dp"
+                        tools:text="10-11 августа"
+                        style="@style/ForOtherText"/>
 
-            <TextView
-                    android:id="@+id/textPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="48dp"
-                    android:layout_below="@+id/textDay"
-                    android:layout_marginTop="14dp"
-                    tools:text="1 200 - 1 500 Р"
-                    style="@style/ForOtherText"
-            />
+                <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/imageIcPrice"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_below="@+id/imageIcDay"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        android:src="@drawable/ic_attach_money"/>
 
-        </RelativeLayout>
+                <TextView
+                        android:id="@+id/textPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textDay"
+                        android:layout_marginStart="48dp"
+                        android:layout_marginTop="14dp"
+                        tools:text="1 200 - 1 500 Р"
+                        style="@style/ForOtherText"/>
 
-    </android.support.v7.widget.CardView>
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -10,7 +10,7 @@
 
     <style name="ForOtherText" parent="android:TextAppearance.Medium">
         <item name="android:fontFamily">Roboto</item>
-        <item name="android:textColor">#99000000</item>
+        <item name="android:textColor">@color/textColorOther</item>
         <item name="android:textSize">14sp</item>
     </style>
 

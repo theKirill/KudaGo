@@ -1,27 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_layout_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.DetailingEventActivity"
-        android:orientation="vertical"
-        android:id="@+id/scroll_view">
+        tools:context=".activities.DetailingEventActivity">
 
-    <FrameLayout
+    <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/buttonBack"
             android:layout_width="48dp"
             android:layout_height="32dp"
-            android:background="@drawable/ic_rectangle">
+            android:background="@drawable/round_shape_button_back"
+            android:src="@drawable/ic_shape"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"/>
 
-        <android.support.v7.widget.AppCompatImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                app:srcCompat="@drawable/ic_shape"
-                android:layout_marginTop="8dp"
-                android:layout_marginLeft="16dp"
-        />
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/scroll_view">
 
-    </FrameLayout>
+        <RelativeLayout
+                android:id="@+id/relative_layout_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-</ScrollView>
+            <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="260dp">
+            </android.support.v4.view.ViewPager>
+
+            <com.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:fillColor="@color/colorWhite"
+                    app:pageColor="@color/colorPage"
+                    app:radius="8dp"
+                    app:strokeColor="@color/colorWhite"
+                    app:strokeWidth="4dp"
+                    android:padding="8dp"
+                    android:layout_marginTop="228dp">
+            </com.viewpagerindicator.CirclePageIndicator>
+
+            <TextView
+                    android:id="@+id/titleEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ForMainText"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/pager"
+                    android:textAllCaps="true"
+                    android:text="Музыкальный фестиваль LIVEFEST SUMMER"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"/>
+
+            <TextView
+                    android:id="@+id/shortDescriptionEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ForMainText"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_below="@+id/titleEvent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Первый фестиваль LiveFest на курорте «Роза Хутор» собрал перспективные музыкальные проекты России и произвёл фурор у публики. Летняя версия будет ещё жарче и динамичнее, охватит ещё больше жанров, откроет новые имена и порадует свежими треками от признанных звёзд."/>
+
+            <TextView
+                    android:id="@+id/fullDescriptionEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/ForOtherText"
+                    android:textSize="16sp"
+                    android:layout_below="@+id/shortDescriptionEvent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:autoLink="web|none"
+                    android:text="Спустя полгода сочинский курорт «Роза Хутор» снова приглашает меломанов на музыкальный фестиваль LiveFest Summer, в котором объединятся все радости южного отдыха: тёплое море, головокружительные горы, зажигательные танцы и сочные песни от талантливых молодых исполнителей.
+
+Главная сцена фестиваля расположится на высоте более полутора тысяч метров над уровнем моря, а гостей туда доставит канатная дорогая «Стрела». К ней присоединятся и другие площадки горного курорта, на которых в последнюю ночь фестиваля состоятся джем-сейшены и невероятные вечеринки.
+
+Представители современных музыкальных направлений наполнят пространство города музыкой и драйвом. Хедлайнеры LiveFest Summer, проекты Therr Maitz и Pompeya выступят с сумасшедшими концертами, Дельфин презентует долгожданный альбом «442», а главным украшением фестиваля станет бесподобная Земфира.
+
+Обладатели билетов получат промокод, предоставляющий скидку на проживание на курорте «Роза Хутор», и бесплатные поездки на канатной дороге «Стрела».
+
+Узнать больше о музыкальном фестивале LiveFest Summer вы можете на сайте, «ВКонтакте» или в Facebook."/>
+
+            <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/imageIcLocationEvent"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_below="@+id/fullDescriptionEvent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_location"/>
+
+            <TextView
+                    android:id="@+id/textLocationEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fullDescriptionEvent"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="16dp"
+                    android:text="ЦПКиО им. Горького"
+                    style="@style/ForOtherText"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/imageIcDayEvent"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_below="@+id/imageIcLocationEvent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_today"/>
+
+            <TextView
+                    android:id="@+id/textDayEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textLocationEvent"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="14dp"
+                    android:text="10-11 августа"
+                    style="@style/ForOtherText"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/imageIcPriceEvent"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_below="@+id/imageIcDayEvent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/ic_attach_money"/>
+
+            <TextView
+                    android:id="@+id/textPriceEvent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textDayEvent"
+                    android:layout_marginStart="48dp"
+                    android:layout_marginTop="14dp"
+                    android:text="1 200 - 1 500 Р"
+                    style="@style/ForOtherText"/>
+
+            <FrameLayout
+                    android:id="@+id/frame_container_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/imageIcPriceEvent">
+
+                <com.google.android.gms.maps.MapView
+                        android:id="@+id/map"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="20dp">
+                </com.google.android.gms.maps.MapView>
+
+                <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/buttonShowRoute"
+                        android:layout_width="155dp"
+                        android:layout_height="32dp"
+                        android:text="@string/textForButtonRoute"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/textColorRed"
+                        android:background="@drawable/round_shape_button_route"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:layout_marginBottom="16dp"/>
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+</FrameLayout>

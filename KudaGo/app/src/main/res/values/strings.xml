@@ -4,4 +4,6 @@
     <string name="noConnectionBottom">Невозможно загрузить данные, проверьте соединение с Интернетом.</string>
     <string name="textCityBegin">Москва</string>
     <string name="kudaGo">Куда сходить</string>
+    <string name="textChoiceCity">Выберите город</string>
+    <string name="textForButtonRoute">Проложить маршрут</string>
 </resources>
