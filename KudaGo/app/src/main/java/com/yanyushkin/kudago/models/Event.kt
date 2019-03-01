@@ -1,13 +1,23 @@
 package com.yanyushkin.kudago.models
 
-class Event(
-    private var name: String,
-    private var description: String,
-    private var location: String,
-    private var day: String,
-    private var price: String,
-    private var idEventImage: Int
-) {
+import com.google.gson.annotations.SerializedName
+
+data class Event(
+    @SerializedName("id")
+    val id: Int,
+    @SerializedName("title")
+    val title: String,
+    @SerializedName("description")
+    val description: String,
+    @SerializedName("place")
+    val place: String,
+    @SerializedName("dates")
+    val dates: String,
+    @SerializedName("price")
+    val price: String,
+    @SerializedName("image")
+    val image: String
+) /*{
 
     val nameInfo: String
         get() = name
@@ -26,4 +36,4 @@ class Event(
 
     val idEventImageInfo: Int
         get() = idEventImage
-}
+}*/

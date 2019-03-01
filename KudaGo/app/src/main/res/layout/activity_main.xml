@@ -6,82 +6,6 @@
              android:layout_height="match_parent"
              tools:context=".activities.MainActivity">
 
-    <!--<LinearLayout
-            android:id="@+id/main_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-       <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar_main"
-                android:layout_width="match_parent"
-                android:layout_height="76dp"
-                android:minHeight="56dp"
-                android:visibility="visible"
-                android:fitsSystemWindows="true">
-
-            <include
-                    android:id="@+id/mainToolbar"
-                    layout="@layout/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.design.widget.CoordinatorLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <android.support.design.widget.AppBarLayout
-                    android:id="@+id/appbar2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true">
-
-                <android.support.design.widget.CollapsingToolbarLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed|snap">
-
-                    <TextView android:id="@+id/textKudaGo"
-                              android:layout_width="wrap_content"
-                              android:layout_height="wrap_content"
-                              android:text="@string/kudaGo"
-                              style="@style/ForMainText"
-                              android:textSize="30sp"
-                              android:textStyle="bold"
-                              android:gravity="center_vertical"
-                              android:layout_marginStart="16dp"/>
-
-                </android.support.design.widget.CollapsingToolbarLayout>
-
-
-            </android.support.design.widget.AppBarLayout>
-
-            <FrameLayout
-                    android:id="@+id/frame_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="16dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-                <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerViewMain"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/colorTransparent"
-                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                        android:scrollbars="vertical">
-                </android.support.v7.widget.RecyclerView>
-
-            </FrameLayout>
-
-        </android.support.design.widget.CoordinatorLayout>
-
-    </LinearLayout>-->
     <android.support.design.widget.CoordinatorLayout
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
@@ -104,44 +28,8 @@
                     app:layout_collapseMode="pin"
                     android:layout_marginTop="21dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
-            <!--      <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/collapsing_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:minHeight="10dp"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                    android:fitsSystemWindows="true">
-
-
-            </android.support.design.widget.CollapsingToolbarLayout>-->
 
         </android.support.design.widget.AppBarLayout>
-
-        <!--   <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fitsSystemWindows="true">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/collapsing_toolbar2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|enterAlways|exitUntilCollapsed"
-                    android:layout_marginTop="80dp"
-                    android:fitsSystemWindows="true">
-                <TextView android:id="@+id/textKudaGo"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="@string/kudaGo"
-                          style="@style/ForMainText"
-                          android:textSize="30sp"
-                          android:textStyle="bold"
-                          android:gravity="center_vertical"
-                          android:layout_marginStart="16dp"/>
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>-->
 
         <FrameLayout
                 android:id="@+id/frame_container"
