@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.view.View
 import android.widget.Toast
-import com.google.gson.Gson
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.EventDataAdapter
 import com.yanyushkin.kudago.models.Event
@@ -19,9 +18,6 @@ import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     var events: ArrayList<Event> = ArrayList<Event>()
@@ -78,24 +74,12 @@ class MainActivity : AppCompatActivity() {
 
         // указываем слушатель свайпов пользователя
         swipeRefreshLayout.setOnRefreshListener {
-            /*events = ArrayList<Event>()
-            initData()
-            events.add(
-                Event(
-                    4,
-                    "ЕЩЕ КАКОЕ-ТО СОБЫТИЕ",
-                    "Первый фестиваль LiveFest на курорте Роза Хутор собрал перспективные музыкальные группы этого года",
-                    "ЦПКиО им. Горького",
-                    "10-11 августа",
-                    "1 200 - 1 500 Р",
-                    R.drawable.ic_photo_camera_black_24dp
-                )
-            )*/
             // указываем, что мы уже сделали все, что нужно было
+            progressBar.visibility = View.VISIBLE
+            events = ArrayList<Event>()
+            initData()
             swipeRefreshLayout.isRefreshing = false
-
-            /*val rv = recyclerViewMain is RecyclerView
-            rv.adapter!!.notifyDataSetChanged()*/
+            //обновляем
             adapter = EventDataAdapter(events)
             recyclerViewMain.removeAllViews()
             recyclerViewMain.adapter = adapter
@@ -158,61 +142,89 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initData() {
-          /*events.add(
-              Event(1,
-                  "МУЗЫКАЛЬНЫЙ ФЕСТИВАЛЬ LIVEFEST SUMMER",
-                  "Первый фестиваль LiveFest на курорте Роза Хутор собрал перспективные музыкальные группы этого года",
-                  "ЦПКиО им. Горького",
-                  "10-11 августа",
-                  "1 200 - 1 500 Р",
-                  R.drawable.muz
-              )
-          )
-          events.add(
-              Event(2,
-                  "Рестобар Чеширский кот",
-                  "Из центра Москвы - прямиком в Зазеркалье! В рестобаре вас встретят улыбчивый кот и другие",
-                  "ул. Кузнецкий Мост, д. 19/1",
-                  "",
-                  "2 500 Р",
-                  R.drawable.kek
-              )
-          )
-          events.add(
-              Event(3,
-                  "Ночь музеев в Москве",
-                  "В ночь с субботы на воскресенье 19 и 20 мая музеи столицы будут открыты с шести вечера до",
-                  "Все музеи Москвы",
-                  "10-11 августа",
-                  "1 200 - 1 500 Р",
-                  R.drawable.ic_photo_camera_black_24dp
-              )
-          )
-*/
         EventsRepository.instance.getEvents(object : ResponseCallback<EventsResponse> {
 
             override fun onSuccess(apiResponse: EventsResponse) {
-                textCity.text = apiResponse.events.get(0).title
-                for (i in 0..apiResponse.events.size-1)
-                events.add(
-                    Event(apiResponse.events[i].id,
-                        apiResponse.events[i].title,
-                        apiResponse.events[i].description.replace("<p>", "").replace("<?p>", "").replace("</p>", ""),
-                        "",
-                        apiResponse.events[i].date[0].start_date+" до "+apiResponse.events[i].date[0].end_date,
-                        apiResponse.events[i].price,
-                        apiResponse.events[i].images[0].image
+                apiResponse.events.forEach {
+                    events.add(
+                        Event(
+                            it.id,
+                            it.title,
+                            it.description,
+                            translatePlace(it.place),
+                            translateDate(
+                                it.date[0].start_date,
+                                it.date[0].end_date
+                            )
+                            ,
+                            it.price,
+                            it.images[0].image
+                        )
                     )
-                )
-                var adapter = EventDataAdapter(events)
-                adapter = EventDataAdapter(events)
+                }
+
+                progressBar.visibility = View.INVISIBLE
+                val adapter = EventDataAdapter(events)
                 recyclerViewMain.removeAllViews()
                 recyclerViewMain.adapter = adapter
             }
 
             override fun onFailure(errorMessage: String) {
+                progressBar.visibility = View.INVISIBLE
                 Toast.makeText(this@MainActivity, errorMessage, Toast.LENGTH_LONG).show()
             }
         })
     }
+
+    fun translateDate(badStartDate: String?, badEndDate: String?): String {
+        val months: Array<String> = arrayOf(
+            "января",
+            "февраля",
+            "марта",
+            "апреля",
+            "мая",
+            "июня",
+            "июля",
+            "августа",
+            "сентября",
+            "октября",
+            "ноября",
+            "декабря"
+        )
+
+        var resDate: String = ""
+        if (badStartDate != null)
+            resDate +="с "+ badStartDate.substring(8) + " " + months[Integer.parseInt(
+                badStartDate.substring(
+                    5,
+                    7
+                )
+            ) - 1] + " " + badStartDate.substring(0, 4)
+
+        if (badEndDate != null)
+            resDate += " до " + badEndDate.substring(8) + " " + months[Integer.parseInt(
+                badEndDate.substring(
+                    5,
+                    7
+                )
+            ) - 1] + " " + badEndDate.substring(0, 4);
+
+        return resDate
+    }
+
+    fun translatePlace(badPlace: Place?): String {
+        if (badPlace != null) {
+            if (badPlace.title != null)
+                return badPlace.title
+            if (badPlace.address != null)
+                return badPlace.address
+        }
+
+        return ""
+    }
+
+    // apiResponse.events[i].description.replace("<p>", "").replace("<?p>", "").replace(
+    //                                "</p>",
+    //                                ""
+    //                            )
 }

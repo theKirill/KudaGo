@@ -21,7 +21,7 @@ class EventsRepository {
 
             override fun onResponse(call: Call<EventsResponse>, response: Response<EventsResponse>) {
                 val eventsResponse = response.body()
-                if (eventsResponse != null) {
+                if (eventsResponse != null && response.isSuccessful) {
                     responseCallback.onSuccess(eventsResponse)
                 } else {
                     responseCallback.onFailure("Getting events error")

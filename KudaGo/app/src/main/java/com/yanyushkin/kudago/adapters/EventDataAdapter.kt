@@ -11,8 +11,10 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.squareup.picasso.Picasso
 import com.yanyushkin.kudago.R
+import com.yanyushkin.kudago.activities.DetailingEventActivity
 import com.yanyushkin.kudago.activities.MainActivity
 import com.yanyushkin.kudago.models.Event
+import android.support.v4.content.ContextCompat.startActivity
 
 class EventDataAdapter(private var events: ArrayList<Event>) : RecyclerView.Adapter<EventDataAdapter.ViewHolder>() {
 
@@ -32,19 +34,27 @@ class EventDataAdapter(private var events: ArrayList<Event>) : RecyclerView.Adap
         }
         p0.titleEvent.text = event.title
         p0.descriptionEvent.text = event.description
-        p0.placeEvent.text = event.place
-        p0.dayEvent.text = event.dates
-        p0.priceEvent.text = event.price
-      /*  Glide.with()
-            .load(event.image)
-            .centerCrop()
-            .into(p0.imageEvent)*/
-        p0.imageEvent.setImageURI(Uri.parse(event.image))
+        if (event.place!="") {
+            p0.placeEvent.text = event.place
+            p0.fLLocation.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+        }
+        if (event.dates!="") {
+            p0.dayEvent.text = event.dates
+            p0.fLDate.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+        }
+        if (event.price!="") {
+            p0.priceEvent.text = event.price
+            p0.fLPrice.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+        }
+        Glide.with(p0.cv).load(event.image).into(p0.imageEvent)
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var cv: CardView
         var fL: FrameLayout
+        var fLLocation: FrameLayout
+        var fLDate: FrameLayout
+        var fLPrice: FrameLayout
         var kudaGo: TextView
         var titleEvent: TextView
         var descriptionEvent: TextView
@@ -56,6 +66,9 @@ class EventDataAdapter(private var events: ArrayList<Event>) : RecyclerView.Adap
         init {
             cv = v.findViewById(R.id.cvEvent)
             fL = v.findViewById(R.id.container_for_textview)
+            fLLocation = v.findViewById(R.id.container_for_text_location)
+            fLDate = v.findViewById(R.id.container_for_text_date)
+            fLPrice = v.findViewById(R.id.container_for_text_price)
             kudaGo = v.findViewById(R.id.textKudaGo)
             titleEvent = v.findViewById(R.id.textNameEvent)
             descriptionEvent = v.findViewById(R.id.textDescriptionEvent)

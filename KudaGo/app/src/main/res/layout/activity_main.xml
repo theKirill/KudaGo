@@ -85,13 +85,12 @@
             android:id="@+id/relative_layout_pBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible">
+            android:visibility="visible">
 
         <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:indeterminateDrawable="@drawable/loader_progress"
                 android:layout_centerInParent="true" android:visibility="visible"/>
     </RelativeLayout>
 

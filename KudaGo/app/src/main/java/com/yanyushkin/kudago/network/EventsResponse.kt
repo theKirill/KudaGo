@@ -19,7 +19,7 @@ data class EventNew(
     @SerializedName("description")
     val description: String,
     @SerializedName("place")
-    var place: Place,
+    var place: Place?,
     @SerializedName("dates")
     var date: List<Date>,
     @SerializedName("price")
@@ -28,20 +28,18 @@ data class EventNew(
     val images: List<Image>
 )
 
-class Place(
+data class Place(
+    @SerializedName("title")
+    val title: String?,
     @SerializedName("address")
-    val address: String
+    val address: String?
 )
 
 data class Date(
     @SerializedName("start_date")
     var start_date: String,
     @SerializedName("end_date")
-    var end_date: String,
-    @SerializedName("start_time")
-    var start_time: String,
-    @SerializedName("end_time")
-    var end_time: String
+    var end_date: String
 )
 
 data class Image(
