@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="@string/textCityBegin"
-                android:textColor="@color/textColorRed"
+                android:textColor="@color/colorRed"
                 android:textSize="16sp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="24dp"

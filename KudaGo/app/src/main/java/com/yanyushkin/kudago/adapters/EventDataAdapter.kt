@@ -1,6 +1,5 @@
 package com.yanyushkin.kudago.adapters
 
-import android.net.Uri
 import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -9,14 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
-import com.squareup.picasso.Picasso
 import com.yanyushkin.kudago.R
-import com.yanyushkin.kudago.activities.DetailingEventActivity
-import com.yanyushkin.kudago.activities.MainActivity
 import com.yanyushkin.kudago.models.Event
-import android.support.v4.content.ContextCompat.startActivity
+import com.yanyushkin.kudago.utils.OnEventClickListener
 
-class EventDataAdapter(private var events: ArrayList<Event>) : RecyclerView.Adapter<EventDataAdapter.ViewHolder>() {
+class EventDataAdapter(private var events: ArrayList<Event>, clickListener: OnEventClickListener) : RecyclerView.Adapter<EventDataAdapter.ViewHolder>() {
+
+   val onClickListener: OnEventClickListener = clickListener
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.card_view, p0, false)
@@ -46,10 +44,22 @@ class EventDataAdapter(private var events: ArrayList<Event>) : RecyclerView.Adap
             p0.priceEvent.text = event.price
             p0.fLPrice.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
         }
-        Glide.with(p0.cv).load(event.image).into(p0.imageEvent)
+        Glide.with(p0.cv).load(event.images).into(p0.imageEvent)
     }
 
-    class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    /*class ViewHolderClick(_v: View, _clickListener: OnEventClickListener) : RecyclerView.ViewHolder(_v), View.OnClickListener{
+        private val clickListener: OnEventClickListener
+
+        init {
+            clickListener=_clickListener
+        }
+
+        override fun onClick(v: View?) {
+           clickListener.onEventCardViewClick(adapterPosition)
+        }
+    }*/
+
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var cv: CardView
         var fL: FrameLayout
         var fLLocation: FrameLayout
@@ -76,6 +86,10 @@ class EventDataAdapter(private var events: ArrayList<Event>) : RecyclerView.Adap
             dayEvent = v.findViewById(R.id.textDay)
             priceEvent = v.findViewById(R.id.textPrice)
             imageEvent = v.findViewById(R.id.imagePhotoEvent)
+
+            v.setOnClickListener {
+                onClickListener.onEventCardViewClick(adapterPosition)
+            }
         }
     }
 }

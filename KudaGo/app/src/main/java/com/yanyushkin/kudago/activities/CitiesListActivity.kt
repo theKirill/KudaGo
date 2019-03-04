@@ -33,82 +33,18 @@ class CitiesListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        init()
+        initData()
     }
 
     fun chooseCityOnClick(v: View) {
         choiceCity.visibility = View.VISIBLE
-        var intentRes = Intent()
+        val intentRes = Intent()
         intentRes.putExtra("city", "something")
         setResult(Activity.RESULT_OK, intentRes)
         finish()
     }
 
-    fun init() {
-        cities.add(
-            City(
-                "Москва"
-            )
-        )
-        cities.add(
-            City(
-                "Санкт-Петербург"
-            )
-        )
-        cities.add(
-            City(
-                "Казань"
-            )
-        )
-        cities.add(
-            City(
-                "Новосибирск"
-            )
-        )
-        cities.add(
-            City(
-                "Екатеринбург"
-            )
-        )
-        cities.add(
-            City(
-                "Нижний Новгород"
-            )
-        )
-        cities.add(
-            City(
-                "Самара"
-            )
-        )
-        cities.add(
-            City(
-                "Уфа"
-            )
-        )
-        cities.add(
-            City(
-                "Красноярск"
-            )
-        )
-        cities.add(
-            City(
-                "Киров"
-            )
-        )
-        cities.add(
-            City(
-                "Пермь"
-            )
-        )
-        cities.add(
-            City(
-                "Владивосток"
-            )
-        )
-        cities.add(
-            City(
-                "Калининград"
-            )
-        )
+    fun initData() {
+
     }
 }

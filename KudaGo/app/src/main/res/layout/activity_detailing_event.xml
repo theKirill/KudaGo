@@ -8,15 +8,6 @@
         android:layout_height="match_parent"
         tools:context=".activities.DetailingEventActivity">
 
-    <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/buttonBack"
-            android:layout_width="48dp"
-            android:layout_height="32dp"
-            android:background="@drawable/round_shape_button_back"
-            android:src="@drawable/ic_shape"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"/>
-
     <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -40,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:fillColor="@color/colorWhite"
-                    app:pageColor="@color/colorPage"
+                    app:pageColor="@color/colorRed"
                     app:radius="8dp"
                     app:strokeColor="@color/colorWhite"
                     app:strokeWidth="4dp"
@@ -169,12 +160,12 @@
 
                 <android.support.v7.widget.AppCompatButton
                         android:id="@+id/buttonShowRoute"
-                        android:layout_width="155dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:text="@string/textForButtonRoute"
                         android:textSize="12sp"
                         android:textAlignment="center"
-                        android:textColor="@color/textColorRed"
+                        android:textColor="@color/colorRed"
                         android:background="@drawable/round_shape_button_route"
                         android:layout_gravity="center_horizontal|bottom"
                         android:layout_marginBottom="16dp"/>
@@ -184,4 +175,7 @@
         </RelativeLayout>
 
     </ScrollView>
+
+    <include layout="@layout/toolbar_detailing_event"/>
+
 </FrameLayout>

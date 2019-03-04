@@ -18,6 +18,8 @@ data class EventNew(
     val title: String,
     @SerializedName("description")
     val description: String,
+    @SerializedName("body_text")
+    val body_text: String,
     @SerializedName("place")
     var place: Place?,
     @SerializedName("dates")
@@ -32,7 +34,9 @@ data class Place(
     @SerializedName("title")
     val title: String?,
     @SerializedName("address")
-    val address: String?
+    val address: String?,
+    @SerializedName("coords")
+    val coords: Coords?
 )
 
 data class Date(
@@ -45,4 +49,11 @@ data class Date(
 data class Image(
     @SerializedName("image")
     val image: String
+)
+
+data class Coords(
+    @SerializedName("lat")
+    val lat: Double?,
+    @SerializedName("lon")
+    val lon: Double?
 )

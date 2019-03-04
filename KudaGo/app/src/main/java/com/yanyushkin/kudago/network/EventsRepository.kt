@@ -12,9 +12,9 @@ class EventsRepository {
         val instance: EventsRepository by lazy { Holder.INSTANCE }
     }
 
-    fun getEvents(responseCallback: ResponseCallback<EventsResponse>) {
+    fun getEvents(responseCallback: ResponseCallback<EventsResponse>, actual_since: Long, lang: String, location: String) {
         //retrofit async
-        NetworkService.instance.service.getEvents().enqueue(object : Callback<EventsResponse> {
+        NetworkService.instance.service.getEvents(actual_since, lang, location).enqueue(object : Callback<EventsResponse> {
             override fun onFailure(call: Call<EventsResponse>, t: Throwable) {
                 responseCallback.onFailure("Getting events error")
             }
