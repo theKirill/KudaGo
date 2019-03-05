@@ -18,15 +18,16 @@ import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import com.yanyushkin.kudago.utils.OnEventClickListener
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.card_view.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
-    var events: ArrayList<Event> = ArrayList<Event>()
-    val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
+    private var events: ArrayList<Event> = ArrayList()
+    private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val REQUEST_CODE_MESSAGE = 1
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
     private var collapsed = false
+    private var imagesOfEvents: ArrayList<ArrayList<Image>> = ArrayList()
+    private var placeOfEvents: ArrayList<Place?> = ArrayList()
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -47,7 +48,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,8 +67,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             main_layout.visibility = View.VISIBLE
             relative_layout.visibility = View.INVISIBLE
+            imagesOfEvents = ArrayList<ArrayList<Image>>()
+            placeOfEvents = ArrayList<Place?>()
             initData()
-
             initRecyclerView()
         }
 
@@ -77,6 +78,8 @@ class MainActivity : AppCompatActivity() {
             // указываем, что мы уже сделали все, что нужно было
             progressBar.visibility = View.VISIBLE
             events = ArrayList<Event>()
+            imagesOfEvents = ArrayList<ArrayList<Image>>()
+            placeOfEvents = ArrayList<Place?>()
             initData()
             swipeRefreshLayout.isRefreshing = false
             //обновляем
@@ -119,11 +122,6 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(receiver, intentFilter)
     }
 
-    fun cardOnClick(v: View) {
-       /* val myIntent = Intent(this, DetailingEventActivity::class.java)
-        startActivity(myIntent)*/
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -145,43 +143,30 @@ class MainActivity : AppCompatActivity() {
 
         recyclerViewMain.apply {
             /*Create adapter*/
-            val adapter = EventDataAdapter(events, object: OnEventClickListener{
+            val adapter = EventDataAdapter(events, object : OnEventClickListener {
+                /*открытие второй активити по клику, передача инфы*/
                 override fun onEventCardViewClick(position: Int) {
                     val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
                     intentDetailingEvent.putExtra("id", events[position].id)
                     intentDetailingEvent.putExtra("title", events[position].title)
                     intentDetailingEvent.putExtra("description", events[position].description)
-                    intentDetailingEvent.putExtra("full_description", events[position].full_description)
+                    intentDetailingEvent.putExtra("fullDescription", events[position].fullDescription)
                     intentDetailingEvent.putExtra("place", events[position].place)
                     intentDetailingEvent.putExtra("date", events[position].dates)
                     intentDetailingEvent.putExtra("price", events[position].price)
-                    intentDetailingEvent.putExtra("images", events[position].images)
+                    //intentDetailingEvent.putExtra("images", imagesOfEvents[position])
+                    intentDetailingEvent.putExtra("coords", getLatAndLon(placeOfEvents[position]))
                     startActivity(intentDetailingEvent)
                 }
             })
-            /*Set a adapter for list*/
+            /*Set a adapter for rv*/
             recyclerViewMain.adapter = adapter
-        }
-
-        //val adapter = EventDataAdapter(events, )
-
-    }
-
-    fun initEventCardViewClickListener() {
-        recyclerViewMain.apply {
-            val adapter = EventDataAdapter(events, object: OnEventClickListener{
-                override fun onEventCardViewClick(position: Int) {
-                    val myIntent = Intent(this@MainActivity, DetailingEventActivity::class.java)
-                    startActivity(myIntent)
-                }
-            })
         }
     }
 
     fun initData() {
         EventsRepository.instance.getEvents(
             object : ResponseCallback<EventsResponse> {
-
                 override fun onSuccess(apiResponse: EventsResponse) {
                     apiResponse.events.forEach {
                         events.add(
@@ -200,6 +185,8 @@ class MainActivity : AppCompatActivity() {
                                 it.images[0].image
                             )
                         )
+                        imagesOfEvents.add(it.images)
+                        placeOfEvents.add(it.place)
                     }
 
                     progressBar.visibility = View.INVISIBLE
@@ -213,7 +200,7 @@ class MainActivity : AppCompatActivity() {
             },
             System.currentTimeMillis() / 1000L,
             "ru",
-            "spb"
+            "msk"
         )//1549040271 берем только те события, которые начинаются с сегодня, на таком-то языке и в таком-то городе
     }
 
@@ -270,8 +257,19 @@ class MainActivity : AppCompatActivity() {
         return ""
     }
 
-    // apiResponse.events[i].description.replace("<p>", "").replace("<?p>", "").replace(
-    //                                "</p>",
-    //                                ""
-    //                            )
+    fun getLatAndLon(place: Place?): ArrayList<Double> {
+        val res: ArrayList<Double> = ArrayList()
+        res.add(-1.0)
+        res.add(-1.0)
+
+        if (place != null && place.coords != null) {
+            if (place.coords.lat != null)
+                res[0] = place.coords.lat
+
+            if (place.coords.lon != null)
+                res[1] = place.coords.lon
+        }
+
+        return res
+    }
 }

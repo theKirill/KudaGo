@@ -27,7 +27,7 @@ data class EventNew(
     @SerializedName("price")
     var price: String,
     @SerializedName("images")
-    val images: List<Image>
+    val images: ArrayList<Image>
 )
 
 data class Place(

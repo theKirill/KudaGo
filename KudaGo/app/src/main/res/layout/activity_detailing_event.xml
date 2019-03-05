@@ -87,69 +87,102 @@
 
 Узнать больше о музыкальном фестивале LiveFest Summer вы можете на сайте, «ВКонтакте» или в Facebook."/>
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/imageIcLocationEvent"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_below="@+id/fullDescriptionEvent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/ic_location"/>
-
-            <TextView
-                    android:id="@+id/textLocationEvent"
+            <LinearLayout
+                    android:id="@+id/layout_additional_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fullDescriptionEvent"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginTop="16dp"
-                    android:text="ЦПКиО им. Горького"
-                    style="@style/ForOtherText"/>
+                    android:orientation="vertical"
+                    android:layout_below="@+id/fullDescriptionEvent">
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/imageIcDayEvent"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_below="@+id/imageIcLocationEvent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:src="@drawable/ic_today"/>
+                <FrameLayout
+                        android:id="@+id/container_for_text_location2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0">
 
-            <TextView
-                    android:id="@+id/textDayEvent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textLocationEvent"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginTop="14dp"
-                    android:text="10-11 августа"
-                    style="@style/ForOtherText"/>
+                    <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/imageIcLocationEvent"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/ic_location"/>
 
-            <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/imageIcPriceEvent"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_below="@+id/imageIcDayEvent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="20dp"
-                    android:src="@drawable/ic_attach_money"/>
+                    <TextView
+                            android:id="@+id/textLocationEvent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="18dp"
+                            android:text="ЦПКиО им. Горького"
+                            style="@style/ForOtherText"/>
 
-            <TextView
-                    android:id="@+id/textPriceEvent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textDayEvent"
-                    android:layout_marginStart="48dp"
-                    android:layout_marginTop="14dp"
-                    android:text="1 200 - 1 500 Р"
-                    style="@style/ForOtherText"/>
+                </FrameLayout>
+
+                <FrameLayout
+                        android:id="@+id/container_for_text_date2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0">
+
+                    <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/imageIcDayEvent"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/ic_today"/>
+
+                    <TextView
+                            android:id="@+id/textDayEvent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="10dp"
+                            android:text="10-11 августа"
+                            style="@style/ForOtherText"/>
+
+                </FrameLayout>
+
+                <FrameLayout
+                        android:id="@+id/container_for_text_price2"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0">
+
+                    <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/imageIcPriceEvent"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="20dp"
+                            android:src="@drawable/ic_attach_money"/>
+
+                    <TextView
+                            android:id="@+id/textPriceEvent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="48dp"
+                            android:layout_marginTop="10dp"
+                            android:text="1 200 - 1 500 Р"
+                            style="@style/ForOtherText"/>
+
+                </FrameLayout>
+
+            </LinearLayout>
 
             <FrameLayout
                     android:id="@+id/frame_container_map"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageIcPriceEvent">
+                    android:layout_below="@+id/layout_additional_info">
+
+              <!--  <fragment
+                        android:id="@+id/map"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"/>-->
 
                 <com.google.android.gms.maps.MapView
                         android:id="@+id/map"

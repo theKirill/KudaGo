@@ -1,24 +1,14 @@
 package com.yanyushkin.kudago.models
 
-import com.google.gson.annotations.SerializedName
-
-data class Event(
-    @SerializedName("id")
+class Event(
     val id: Int,
-    @SerializedName("title")
     val title: String,
-    @SerializedName("description")
     val description: String,
-    @SerializedName("full_description")
-    val full_description: String,
-    @SerializedName("place")
+    val fullDescription: String,
     val place: String,
-    @SerializedName("dates")
     val dates: String,
-    @SerializedName("price")
     val price: String,
-    @SerializedName("images")
-    val images: String
+    val imageURL: String
 ) /*{
 
     val nameInfo: String

@@ -28,10 +28,11 @@ class EventDataAdapter(private var events: ArrayList<Event>, clickListener: OnEv
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val event = events[p1]
         if (p1 == 0) {
-            p0.fL.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+            p0.fL.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.0f)
         }
         p0.titleEvent.text = event.title
         p0.descriptionEvent.text = event.description
+
         if (event.place!="") {
             p0.placeEvent.text = event.place
             p0.fLLocation.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
@@ -44,7 +45,7 @@ class EventDataAdapter(private var events: ArrayList<Event>, clickListener: OnEv
             p0.priceEvent.text = event.price
             p0.fLPrice.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
         }
-        Glide.with(p0.cv).load(event.images).into(p0.imageEvent)
+        Glide.with(p0.cv).load(event.imageURL).into(p0.imageEvent)
     }
 
     /*class ViewHolderClick(_v: View, _clickListener: OnEventClickListener) : RecyclerView.ViewHolder(_v), View.OnClickListener{
