@@ -1,17 +1,21 @@
 package com.yanyushkin.kudago.adapters
 
 import android.content.Context
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.AppCompatImageView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ImageView
+import com.squareup.picasso.Picasso
+import com.yanyushkin.kudago.R
 
-class ViewPagerAdapter(_context: Context) : PagerAdapter() {
-    val context: Context = _context
+class ViewPagerAdapter(private val context: Context, private val images: ArrayList<String>) : PagerAdapter() {
 
     override fun getCount(): Int {
-        return 1
+        return images.size
     }
 
     override fun isViewFromObject(p0: View, p1: Any): Boolean {
@@ -19,10 +23,21 @@ class ViewPagerAdapter(_context: Context) : PagerAdapter() {
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val tv = TextView(context)
-        tv.text = position.toString()
+        val imageView = AppCompatImageView(context)
+        imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGray))
+        imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+
         val vP = container as ViewPager
-        vP.addView(tv, 0)
-        return tv
+        vP.addView(imageView)
+
+        Picasso.get().load(images[position]).placeholder(R.drawable.ic_photo_camera_black_24dp)
+            .error(R.drawable.ic_photo_camera_black_24dp).into(imageView)
+        //Glide.with(context).load(images[position]).into(imageView)
+        return imageView
     }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        (container as ViewPager).removeView(`object` as AppCompatImageView)
+    }
+
 }

@@ -6,4 +6,5 @@
     <string name="kudaGo">Куда сходить</string>
     <string name="textChoiceCity">Выберите город</string>
     <string name="textForButtonRoute">Проложить маршрут</string>
+    <string name="apiKeyForGoogleMaps">"AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM"</string>
 </resources>

@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_MESSAGE = 1
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
     private var collapsed = false
-    private var imagesOfEvents: ArrayList<ArrayList<Image>> = ArrayList()
+    private var imagesOfEvents: ArrayList<ArrayList<String>> = ArrayList()
     private var placeOfEvents: ArrayList<Place?> = ArrayList()
 
     /*receiver for monitoring connection changes*/
@@ -67,8 +67,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             main_layout.visibility = View.VISIBLE
             relative_layout.visibility = View.INVISIBLE
-            imagesOfEvents = ArrayList<ArrayList<Image>>()
-            placeOfEvents = ArrayList<Place?>()
+            imagesOfEvents = ArrayList()
+            placeOfEvents = ArrayList()
             initData()
             initRecyclerView()
         }
@@ -77,9 +77,9 @@ class MainActivity : AppCompatActivity() {
         swipeRefreshLayout.setOnRefreshListener {
             // указываем, что мы уже сделали все, что нужно было
             progressBar.visibility = View.VISIBLE
-            events = ArrayList<Event>()
-            imagesOfEvents = ArrayList<ArrayList<Image>>()
-            placeOfEvents = ArrayList<Place?>()
+            events = ArrayList()
+            imagesOfEvents = ArrayList()
+            placeOfEvents = ArrayList()
             initData()
             swipeRefreshLayout.isRefreshing = false
             //обновляем
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                     intentDetailingEvent.putExtra("place", events[position].place)
                     intentDetailingEvent.putExtra("date", events[position].dates)
                     intentDetailingEvent.putExtra("price", events[position].price)
-                    //intentDetailingEvent.putExtra("images", imagesOfEvents[position])
+                    intentDetailingEvent.putExtra("images", imagesOfEvents[position])
                     intentDetailingEvent.putExtra("coords", getLatAndLon(placeOfEvents[position]))
                     startActivity(intentDetailingEvent)
                 }
@@ -162,9 +162,13 @@ class MainActivity : AppCompatActivity() {
             /*Set a adapter for rv*/
             recyclerViewMain.adapter = adapter
         }
+
+        progressBar.visibility = View.INVISIBLE
     }
 
     fun initData() {
+        progressBar.visibility = View.VISIBLE
+
         EventsRepository.instance.getEvents(
             object : ResponseCallback<EventsResponse> {
                 override fun onSuccess(apiResponse: EventsResponse) {
@@ -185,11 +189,15 @@ class MainActivity : AppCompatActivity() {
                                 it.images[0].image
                             )
                         )
-                        imagesOfEvents.add(it.images)
+
+                        val urls= ArrayList<String>()
+                        it.images.forEach {
+                            urls.add(it.image)
+                          }
+                        imagesOfEvents.add(urls)
                         placeOfEvents.add(it.place)
                     }
 
-                    progressBar.visibility = View.INVISIBLE
                     initRecyclerView()
                 }
 

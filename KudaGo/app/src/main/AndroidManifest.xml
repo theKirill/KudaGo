@@ -14,14 +14,6 @@
             android:required="true">
     </uses-feature>
 
-    <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-    <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM" />
-
     <application
             android:allowBackup="true"
             android:icon="@drawable/logo"
@@ -40,6 +32,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <meta-data
+                android:name="com.google.android.gms.version"
+                android:value="@integer/google_play_services_version" />
+
+        <meta-data
+                android:name="com.google.android.maps.v2.API_KEY"
+                android:value="@string/apiKeyForGoogleMaps" />
     </application>
 
 </manifest>

@@ -6,7 +6,8 @@
         android:id="@+id/main_layout_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".activities.DetailingEventActivity">
+        tools:context=".activities.DetailingEventActivity"
+        android:background="@color/colorWhite">
 
     <ScrollView
             android:layout_width="match_parent"
@@ -30,11 +31,11 @@
                     android:id="@+id/indicator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:fillColor="@color/colorWhite"
-                    app:pageColor="@color/colorRed"
-                    app:radius="8dp"
+                    app:fillColor="@color/colorRed"
+                    app:pageColor="@color/colorWhite"
+                    app:radius="4dp"
                     app:strokeColor="@color/colorWhite"
-                    app:strokeWidth="4dp"
+                    app:strokeWidth="2dp"
                     android:padding="8dp"
                     android:layout_marginTop="228dp">
             </com.viewpagerindicator.CirclePageIndicator>
@@ -46,9 +47,9 @@
                     style="@style/ForMainText"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_below="@+id/pager"
                     android:textAllCaps="true"
                     android:text="Музыкальный фестиваль LIVEFEST SUMMER"
+                    android:layout_below="@+id/pager"
                     android:layout_marginTop="24dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"/>
@@ -178,18 +179,18 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layout_additional_info">
 
-              <!--  <fragment
-                        android:id="@+id/map"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"/>-->
+                  <fragment
+                          android:id="@+id/map"
+                          android:layout_width="match_parent"
+                          android:layout_height="200dp"
+                          android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
-                <com.google.android.gms.maps.MapView
+              <!--  <com.google.android.gms.maps.MapView
                         android:id="@+id/map"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginTop="20dp">
-                </com.google.android.gms.maps.MapView>
+                </com.google.android.gms.maps.MapView>-->
 
                 <android.support.v7.widget.AppCompatButton
                         android:id="@+id/buttonShowRoute"
