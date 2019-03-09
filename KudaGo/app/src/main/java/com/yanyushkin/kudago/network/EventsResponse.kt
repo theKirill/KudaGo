@@ -2,14 +2,12 @@ package com.yanyushkin.kudago.network
 
 import com.google.gson.annotations.SerializedName
 
-interface ApiResponse
-
 data class EventsResponse(
     @SerializedName("count")
     val count: Int,
     @SerializedName("results")
     val events: List<EventNew>
-) : ApiResponse
+)
 
 data class EventNew(
     @SerializedName("id")

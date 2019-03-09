@@ -30,8 +30,8 @@ class ViewPagerAdapter(private val context: Context, private val images: ArrayLi
         val vP = container as ViewPager
         vP.addView(imageView)
 
-        Picasso.get().load(images[position]).placeholder(R.drawable.ic_photo_camera_black_24dp)
-            .error(R.drawable.ic_photo_camera_black_24dp).into(imageView)
+        Picasso.get().load(images[position])
+            .error(R.drawable.ic_error_photo).into(imageView)
         //Glide.with(context).load(images[position]).into(imageView)
         return imageView
     }

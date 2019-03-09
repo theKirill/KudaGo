@@ -6,15 +6,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.models.Event
-import com.yanyushkin.kudago.utils.OnEventClickListener
+import com.yanyushkin.kudago.utils.OnClickListener
 
-class EventDataAdapter(private var events: ArrayList<Event>, clickListener: OnEventClickListener) : RecyclerView.Adapter<EventDataAdapter.ViewHolder>() {
-
-   val onClickListener: OnEventClickListener = clickListener
+class EventDataAdapter(private var events: ArrayList<Event>, private val clickListener: OnClickListener) :
+    RecyclerView.Adapter<EventDataAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view = LayoutInflater.from(p0.context).inflate(R.layout.card_view, p0, false)
@@ -28,37 +28,41 @@ class EventDataAdapter(private var events: ArrayList<Event>, clickListener: OnEv
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val event = events[p1]
         if (p1 == 0) {
-            p0.fL.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.0f)
+            p0.fL.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                0.0f
+            )
         }
         p0.titleEvent.text = event.title
         p0.descriptionEvent.text = event.description
 
-        if (event.place!="") {
+        if (event.place != "") {
             p0.placeEvent.text = event.place
-            p0.fLLocation.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+            p0.fLLocation.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1.0f
+            )
         }
-        if (event.dates!="") {
+        if (event.dates != "") {
             p0.dayEvent.text = event.dates
-            p0.fLDate.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+            p0.fLDate.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1.0f
+            )
         }
-        if (event.price!="") {
+        if (event.price != "") {
             p0.priceEvent.text = event.price
-            p0.fLPrice.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f)
+            p0.fLPrice.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1.0f
+            )
         }
         Glide.with(p0.cv).load(event.imageURL).into(p0.imageEvent)
     }
-
-    /*class ViewHolderClick(_v: View, _clickListener: OnEventClickListener) : RecyclerView.ViewHolder(_v), View.OnClickListener{
-        private val clickListener: OnEventClickListener
-
-        init {
-            clickListener=_clickListener
-        }
-
-        override fun onClick(v: View?) {
-           clickListener.onEventCardViewClick(adapterPosition)
-        }
-    }*/
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         var cv: CardView
@@ -89,7 +93,7 @@ class EventDataAdapter(private var events: ArrayList<Event>, clickListener: OnEv
             imageEvent = v.findViewById(R.id.imagePhotoEvent)
 
             v.setOnClickListener {
-                onClickListener.onEventCardViewClick(adapterPosition)
+                clickListener.onCardViewClick(adapterPosition)
             }
         }
     }

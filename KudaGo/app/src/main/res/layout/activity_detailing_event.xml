@@ -33,9 +33,10 @@
                     android:layout_height="wrap_content"
                     app:fillColor="@color/colorRed"
                     app:pageColor="@color/colorWhite"
-                    app:radius="4dp"
+                    app:radius="2dp"
                     app:strokeColor="@color/colorWhite"
-                    app:strokeWidth="2dp"
+                    app:strokeWidth="4dp"
+                    app:gap="10dp"
                     android:padding="8dp"
                     android:layout_marginTop="228dp">
             </com.viewpagerindicator.CirclePageIndicator>
@@ -157,7 +158,6 @@
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
-                            android:layout_marginBottom="20dp"
                             android:src="@drawable/ic_attach_money"/>
 
                     <TextView
@@ -177,20 +177,14 @@
                     android:id="@+id/frame_container_map"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/layout_additional_info">
+                    android:layout_below="@+id/layout_additional_info"
+                    android:layout_marginTop="20dp">
 
-                  <fragment
-                          android:id="@+id/map"
-                          android:layout_width="match_parent"
-                          android:layout_height="200dp"
-                          android:name="com.google.android.gms.maps.SupportMapFragment"/>
-
-              <!--  <com.google.android.gms.maps.MapView
+                <fragment
                         android:id="@+id/map"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:layout_marginTop="20dp">
-                </com.google.android.gms.maps.MapView>-->
+                        android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
                 <android.support.v7.widget.AppCompatButton
                         android:id="@+id/buttonShowRoute"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KudaGo</string>
+    <string name="noConnectionMain">Error of loading data, check your Internet connection</string>
+    <string name="noConnectionBottom">Impossible to load data, check your Internet connection.</string>
+    <string name="nameCityBegin">Moscow</string>
+    <string name="shortNameCityBegin">msk</string>
+    <string name="kudaGo">Where to go</string>
+    <string name="textChoiceCity">Choose the city</string>
+    <string name="textForButtonRoute">Pave route</string>
+    <string name="errorMassageGetEvents">Getting events error</string>
+    <string name="errorMassageGetCities">Getting cities error</string>
+    <string name="apiKeyForGoogleMaps">AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM</string>
+</resources>

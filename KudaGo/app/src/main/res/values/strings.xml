@@ -2,9 +2,12 @@
     <string name="app_name">KudaGo</string>
     <string name="noConnectionMain">Ошибка загрузки данных, проверьте соединение с Интернетом</string>
     <string name="noConnectionBottom">Невозможно загрузить данные, проверьте соединение с Интернетом.</string>
-    <string name="textCityBegin">Москва</string>
+    <string name="nameCityBegin">Москва</string>
+    <string name="shortNameCityBegin">msk</string>
     <string name="kudaGo">Куда сходить</string>
     <string name="textChoiceCity">Выберите город</string>
     <string name="textForButtonRoute">Проложить маршрут</string>
-    <string name="apiKeyForGoogleMaps">"AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM"</string>
+    <string name="errorMassageGetEvents">Getting events error</string>
+    <string name="errorMassageGetCities">Getting cities error</string>
+    <string name="apiKeyForGoogleMaps">AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM</string>
 </resources>

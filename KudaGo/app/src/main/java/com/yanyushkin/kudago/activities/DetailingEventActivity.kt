@@ -7,9 +7,6 @@ import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.view.View
-import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -86,7 +83,7 @@ class DetailingEventActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             val coords: ArrayList<Double> = arguments.get("coords") as ArrayList<Double>
-            if (coords[0] != -1.0 && coords[1] != -1.0) {
+            if (coords.size!=0) {
                 lat = coords[0]
                 lon = coords[1]
                 createMapView()

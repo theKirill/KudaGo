@@ -9,14 +9,13 @@
             android:id="@+id/cvCity"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:cardBackgroundColor="@color/colorWhite"
-            android:onClick="chooseCityOnClick">
+            app:cardBackgroundColor="@color/colorWhite">
 
         <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <TextView
-                    android:id="@+id/text_nameCity"
+                    android:id="@+id/nameCity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:text="Москва"
@@ -31,7 +30,7 @@
                     app:layout_constraintVertical_bias="0.526"/>
 
             <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/choiceCity"
+                    android:id="@+id/selectedCity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_choose_city"

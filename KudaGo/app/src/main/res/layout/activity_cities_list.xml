@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -7,6 +7,11 @@
         android:layout_height="match_parent"
         tools:context=".activities.CitiesListActivity">
 
+    <RelativeLayout
+            android:id="@+id/main_layout_cities"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
     <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar_cities"
             android:layout_width="match_parent"
@@ -36,5 +41,47 @@
         </android.support.v7.widget.RecyclerView>
 
     </FrameLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+            android:id="@+id/relative_layout_cities"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/image_no_connection_cities"
+                android:src="@drawable/ic_no_connection"
+                android:layout_centerInParent="true"
+                android:layout_width="96dp"
+                android:layout_height="96dp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image_no_connection_cities"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26dp"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                android:text="@string/noConnectionMain"
+                style="@style/ForMainText"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/relative_layout_pBar_cities"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+        <ProgressBar
+                android:id="@+id/progressBar_cities"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_centerInParent="true"
+                android:indeterminateDrawable="@drawable/spinner_progress_bar"
+                android:indeterminateOnly="true"
+                android:visibility="visible"/>
+    </RelativeLayout>
+
+</FrameLayout>

@@ -7,13 +7,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class NetworkService {
+
     private val okHttpClient: OkHttpClient
-    val service: EventsService
+    val service: ResponseService
 
     private object Holder { val INSTANCE = NetworkService() }
 
     companion object {
         val instance: NetworkService by lazy { Holder.INSTANCE }
+        const val BASE_URL = "https://kudago.com/public-api/v1.4/"
     }
 
     init {
@@ -31,13 +33,13 @@ class NetworkService {
         return okHttpClientBuilder.build()
     }
 
-    private fun makeService(okHttpClient: OkHttpClient): EventsService{
+    private fun makeService(okHttpClient: OkHttpClient): ResponseService{
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
 
-        return retrofit.create(EventsService::class.java)
+        return retrofit.create(ResponseService::class.java)
     }
 }
