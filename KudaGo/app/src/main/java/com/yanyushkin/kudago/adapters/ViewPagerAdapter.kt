@@ -22,6 +22,7 @@ class ViewPagerAdapter(private val context: Context, private val images: ArrayLi
         return p0 == (p1 as View)
     }
 
+    /*adding imageView with a photo to ViewPager on each page*/
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = AppCompatImageView(context)
         imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGray))
@@ -32,7 +33,7 @@ class ViewPagerAdapter(private val context: Context, private val images: ArrayLi
 
         Picasso.get().load(images[position])
             .error(R.drawable.ic_error_photo).into(imageView)
-        //Glide.with(context).load(images[position]).into(imageView)
+
         return imageView
     }
 

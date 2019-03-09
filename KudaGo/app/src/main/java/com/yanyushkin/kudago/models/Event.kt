@@ -1,31 +1,37 @@
 package com.yanyushkin.kudago.models
 
 class Event(
-    val id: Int,
-    val title: String,
-    val description: String,
-    val fullDescription: String,
-    val place: String,
-    val dates: String,
-    val price: String,
-    val imageURL: String
-) /*{
+    private val id: Int,
+    private val title: String,
+    private val description: String,
+    private val fullDescription: String,
+    private val place: String,
+    private val dates: String,
+    private val price: String,
+    private val imageURL: String
+) {
 
-    val nameInfo: String
-        get() = name
+    val idInfo: Int
+        get() = id
+
+    val titleInfo: String
+        get() = title
 
     val descriptionInfo: String
         get() = description
 
-    val locationInfo: String
-        get() = location
+    val fullDescriptionInfo: String
+        get() = fullDescription
 
-    val dayInfo: String
-        get() = day
+    val placeInfo: String
+        get() = place
+
+    val datesInfo: String
+        get() = dates
 
     val priceInfo: String
         get() = price
 
-    val idEventImageInfo: Int
-        get() = idEventImage
-}*/
+    val imageURLInfo: String
+        get() = imageURL
+}

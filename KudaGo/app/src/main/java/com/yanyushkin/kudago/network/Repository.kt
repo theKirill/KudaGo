@@ -20,7 +20,7 @@ class Repository {
         location: String,
         page: Int
     ) {
-        //retrofit async
+        /*async data acquisition*/
         NetworkService.instance.service.getEvents(actual_since, lang, location, page)
             .enqueue(object : Callback<EventsResponse> {
                 override fun onFailure(call: Call<EventsResponse>, t: Throwable) {
@@ -31,7 +31,7 @@ class Repository {
                     val eventsResponse = response.body()
 
                     if (eventsResponse != null && response.isSuccessful) {
-                        responseCallback.onSuccess(eventsResponse)
+                        responseCallback.onSuccess(eventsResponse)//take the parsed data
                     } else {
                         responseCallback.onFailure("Getting events error")
                     }
@@ -40,6 +40,7 @@ class Repository {
     }
 
     fun getCities(responseCallback: ResponseCallback<ArrayList<CitiesResponse>>, lang: String) {
+        /*async data acquisition*/
         NetworkService.instance.service.getCities(lang).enqueue(object : Callback<ArrayList<CitiesResponse>> {
             override fun onFailure(call: Call<ArrayList<CitiesResponse>>, t: Throwable) {
                 responseCallback.onFailure("Getting cities error")
@@ -52,7 +53,7 @@ class Repository {
                 val citiesResponse = response.body()
 
                 if (citiesResponse != null && response.isSuccessful) {
-                    responseCallback.onSuccess(citiesResponse)
+                    responseCallback.onSuccess(citiesResponse)//take the parsed data
                 } else {
                     responseCallback.onFailure("Getting cities error")
                 }

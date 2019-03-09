@@ -17,7 +17,8 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="16dp">
+            android:layout_marginEnd="16dp"
+            android:id="@+id/layout_for_data_toolbar">
 
         <TextView
                 android:id="@+id/textCity"
@@ -34,7 +35,7 @@
                 android:textStyle="bold"/>
 
         <android.support.v7.widget.AppCompatImageButton
-                android:id="@+id/buttonChoiceCity"
+                android:id="@+id/button_choiceCity"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_choosethecity"
@@ -44,6 +45,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="6dp"
                 android:layout_marginTop="-9dp"/>
+
     </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>

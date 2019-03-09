@@ -10,7 +10,7 @@
         tools:context=".activities.CitiesListActivity">
 
     <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/closeButtonCities"
+            android:id="@+id/button_closeCities"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:src="@drawable/ic_close"
@@ -19,6 +19,7 @@
             android:background="@color/colorWhite"/>
 
     <TextView
+            android:id="@+id/text_choiceCity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

@@ -2,6 +2,7 @@ package com.yanyushkin.kudago.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
+import kotlinx.coroutines.delay
 import java.lang.Exception
 
 class CheckInternet {
@@ -16,7 +17,8 @@ class CheckInternet {
         }
 
         /*check Internet*/
-        fun isHasInternet(context: Context): Boolean {//http://qaru.site/questions/13922/how-to-check-internet-access-on-android-inetaddress-never-times-out
+       suspend fun isHasInternet(context: Context): Boolean {
+            delay(100)
             if (isNetworkConnectivity(context)) {
                 try {
                     val p1 = Runtime.getRuntime().exec("ping -c 1 www.google.com")

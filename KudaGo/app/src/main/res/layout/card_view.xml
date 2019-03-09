@@ -5,17 +5,17 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/layouts_card_events"
         android:orientation="vertical"
-        android:background="@color/colorWhite"
->
+        android:background="@color/colorWhite">
 
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0"
-            android:id="@+id/container_for_textview">
+            android:id="@+id/container_for_text_kudaGo">
 
-        <TextView android:id="@+id/textKudaGo"
+        <TextView android:id="@+id/text_kudaGo"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:text="@string/kudaGo"
@@ -32,11 +32,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/container_for_cardview"
+            android:id="@+id/container_for_cardView"
             android:paddingTop="16dp">
 
         <android.support.v7.widget.CardView
-                android:id="@+id/cvEvent"
+                android:id="@+id/cv_of_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="20dp"
@@ -47,20 +47,21 @@
                 android:layout_marginBottom="3dp">
 
             <LinearLayout
+                    android:id="@+id/layout_info_of_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginBottom="16dp">
 
                 <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/imagePhotoEvent"
+                        android:id="@+id/imagePhoto"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:src="@drawable/ic_photo_camera_black_24dp"
+                        android:src="@drawable/ic_error_photo"
                         android:scaleType="centerCrop"/>
 
                 <TextView
-                        android:id="@+id/textNameEvent"
+                        android:id="@+id/textTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         tools:text="МУЗЫКАЛЬНЫЙ ФЕСТИВАЛЬ LIVEFEST SUMMER"
@@ -74,7 +75,7 @@
                         style="@style/ForMainText"/>
 
                 <TextView
-                        android:id="@+id/textDescriptionEvent"
+                        android:id="@+id/textDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
@@ -91,9 +92,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0"
-                        android:id="@+id/container_for_text_location">
+                        android:id="@+id/container_for_location">
+
                     <android.support.v7.widget.AppCompatImageView
-                            android:id="@+id/imageIcLocation"
+                            android:id="@+id/imageLocation"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"
@@ -115,9 +117,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0"
-                        android:id="@+id/container_for_text_date">
+                        android:id="@+id/container_for_date">
+
                     <android.support.v7.widget.AppCompatImageView
-                            android:id="@+id/imageIcDay"
+                            android:id="@+id/imageDay"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"
@@ -133,16 +136,17 @@
                             android:layout_marginEnd="16dp"
                             tools:text="10-11 августа"
                             style="@style/ForOtherText"/>
+
                 </FrameLayout>
 
                 <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0"
-                        android:id="@+id/container_for_text_price">
+                        android:id="@+id/container_for_price">
 
                     <android.support.v7.widget.AppCompatImageView
-                            android:id="@+id/imageIcPrice"
+                            android:id="@+id/imagePrice"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"

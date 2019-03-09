@@ -5,46 +5,49 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/layouts_cities"
         tools:context=".activities.CitiesListActivity">
 
     <RelativeLayout
-            android:id="@+id/main_layout_cities"
+            android:id="@+id/layout_main_cities"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:ignore="UselessParent">
-    <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar_cities"
-            android:layout_width="match_parent"
-            android:background="@color/colorWhite"
-            android:layout_height="56dp">
 
-        <include
-                layout="@layout/toolbar_cities"
-                android:id="@+id/toolbarCities"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>
+        <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar_cities"
+                android:layout_width="match_parent"
+                android:background="@color/colorWhite"
+                android:layout_height="56dp">
 
-    </android.support.design.widget.AppBarLayout>
+            <include
+                    layout="@layout/toolbar_cities"
+                    android:id="@+id/toolbar_for_cities"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"/>
 
-    <FrameLayout
-            android:id="@+id/frame_container_cities"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/appbar_cities">
+        </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView_cities"
+        <FrameLayout
+                android:id="@+id/container_data_cities"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                android:scrollbars="vertical">
-        </android.support.v7.widget.RecyclerView>
+                android:layout_below="@+id/appbar_cities">
 
-    </FrameLayout>
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView_cities"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    android:scrollbars="vertical">
+            </android.support.v7.widget.RecyclerView>
+
+        </FrameLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
-            android:id="@+id/relative_layout_cities"
+            android:id="@+id/layout_error_internet_cities"
             android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -56,6 +59,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"/>
         <TextView
+                android:id="@+id/text_error_internet_cities"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/image_no_connection_cities"
@@ -64,12 +68,12 @@
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:text="@string/noConnectionMain"
-                style="@style/ForMainText"
-        />
+                style="@style/ForMainText"/>
+
     </RelativeLayout>
 
     <RelativeLayout
-            android:id="@+id/relative_layout_pBar_cities"
+            android:id="@+id/layout_pBar_cities"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible">

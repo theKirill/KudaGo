@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/main_layout_event"
+        android:id="@+id/layouts_event"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".activities.DetailingEventActivity"
@@ -13,10 +13,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:id="@+id/scroll_view">
+            android:id="@+id/scrollView_event">
 
         <RelativeLayout
-                android:id="@+id/relative_layout_event"
+                android:id="@+id/layout_main_event"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -42,44 +42,43 @@
             </com.viewpagerindicator.CirclePageIndicator>
 
             <TextView
-                    android:id="@+id/titleEvent"
+                    android:id="@+id/title_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/ForMainText"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:textAllCaps="true"
-                    android:text="Музыкальный фестиваль LIVEFEST SUMMER"
+                    tools:text="Музыкальный фестиваль LIVEFEST SUMMER"
                     android:layout_below="@+id/pager"
                     android:layout_marginTop="24dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"/>
 
             <TextView
-                    android:id="@+id/shortDescriptionEvent"
+                    android:id="@+id/shortDescription_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/ForMainText"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    android:layout_below="@+id/titleEvent"
+                    android:layout_below="@+id/title_event"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:text="Первый фестиваль LiveFest на курорте «Роза Хутор» собрал перспективные музыкальные проекты России и произвёл фурор у публики. Летняя версия будет ещё жарче и динамичнее, охватит ещё больше жанров, откроет новые имена и порадует свежими треками от признанных звёзд."/>
+                    tools:text="Первый фестиваль LiveFest на курорте «Роза Хутор» собрал перспективные музыкальные проекты России и произвёл фурор у публики. Летняя версия будет ещё жарче и динамичнее, охватит ещё больше жанров, откроет новые имена и порадует свежими треками от признанных звёзд."/>
 
             <TextView
-                    android:id="@+id/fullDescriptionEvent"
+                    android:id="@+id/fullDescription_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/ForOtherText"
                     android:textSize="16sp"
-                    android:layout_below="@+id/shortDescriptionEvent"
-                    android:layout_marginTop="16dp"
+                    android:layout_below="@+id/shortDescription_event"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:autoLink="web|none"
-                    android:text="Спустя полгода сочинский курорт «Роза Хутор» снова приглашает меломанов на музыкальный фестиваль LiveFest Summer, в котором объединятся все радости южного отдыха: тёплое море, головокружительные горы, зажигательные танцы и сочные песни от талантливых молодых исполнителей.
+                    tools:text="Спустя полгода сочинский курорт «Роза Хутор» снова приглашает меломанов на музыкальный фестиваль LiveFest Summer, в котором объединятся все радости южного отдыха: тёплое море, головокружительные горы, зажигательные танцы и сочные песни от талантливых молодых исполнителей.
 
 Главная сцена фестиваля расположится на высоте более полутора тысяч метров над уровнем моря, а гостей туда доставит канатная дорогая «Стрела». К ней присоединятся и другие площадки горного курорта, на которых в последнюю ночь фестиваля состоятся джем-сейшены и невероятные вечеринки.
 
@@ -90,45 +89,44 @@
 Узнать больше о музыкальном фестивале LiveFest Summer вы можете на сайте, «ВКонтакте» или в Facebook."/>
 
             <LinearLayout
-                    android:id="@+id/layout_additional_info"
+                    android:id="@+id/layout_additionalInfo_event"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_below="@+id/fullDescriptionEvent">
+                    android:layout_below="@+id/fullDescription_event">
 
                 <FrameLayout
-                        android:id="@+id/container_for_text_location2"
+                        android:id="@+id/container_for_location_event"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0">
 
                     <android.support.v7.widget.AppCompatImageView
-                            android:id="@+id/imageIcLocationEvent"
+                            android:id="@+id/imageLocation_event"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="16dp"
                             android:src="@drawable/ic_location"/>
 
                     <TextView
-                            android:id="@+id/textLocationEvent"
+                            android:id="@+id/textLocation_event"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="48dp"
-                            android:layout_marginTop="18dp"
-                            android:text="ЦПКиО им. Горького"
+                            android:layout_marginTop="2dp"
+                            tools:text="ЦПКиО им. Горького"
                             style="@style/ForOtherText"/>
 
                 </FrameLayout>
 
                 <FrameLayout
-                        android:id="@+id/container_for_text_date2"
+                        android:id="@+id/container_for_date_event"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0">
 
                     <android.support.v7.widget.AppCompatImageView
-                            android:id="@+id/imageIcDayEvent"
+                            android:id="@+id/imageDay_event"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"
@@ -136,24 +134,24 @@
                             android:src="@drawable/ic_today"/>
 
                     <TextView
-                            android:id="@+id/textDayEvent"
+                            android:id="@+id/textDay_event"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="48dp"
                             android:layout_marginTop="10dp"
-                            android:text="10-11 августа"
+                            tools:text="10-11 августа"
                             style="@style/ForOtherText"/>
 
                 </FrameLayout>
 
                 <FrameLayout
-                        android:id="@+id/container_for_text_price2"
+                        android:id="@+id/container_for_price_event"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="0">
 
                     <android.support.v7.widget.AppCompatImageView
-                            android:id="@+id/imageIcPriceEvent"
+                            android:id="@+id/imagePrice_event"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"
@@ -161,12 +159,12 @@
                             android:src="@drawable/ic_attach_money"/>
 
                     <TextView
-                            android:id="@+id/textPriceEvent"
+                            android:id="@+id/textPrice_event"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="48dp"
                             android:layout_marginTop="10dp"
-                            android:text="1 200 - 1 500 Р"
+                            tools:text="1 200 - 1 500 Р"
                             style="@style/ForOtherText"/>
 
                 </FrameLayout>
@@ -174,10 +172,10 @@
             </LinearLayout>
 
             <FrameLayout
-                    android:id="@+id/frame_container_map"
+                    android:id="@+id/container_for_map"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/layout_additional_info"
+                    android:layout_below="@+id/layout_additionalInfo_event"
                     android:layout_marginTop="20dp">
 
                 <fragment
@@ -187,7 +185,7 @@
                         android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
                 <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/buttonShowRoute"
+                        android:id="@+id/button_showRoute"
                         android:layout_width="wrap_content"
                         android:layout_height="32dp"
                         android:text="@string/textForButtonRoute"
@@ -204,6 +202,8 @@
 
     </ScrollView>
 
-    <include layout="@layout/toolbar_detailing_event"/>
+    <include
+            layout="@layout/toolbar_detailing_event"
+            android:id="@+id/toolbar_for_detailing_event"/>
 
 </FrameLayout>

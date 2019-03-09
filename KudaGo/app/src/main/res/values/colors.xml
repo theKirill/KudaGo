@@ -3,8 +3,8 @@
     <color name="colorPrimary">@android:color/holo_red_dark</color>
     <color name="colorPrimaryDark">@android:color/black</color>
     <color name="colorAccent">#D81B60</color>
-    <color name="textColorMain">#D9000000</color>
-    <color name="textColorOther">#99000000</color>
+    <color name="colorMainText">#D9000000</color>
+    <color name="colorOtherText">#99000000</color>
     <color name="colorRed">#E62D37</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBackgroundMain">#808080</color>

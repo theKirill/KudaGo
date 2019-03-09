@@ -10,12 +10,12 @@
 
     <style name="ForOtherText" parent="android:TextAppearance.Medium">
         <item name="android:fontFamily">Roboto</item>
-        <item name="android:textColor">@color/textColorOther</item>
+        <item name="android:textColor">@color/colorOtherText</item>
         <item name="android:textSize">14sp</item>
     </style>
 
     <style name="ForMainText" parent="android:TextAppearance.Medium">
         <item name="android:fontFamily">Roboto</item>
-        <item name="android:textColor">@color/textColorMain</item>
+        <item name="android:textColor">@color/colorMainText</item>
     </style>
 </resources>

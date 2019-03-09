@@ -4,18 +4,19 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+             android:id="@+id/layouts_events"
              tools:context=".activities.MainActivity"
              android:background="@color/colorWhite">
 
     <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/main_layout"
+            android:id="@+id/layout_main_events"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
             android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbar"
+                android:id="@+id/appbar_events"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:minHeight="70dp"
@@ -24,7 +25,7 @@
 
             <include
                     layout="@layout/toolbar"
-                    android:id="@+id/mainToolbar"
+                    android:id="@+id/toolbar_for_events"
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
                     app:layout_collapseMode="pin"
@@ -34,18 +35,18 @@
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
-                android:id="@+id/frame_container"
+                android:id="@+id/container_data_events"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v4.widget.SwipeRefreshLayout
-                    android:id="@+id/swipeRefreshLayout"
+                    android:id="@+id/layout_swipe_events"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                 <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerViewMain"
+                        android:id="@+id/recyclerView_events"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
@@ -59,44 +60,47 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <RelativeLayout
-            android:id="@+id/relative_layout"
+            android:id="@+id/layout_error_internet_events"
             android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/image_no_connection"
+                android:id="@+id/image_no_connection_events"
                 android:src="@drawable/ic_no_connection"
                 android:layout_centerInParent="true"
                 android:layout_width="96dp"
                 android:layout_height="96dp"/>
+
         <TextView
+                android:id="@+id/text_error_internet_events"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/image_no_connection"
+                android:layout_below="@+id/image_no_connection_events"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="26dp"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:text="@string/noConnectionMain"
-                style="@style/ForMainText"
-        />
+                style="@style/ForMainText"/>
+
     </RelativeLayout>
 
     <RelativeLayout
-            android:id="@+id/relative_layout_pBar"
+            android:id="@+id/layout_pBar_events"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible">
 
         <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/progressBar_events"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_centerInParent="true"
                 android:indeterminateDrawable="@drawable/spinner_progress_bar"
                 android:indeterminateOnly="true"
                 android:visibility="visible"/>
+
     </RelativeLayout>
 
 </FrameLayout>
