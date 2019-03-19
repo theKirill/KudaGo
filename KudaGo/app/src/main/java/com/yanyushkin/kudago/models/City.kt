@@ -2,8 +2,9 @@ package com.yanyushkin.kudago.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.io.Serializable
 
-class City(private var name: String, private var shortEnglishName: String) : Parcelable {
+class City(private var name: String, private var shortEnglishName: String) : Parcelable, Serializable {
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString()

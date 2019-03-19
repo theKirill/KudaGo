@@ -66,6 +66,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     tools:text="Первый фестиваль LiveFest на курорте «Роза Хутор» собрал перспективные музыкальные проекты России и произвёл фурор у публики. Летняя версия будет ещё жарче и динамичнее, охватит ещё больше жанров, откроет новые имена и порадует свежими треками от признанных звёзд."/>
 
             <TextView
@@ -78,8 +79,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:autoLink="web|none"
+                    android:linksClickable="true"
                     tools:text="Спустя полгода сочинский курорт «Роза Хутор» снова приглашает меломанов на музыкальный фестиваль LiveFest Summer, в котором объединятся все радости южного отдыха: тёплое море, головокружительные горы, зажигательные танцы и сочные песни от талантливых молодых исполнителей.
-
 Главная сцена фестиваля расположится на высоте более полутора тысяч метров над уровнем моря, а гостей туда доставит канатная дорогая «Стрела». К ней присоединятся и другие площадки горного курорта, на которых в последнюю ночь фестиваля состоятся джем-сейшены и невероятные вечеринки.
 
 Представители современных музыкальных направлений наполнят пространство города музыкой и драйвом. Хедлайнеры LiveFest Summer, проекты Therr Maitz и Pompeya выступят с сумасшедшими концертами, Дельфин презентует долгожданный альбом «442», а главным украшением фестиваля станет бесподобная Земфира.
@@ -93,7 +94,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_below="@+id/fullDescription_event">
+                    android:layout_below="@+id/fullDescription_event"
+            android:layout_marginTop="8dp">
 
                 <FrameLayout
                         android:id="@+id/container_for_location_event"
@@ -106,6 +108,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
                             android:src="@drawable/ic_location"/>
 
                     <TextView
@@ -113,7 +116,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="48dp"
-                            android:layout_marginTop="2dp"
+                            android:layout_marginTop="10dp"
                             tools:text="ЦПКиО им. Горького"
                             style="@style/ForOtherText"/>
 

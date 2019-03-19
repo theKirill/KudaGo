@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Html
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -67,17 +68,17 @@ class DetailingEventActivity : AppCompatActivity(), OnMapReadyCallback {
             val shortDescriptionWithHtml = arguments.getString("description")
             /*replacing tags*/
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY)
+                shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY).trim()
             } else {
-                shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml)
+                shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml).trim()
             }
 
             val fullDescriptionWithHtml = arguments.getString("fullDescription")
             /*replacing tags*/
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY)
+                fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY).trim()
             } else {
-                fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml)
+                fullDescription_event.text  = Html.fromHtml(fullDescriptionWithHtml).trim()
             }
 
             /*if we have the right data, insert it in views and show, else not show*/
@@ -118,7 +119,6 @@ class DetailingEventActivity : AppCompatActivity(), OnMapReadyCallback {
                 createMapView()
             }
         }
-
     }
 
     private fun createMapView() {

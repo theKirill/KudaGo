@@ -1,5 +1,7 @@
 package com.yanyushkin.kudago.models
 
+import java.io.Serializable
+
 class Event(
     private val id: Int,
     private val title: String,
@@ -9,7 +11,7 @@ class Event(
     private val dates: String,
     private val price: String,
     private val imageURL: String
-) {
+): Serializable {
 
     val idInfo: Int
         get() = id

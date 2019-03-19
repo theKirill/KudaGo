@@ -6,7 +6,6 @@ import kotlinx.coroutines.delay
 import java.lang.Exception
 
 class CheckInternet {
-
     companion object {
         /*check network*/
         private fun isNetworkConnectivity(context: Context): Boolean {
@@ -17,15 +16,14 @@ class CheckInternet {
         }
 
         /*check Internet*/
-       suspend fun isHasInternet(context: Context): Boolean {
+        suspend fun isHasInternet(context: Context): Boolean {
             delay(100)
             if (isNetworkConnectivity(context)) {
                 try {
                     val p1 = Runtime.getRuntime().exec("ping -c 1 www.google.com")
                     val returnVal = p1.waitFor()
                     return returnVal == 0
-                }
-                catch (e: Exception){
+                } catch (e: Exception) {
 
                 }
                 return false

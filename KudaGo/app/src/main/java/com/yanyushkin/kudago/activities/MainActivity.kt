@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
                             if (!isHasInternet) {
                                 showErrorNoInternet()
                             } else {
-                                showHasInternet()
+                                showEvents()
                             }
                         }
                     }
@@ -91,8 +91,6 @@ class MainActivity : AppCompatActivity() {
         initSwipeRefreshListener()
 
         changingLogoSize()
-
-        setAnimation()
 
         textCity.setOnClickListener { selectCity() }
         button_choiceCity.setOnClickListener { selectCity() }
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         sbError.show(this)
     }
 
-    private fun showHasInternet() {
+    private fun showEvents() {
         if (events.size == 0) {
             events = ArrayList()
             imagesOfEvents = ArrayList()
@@ -197,27 +195,6 @@ class MainActivity : AppCompatActivity() {
                     imageLogo.scaleX = 1.0f
                     imageLogo.scaleY = 1.0f
                 }
-            }
-        })
-    }
-
-    private fun setAnimation() {
-        /*changing the transparency*/
-        val animation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.anim_alpha)
-
-        textCity.setOnLongClickListener(object : View.OnLongClickListener {
-            override fun onLongClick(v: View?): Boolean {
-                textCity.startAnimation(animation)
-                button_choiceCity.startAnimation(animation)
-                return true
-            }
-        })
-
-        button_choiceCity.setOnLongClickListener(object : View.OnLongClickListener {
-            override fun onLongClick(v: View?): Boolean {
-                textCity.startAnimation(animation)
-                button_choiceCity.startAnimation(animation)
-                return true
             }
         })
     }
@@ -333,6 +310,7 @@ class MainActivity : AppCompatActivity() {
                     intentDetailingEvent.putExtra("price", events[position].priceInfo)
                     intentDetailingEvent.putExtra("images", imagesOfEvents[position])
                     intentDetailingEvent.putExtra("coords", getLatAndLon(placeOfEvents[position]))
+                    //intentDetailingEvent.putExtra(Event::class.java.simpleName, events[position])
                     /*pass the necessary data to detailing activity*/
                     startActivity(intentDetailingEvent)
                 }

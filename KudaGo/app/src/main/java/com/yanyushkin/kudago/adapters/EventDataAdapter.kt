@@ -34,8 +34,15 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
         if (p1 == 0) {
             p0.fL.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f
+            )
+        }
+        else{
+            p0.fL.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                0.0f
             )
         }
         p0.titleEvent.text = event.titleInfo
@@ -58,6 +65,14 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
                 1.0f
             )
         }
+        else
+        {
+            p0.fLLocation.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                0.0f
+            )
+        }
         if (event.datesInfo != "") {
             p0.dayEvent.text = event.datesInfo
             p0.fLDate.layoutParams = LinearLayout.LayoutParams(
@@ -66,12 +81,27 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
                 1.0f
             )
         }
+        else{
+            p0.fLDate.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                0.0f
+            )
+        }
         if (event.priceInfo != "") {
             p0.priceEvent.text = event.priceInfo
             p0.fLPrice.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f
+            )
+        }
+        else
+        {
+            p0.fLPrice.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                0.0f
             )
         }
 

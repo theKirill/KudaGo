@@ -51,7 +51,7 @@ class CitiesListActivity : AppCompatActivity() {
                             if (!isHasInternet) {
                                 showErrorNoInternet()
                             } else {
-                                showHasInternet()
+                                showCities()
                             }
                         }
                     }
@@ -109,7 +109,7 @@ class CitiesListActivity : AppCompatActivity() {
         sbError.show(this)
     }
 
-    private fun showHasInternet() {
+    private fun showCities() {
         if (cities.size == 0) {
             cities = ArrayList()
             initData()
@@ -148,8 +148,10 @@ class CitiesListActivity : AppCompatActivity() {
         val adapter = CityDataAdapter(cities, object : OnClickListener {
             override fun onCardViewClick(position: Int) {
                 val intentRes = Intent()
+               // val selectedCity = City(cities[position].nameInfo, cities[position].shortEnglishNameInfo)
                 intentRes.putExtra("nameOfSelectedCity", cities[position].nameInfo)
                 intentRes.putExtra("shortEnglishNameOfSelectedCity", cities[position].shortEnglishNameInfo)
+                //intentRes.putExtra("", selectedCity)
                 /*remember the selected city and pass to main activity*/
                 setResult(Activity.RESULT_OK, intentRes)
                 finish()
