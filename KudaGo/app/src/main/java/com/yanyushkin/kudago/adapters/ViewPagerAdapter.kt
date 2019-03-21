@@ -1,7 +1,6 @@
 package com.yanyushkin.kudago.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -18,8 +17,8 @@ class ViewPagerAdapter(private val context: Context, private val images: ArrayLi
         return images.size
     }
 
-    override fun isViewFromObject(p0: View, p1: Any): Boolean {
-        return p0 == (p1 as View)
+    override fun isViewFromObject(view: View, any: Any): Boolean {
+        return view == (any as View)
     }
 
     /*adding imageView with a photo to ViewPager on each page*/

@@ -14,25 +14,27 @@ import com.yanyushkin.kudago.utils.OnClickListener
 class CityDataAdapter(private var cities: ArrayList<City>, private val clickListener: OnClickListener, private val currentCity: String) :
     RecyclerView.Adapter<CityDataAdapter.ViewHolder>() {
 
-    override fun getItemCount(): Int {
-        return cities.size
-    }
+    override fun getItemCount() = cities.size
 
     /*init of ViewHolder*/
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(p0.context).inflate(R.layout.card_view_separate_city, p0, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): ViewHolder {
+        return ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.card_view_separate_city, viewGroup, false))
     }
 
     /*full data for each element of RV*/
-    override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        val city = cities[p1]
-        p0.nameCity.text = city.nameInfo
+    override fun onBindViewHolder(viewHolder: ViewHolder, poistion: Int) {
+        val city = cities[poistion]
+        viewHolder.nameCity.text = city.nameInfo
 
         /*check currentCity and put a tick*/
         if (city.shortEnglishNameInfo == currentCity) {
-            p0.selectedCity.visibility = View.VISIBLE
+            viewHolder.selectedCity.visibility = View.VISIBLE
         }
+    }
+
+    fun setItems(_cities: ArrayList<City>) {
+        cities = _cities
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {

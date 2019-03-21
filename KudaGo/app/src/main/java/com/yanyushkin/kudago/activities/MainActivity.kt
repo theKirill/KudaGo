@@ -1,6 +1,8 @@
 package com.yanyushkin.kudago.activities
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,20 +10,22 @@ import android.support.design.widget.AppBarLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.yanyushkin.kudago.R
+import com.yanyushkin.kudago.ViewModels.BaseViewModelFactory
 import com.yanyushkin.kudago.adapters.EventDataAdapter
 import com.yanyushkin.kudago.models.Event
 import com.yanyushkin.kudago.network.*
 import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import com.yanyushkin.kudago.utils.OnClickListener
+import com.yanyushkin.kudago.utils.Tools
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
     private var events: ArrayList<Event> = ArrayList()
@@ -41,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private var page = 1
     private var lang = "en"
     private var actualSince: Long = 0
+    private lateinit var adapter: EventDataAdapter
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -94,6 +99,8 @@ class MainActivity : AppCompatActivity() {
 
         textCity.setOnClickListener { selectCity() }
         button_choiceCity.setOnClickListener { selectCity() }
+
+        initRecyclerView()
     }
 
     override fun onResume() {
@@ -171,7 +178,6 @@ class MainActivity : AppCompatActivity() {
     private fun initSwipeRefreshListener() {
         layout_swipe_events.setColorSchemeResources(R.color.colorRed)
         layout_swipe_events.setOnRefreshListener {
-            progressBar_events.visibility = View.VISIBLE
             events = ArrayList()
             imagesOfEvents = ArrayList()
             placeOfEvents = ArrayList()
@@ -231,7 +237,6 @@ class MainActivity : AppCompatActivity() {
         progressBar_events.visibility = View.VISIBLE
 
         isLoading = true
-
         /*get actual events on installed language from selected city from necessary page and add it to ArrayList of events*/
         Repository.instance.getEvents(
             object : ResponseCallback<EventsResponse> {
@@ -243,8 +248,8 @@ class MainActivity : AppCompatActivity() {
                                 it.title,
                                 it.description,
                                 it.body_text,
-                                translatePlace(it.place),
-                                translateDate(
+                                Tools.translatePlace(it.place),
+                                Tools.translateDate(
                                     it.date[0].start_date,
                                     it.date[0].end_date
                                 )
@@ -267,13 +272,14 @@ class MainActivity : AppCompatActivity() {
                     isLoading = false
 
                     if (page > 1) {
-                        layout_swipe_events.isRefreshing = false
-                        progressBar_events.visibility = View.INVISIBLE
                         /*don`t move to top of the RV, because we add data to end*/
                         recyclerView_events.adapter!!.notifyItemInserted(events.size - 1)
                     } else {
-                        initRecyclerView()
+                        adapter.setItems(events)
+                        recyclerView_events.adapter=adapter
                     }
+                    layout_swipe_events.isRefreshing = false
+                    progressBar_events.visibility = View.INVISIBLE
                 }
 
                 override fun onFailure(errorMessage: String) {
@@ -288,34 +294,37 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private fun initAdapter() {
+        /*Create adapter with listener of click on element*/
+        adapter = EventDataAdapter(events, object : OnClickListener {
+            override fun onCardViewClick(position: Int) {
+                val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
+                intentDetailingEvent.putExtra("id", events[position].idInfo)
+                intentDetailingEvent.putExtra("title", events[position].titleInfo)
+                intentDetailingEvent.putExtra("description", events[position].descriptionInfo)
+                intentDetailingEvent.putExtra("fullDescription", events[position].fullDescriptionInfo)
+                intentDetailingEvent.putExtra("place", events[position].placeInfo)
+                intentDetailingEvent.putExtra("date", events[position].datesInfo)
+                intentDetailingEvent.putExtra("price", events[position].priceInfo)
+                intentDetailingEvent.putExtra("images", imagesOfEvents[position])
+                 intentDetailingEvent.putExtra("coords", Tools.getLatAndLon(placeOfEvents[position]))
+                //intentDetailingEvent.putExtra(Event::class.java.simpleName, events[position])
+                /*pass the necessary data to detailing activity*/
+                startActivity(intentDetailingEvent)
+            }
+        })
+    }
+
     private fun initRecyclerView() {
         val layoutManagerForRV = LinearLayoutManager(this)
         layoutManagerForRV.orientation = LinearLayout.VERTICAL
         recyclerView_events.layoutManager = layoutManagerForRV
 
-        /*Clear RV*/
         recyclerView_events.removeAllViews()
 
         recyclerView_events.apply {
-            /*Create adapter with listener of click on element*/
-            val adapter = EventDataAdapter(events, object : OnClickListener {
-                override fun onCardViewClick(position: Int) {
-                    val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
-                    intentDetailingEvent.putExtra("id", events[position].idInfo)
-                    intentDetailingEvent.putExtra("title", events[position].titleInfo)
-                    intentDetailingEvent.putExtra("description", events[position].descriptionInfo)
-                    intentDetailingEvent.putExtra("fullDescription", events[position].fullDescriptionInfo)
-                    intentDetailingEvent.putExtra("place", events[position].placeInfo)
-                    intentDetailingEvent.putExtra("date", events[position].datesInfo)
-                    intentDetailingEvent.putExtra("price", events[position].priceInfo)
-                    intentDetailingEvent.putExtra("images", imagesOfEvents[position])
-                    intentDetailingEvent.putExtra("coords", getLatAndLon(placeOfEvents[position]))
-                    //intentDetailingEvent.putExtra(Event::class.java.simpleName, events[position])
-                    /*pass the necessary data to detailing activity*/
-                    startActivity(intentDetailingEvent)
-                }
-            })
             /*Set a adapter for rv*/
+            initAdapter()
             recyclerView_events.adapter = adapter
         }
 
@@ -339,75 +348,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        //textKudaGo.visibility=View.VISIBLE
         layout_swipe_events.isRefreshing = false
         progressBar_events.visibility = View.INVISIBLE
-    }
-
-    private fun translateDate(badStartDate: String?, badEndDate: String?): String {
-        val months: Array<String> = arrayOf(
-            "января",
-            "февраля",
-            "марта",
-            "апреля",
-            "мая",
-            "июня",
-            "июля",
-            "августа",
-            "сентября",
-            "октября",
-            "ноября",
-            "декабря"
-        )
-        var resDate: String = ""
-
-        if (badStartDate != null)
-            resDate += badStartDate.substring(8) + " " + months[Integer.parseInt(
-                badStartDate.substring(
-                    5,
-                    7
-                )
-            ) - 1] + " " + badStartDate.substring(0, 4)
-
-        if (badEndDate != null) {
-            if (resDate.isNotEmpty())
-                resDate += " - "
-            else
-                resDate += "до "
-
-            resDate += badEndDate.substring(8) + " " + months[Integer.parseInt(
-                badEndDate.substring(
-                    5,
-                    7
-                )
-            ) - 1] + " " + badEndDate.substring(0, 4)
-        }
-
-        return resDate
-    }
-
-    private fun translatePlace(badPlace: Place?): String {
-        if (badPlace != null) {
-            if (badPlace.title != null)
-                return badPlace.title
-            if (badPlace.address != null)
-                return badPlace.address
-        }
-
-        return ""
-    }
-
-    private fun getLatAndLon(place: Place?): ArrayList<Double> {
-        val res: ArrayList<Double> = ArrayList()
-
-        if (place != null && place.coords != null) {
-            if (place.coords.lat != null)
-                res.add(place.coords.lat)
-
-            if (place.coords.lon != null)
-                res.add(place.coords.lon)
-        }
-
-        return res
     }
 }

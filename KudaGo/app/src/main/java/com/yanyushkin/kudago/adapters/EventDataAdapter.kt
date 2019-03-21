@@ -8,7 +8,6 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.*
 import com.bumptech.glide.Glide
 import com.yanyushkin.kudago.R
@@ -18,94 +17,124 @@ import com.yanyushkin.kudago.utils.OnClickListener
 class EventDataAdapter(private var events: ArrayList<Event>, private val clickListener: OnClickListener) :
     RecyclerView.Adapter<EventDataAdapter.ViewHolder>() {
 
-    override fun getItemCount(): Int {
-        return events.size
-    }
+    override fun getItemCount() = events.size
 
     /*init of ViewHolder*/
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val view = LayoutInflater.from(p0.context).inflate(R.layout.card_view, p0, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.card_view, viewGroup, false))
     }
 
     /*full data for each element of RV*/
-    override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
-        val event = events[p1]
-        if (p1 == 0) {
-            p0.fL.layoutParams = LinearLayout.LayoutParams(
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val event = events[position]
+
+        setHeader(viewHolder, position)
+
+        setImage(viewHolder, event)
+
+        setTitle(viewHolder, event)
+
+        setDescription(viewHolder, event)
+
+        setPlace(viewHolder, event)
+
+        setDate(viewHolder, event)
+
+        setPrice(viewHolder, event)
+
+    }
+
+    fun setItems(_events: ArrayList<Event>) {
+        events = _events
+        notifyDataSetChanged()
+    }
+
+    private fun setHeader(viewHolder: ViewHolder, position: Int) {
+        /*Visibility of Header*/
+        if (position == 0) {
+            viewHolder.fL.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f
             )
-        }
-        else{
-            p0.fL.layoutParams = LinearLayout.LayoutParams(
+        } else {
+            viewHolder.fL.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0,
                 0.0f
             )
         }
-        p0.titleEvent.text = event.titleInfo
+    }
 
+    private fun setImage(viewHolder: ViewHolder, event: Event) {
+        Glide.with(viewHolder.cv).load(event.imageURLInfo).into(viewHolder.imageEvent)
+    }
+
+    private fun setTitle(viewHolder: ViewHolder, event: Event) {
+        viewHolder.titleEvent.text = event.titleInfo
+    }
+
+    private fun setDescription(viewHolder: ViewHolder, event: Event) {
         val descriptionEventWithHtml = event.descriptionInfo
 
         /*replacing tags*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            p0.descriptionEvent.text = Html.fromHtml(descriptionEventWithHtml, Html.FROM_HTML_MODE_LEGACY)
+            viewHolder.descriptionEvent.text = Html.fromHtml(descriptionEventWithHtml, Html.FROM_HTML_MODE_LEGACY)
         } else {
-            p0.descriptionEvent.text = Html.fromHtml(descriptionEventWithHtml)
+            viewHolder.descriptionEvent.text = Html.fromHtml(descriptionEventWithHtml)
         }
+    }
 
+    private fun setPlace(viewHolder: ViewHolder, event: Event) {
         /*if we have the right data, insert it in views and show, else not show*/
         if (event.placeInfo != "") {
-            p0.placeEvent.text = event.placeInfo
-            p0.fLLocation.layoutParams = LinearLayout.LayoutParams(
+            viewHolder.placeEvent.text = event.placeInfo
+            viewHolder.fLLocation.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f
             )
-        }
-        else
-        {
-            p0.fLLocation.layoutParams = LinearLayout.LayoutParams(
+        } else {
+            viewHolder.fLLocation.layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0,
                 0.0f
             )
         }
-        if (event.datesInfo != "") {
-            p0.dayEvent.text = event.datesInfo
-            p0.fLDate.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f
-            )
-        }
-        else{
-            p0.fLDate.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                0.0f
-            )
-        }
-        if (event.priceInfo != "") {
-            p0.priceEvent.text = event.priceInfo
-            p0.fLPrice.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f
-            )
-        }
-        else
-        {
-            p0.fLPrice.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                0,
-                0.0f
-            )
-        }
+    }
 
-        Glide.with(p0.cv).load(event.imageURLInfo).into(p0.imageEvent)
+    private fun setDate(viewHolder: ViewHolder, event: Event) {
+        if (event.datesInfo != "") {
+            viewHolder.dayEvent.text = event.datesInfo
+            viewHolder.fLDate.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1.0f
+            )
+        } else {
+            viewHolder.fLDate.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                0.0f
+            )
+        }
+    }
+
+    private fun setPrice(viewHolder: ViewHolder, event: Event) {
+        if (event.priceInfo != "") {
+            viewHolder.priceEvent.text = event.priceInfo
+            viewHolder.fLPrice.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1.0f
+            )
+        } else {
+            viewHolder.fLPrice.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                0.0f
+            )
+        }
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {

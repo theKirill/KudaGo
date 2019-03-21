@@ -1,20 +1,20 @@
 package com.yanyushkin.kudago.activities
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.yanyushkin.kudago.R
+import com.yanyushkin.kudago.ViewModels.BaseViewModelFactory
+import com.yanyushkin.kudago.ViewModels.CitiesViewModel
 import com.yanyushkin.kudago.adapters.CityDataAdapter
 import com.yanyushkin.kudago.models.City
-import com.yanyushkin.kudago.network.CitiesResponse
-import com.yanyushkin.kudago.network.Repository
-import com.yanyushkin.kudago.network.ResponseCallback
 import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import com.yanyushkin.kudago.utils.OnClickListener
@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.activity_cities_list.*
 import kotlinx.android.synthetic.main.toolbar_cities.*
 import kotlinx.coroutines.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CitiesListActivity : AppCompatActivity() {
     private var cities: ArrayList<City> = ArrayList()
@@ -29,6 +30,9 @@ class CitiesListActivity : AppCompatActivity() {
     private val CITIES = "cities"
     private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
+    private lateinit var adapter: CityDataAdapter
+    private lateinit var viewModel: CitiesViewModel
+    private var loaded: Boolean = false
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -77,12 +81,10 @@ class CitiesListActivity : AppCompatActivity() {
             cities = savedInstanceState.getParcelableArrayList(CITIES)
         }
 
-        button_closeCities.setOnClickListener { finish() }
-    }
-
-    override fun onResume() {
-        super.onResume()
         registerReceiver(receiver, intentFilter)
+        initAdapter()
+
+        button_closeCities.setOnClickListener { finish() }
     }
 
     override fun onPause() {
@@ -97,14 +99,13 @@ class CitiesListActivity : AppCompatActivity() {
         if (outState != null) {
             outState.clear()
             outState.putParcelableArrayList(CITIES, cities)
-            initRecyclerView()
         }
     }
 
     private fun showErrorNoInternet() {
         layout_main_cities.visibility = View.INVISIBLE
         layout_error_internet_cities.visibility = View.VISIBLE
-        progressBar_cities.visibility = View.INVISIBLE
+        hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_cities)
         sbError.show(this)
     }
@@ -112,43 +113,48 @@ class CitiesListActivity : AppCompatActivity() {
     private fun showCities() {
         if (cities.size == 0) {
             cities = ArrayList()
-            initData()
+            initViewModel()
+        } else {
+            hideProgress()
         }
         layout_main_cities.visibility = View.VISIBLE
         layout_error_internet_cities.visibility = View.INVISIBLE
     }
 
-    private fun initData() {
+    private fun showProgress() {
         progressBar_cities.visibility = View.VISIBLE
-
-        /*make request (async)*/
-        Repository.instance.getCities(object : ResponseCallback<ArrayList<CitiesResponse>> {
-            override fun onSuccess(apiResponse: ArrayList<CitiesResponse>) {
-                /*init data for RV from request*/
-                apiResponse.forEach {
-                    cities.add(City(it.name, it.slug))
-                }
-                initRecyclerView()
-            }
-
-            override fun onFailure(errorMessage: String) {
-                progressBar_cities.visibility = View.INVISIBLE
-            }
-
-        }, lang)
     }
 
-    private fun initRecyclerView() {
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView_cities)
+    private fun hideProgress() {
+        progressBar_cities.visibility = View.INVISIBLE
+    }
 
+    private fun initViewModel() {
+        viewModel =
+            ViewModelProviders.of(this, BaseViewModelFactory { CitiesViewModel(lang) }).get(CitiesViewModel::class.java)
+
+        viewModel.getCities().observe(this, object : Observer<ArrayList<City>> {
+            override fun onChanged(citiesList: ArrayList<City>?) {
+                if (citiesList != null && cities!=citiesList) {
+                    showProgress()
+                    cities = citiesList
+                    adapter.setItems(cities)
+                    loaded = true
+                }
+                hideProgress()
+            }
+        })
+    }
+
+    private fun initAdapter() {
         val arguments = intent.extras
         val currentCity: String = arguments.getString("currentCity")
 
         /*Create adapter with listener of click on element*/
-        val adapter = CityDataAdapter(cities, object : OnClickListener {
+        adapter = CityDataAdapter(cities, object : OnClickListener {
             override fun onCardViewClick(position: Int) {
                 val intentRes = Intent()
-               // val selectedCity = City(cities[position].nameInfo, cities[position].shortEnglishNameInfo)
+                // val selectedCity = City(cities[position].nameInfo, cities[position].shortEnglishNameInfo)
                 intentRes.putExtra("nameOfSelectedCity", cities[position].nameInfo)
                 intentRes.putExtra("shortEnglishNameOfSelectedCity", cities[position].shortEnglishNameInfo)
                 //intentRes.putExtra("", selectedCity)
@@ -158,7 +164,6 @@ class CitiesListActivity : AppCompatActivity() {
             }
         }, currentCity)
 
-        recyclerView.adapter = adapter
-        progressBar_cities.visibility = View.INVISIBLE
+        recyclerView_cities.adapter = adapter
     }
 }
