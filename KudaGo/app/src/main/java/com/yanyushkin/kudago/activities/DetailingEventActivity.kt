@@ -1,35 +1,25 @@
 package com.yanyushkin.kudago.activities
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import com.google.android.gms.maps.*
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.ViewPagerAdapter
+import com.yanyushkin.kudago.models.Event
 import com.yanyushkin.kudago.utils.Maps
-import com.yanyushkin.kudago.utils.Tools
 import kotlinx.android.synthetic.main.activity_detailing_event.*
 import kotlinx.android.synthetic.main.toolbar_detailing_event.*
 
 class DetailingEventActivity : AppCompatActivity() {
     private var lat: Double = 0.0
     private var lon: Double = 0.0
-    private lateinit var arguments: Bundle
+    private lateinit var event: Event
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +35,8 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun fillingActivity() {
         /*get data from main activity about selected event*/
-        arguments = intent.extras
+        val arguments = intent.extras
+        event = arguments.get("event") as Event
 
         /*filling views*/
         setImages()
@@ -59,7 +50,7 @@ class DetailingEventActivity : AppCompatActivity() {
     }
 
     private fun setImages() {
-        val images = arguments.get("images") as ArrayList<String>
+        val images =event.imagesURLInfo
         if (images.size > 0) {
             val viewPager = pager
 
@@ -73,11 +64,11 @@ class DetailingEventActivity : AppCompatActivity() {
     }
 
     private fun setTitle() {
-        title_event.text = arguments.getString("title")
+        title_event.text = event.titleInfo
     }
 
     private fun setShortDescription() {
-        val shortDescriptionWithHtml = arguments.getString("description")
+        val shortDescriptionWithHtml = event.descriptionInfo
         /*replacing tags*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY).trim()
@@ -87,11 +78,11 @@ class DetailingEventActivity : AppCompatActivity() {
     }
 
     private fun setFullDescription() {
-        val fullDescriptionWithHtml = arguments.getString("fullDescription")
-        fullDescription_event.movementMethod = LinkMovementMethod.getInstance()
+        val fullDescriptionWithHtml = event.fullDescriptionInfo
+        //fullDescription_event.movementMethod = LinkMovementMethod.getInstance()
         /*replacing tags*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY).trim()
+            fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY)
         } else {
             fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml).trim()
         }
@@ -99,7 +90,7 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun setPlace() {
         /*if we have the right data, insert it in views and show, else not show*/
-        val place = arguments.getString("place")
+        val place = event.placeInfo
         if (place != "") {
             textLocation_event.text = place
             container_for_location_event.layoutParams = LinearLayout.LayoutParams(
@@ -111,7 +102,7 @@ class DetailingEventActivity : AppCompatActivity() {
     }
 
     private fun setDate() {
-        val date = arguments.getString("date")
+        val date = event.datesInfo
         if (date != "") {
             textDay_event.text = date
             container_for_date_event.layoutParams = LinearLayout.LayoutParams(
@@ -123,7 +114,7 @@ class DetailingEventActivity : AppCompatActivity() {
     }
 
     private fun setPrice() {
-        val price = arguments.getString("price")
+        val price = event.priceInfo
         if (price != "") {
             textPrice_event.text = price
             container_for_price_event.layoutParams = LinearLayout.LayoutParams(
@@ -135,7 +126,7 @@ class DetailingEventActivity : AppCompatActivity() {
     }
 
     private fun initMaps() {
-        val coords = arguments.get("coords") as ArrayList<Double>
+        val coords = event.coordsInfo
         if (coords.size != 0) {
             lat = coords[0]
             lon = coords[1]

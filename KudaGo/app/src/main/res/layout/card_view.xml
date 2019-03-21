@@ -9,11 +9,11 @@
         android:orientation="vertical"
         android:background="@color/colorWhite">
 
-    <FrameLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0"
-            android:id="@+id/container_for_text_kudaGo">
+            android:id="@+id/container_for_header">
 
         <TextView android:id="@+id/text_kudaGo"
                   android:layout_width="wrap_content"
@@ -26,7 +26,7 @@
                   android:layout_marginStart="16dp"
                   android:layout_marginTop="16dp"/>
 
-    </FrameLayout>
+    </LinearLayout>
 
     <FrameLayout
             android:layout_width="match_parent"

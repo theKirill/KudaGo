@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.models.City
 import com.yanyushkin.kudago.utils.OnClickListener
+import kotlinx.android.synthetic.main.card_view_separate_city.view.*
 
 class CityDataAdapter(private var cities: ArrayList<City>, private val clickListener: OnClickListener, private val currentCity: String) :
     RecyclerView.Adapter<CityDataAdapter.ViewHolder>() {
@@ -24,12 +25,7 @@ class CityDataAdapter(private var cities: ArrayList<City>, private val clickList
     /*full data for each element of RV*/
     override fun onBindViewHolder(viewHolder: ViewHolder, poistion: Int) {
         val city = cities[poistion]
-        viewHolder.nameCity.text = city.nameInfo
-
-        /*check currentCity and put a tick*/
-        if (city.shortEnglishNameInfo == currentCity) {
-            viewHolder.selectedCity.visibility = View.VISIBLE
-        }
+        viewHolder.bind(city)
     }
 
     fun setItems(_cities: ArrayList<City>) {
@@ -38,18 +34,21 @@ class CityDataAdapter(private var cities: ArrayList<City>, private val clickList
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        var cv: CardView
-        var nameCity: TextView
-        var selectedCity: AppCompatImageView
-
-        /*initializing views for elements of RecyclerView*/
         init {
-            cv = v.findViewById(R.id.cv_of_city)
-            nameCity = v.findViewById(R.id.nameCity)
-            selectedCity = v.findViewById(R.id.selectedCity)
-
+            /*set clickListener on elements RV*/
             v.setOnClickListener {
                 clickListener.onCardViewClick(adapterPosition)
+            }
+        }
+
+        fun bind(city: City){
+            itemView.nameCity.text=city.nameInfo
+
+            if (city.shortEnglishNameInfo == currentCity) {
+                itemView.selectedCity.visibility = View.VISIBLE
+            }
+            else{
+                itemView.selectedCity.visibility = View.INVISIBLE
             }
         }
     }

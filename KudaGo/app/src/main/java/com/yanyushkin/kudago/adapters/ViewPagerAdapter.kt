@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import com.yanyushkin.kudago.R
+import com.yanyushkin.kudago.network.Image
 
 class ViewPagerAdapter(private val context: Context, private val images: ArrayList<String>) : PagerAdapter() {
 

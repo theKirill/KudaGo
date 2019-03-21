@@ -18,9 +18,7 @@ class CitiesViewModel(private val lang: String): ViewModel() {
         }
     }
 
-    fun getCities(): LiveData<ArrayList<City>> {
-        return cities
-    }
+    fun getCities(): LiveData<ArrayList<City>> = cities
 
     private fun loadCities() {
         val citiesFromServer: ArrayList<City> = ArrayList()
@@ -31,15 +29,12 @@ class CitiesViewModel(private val lang: String): ViewModel() {
                 apiResponse.forEach {
                     citiesFromServer.add(City(it.name, it.slug))
                 }
-                //initRecyclerView()
                 cities.value=citiesFromServer
             }
 
             override fun onFailure(errorMessage: String) {
-               // progressBar_cities.visibility = View.INVISIBLE
             }
 
         }, lang)
-
     }
 }

@@ -28,9 +28,10 @@ class Repository {
                 }
 
                 override fun onResponse(call: Call<EventsResponse>, response: Response<EventsResponse>) {
-                    val eventsResponse = response.body()
+                    if (response.isSuccessful) {
+                        val eventsResponse = response.body()
 
-                    if (eventsResponse != null && response.isSuccessful) {
+                        if (eventsResponse!=null)
                         responseCallback.onSuccess(eventsResponse)//take the parsed data
                     } else {
                         responseCallback.onFailure("Getting events error")

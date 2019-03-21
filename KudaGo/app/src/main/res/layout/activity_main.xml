@@ -19,7 +19,6 @@
                 android:id="@+id/appbar_events"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:minHeight="70dp"
                 android:background="@color/colorWhite"
                 app:elevation="0dp">
 
@@ -29,7 +28,6 @@
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
                     app:layout_collapseMode="pin"
-                    android:layout_marginTop="21dp"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
 
         </android.support.design.widget.AppBarLayout>

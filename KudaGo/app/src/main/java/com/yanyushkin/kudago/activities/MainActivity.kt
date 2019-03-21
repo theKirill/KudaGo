@@ -1,8 +1,6 @@
 package com.yanyushkin.kudago.activities
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,9 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.yanyushkin.kudago.R
-import com.yanyushkin.kudago.ViewModels.BaseViewModelFactory
 import com.yanyushkin.kudago.adapters.EventDataAdapter
 import com.yanyushkin.kudago.models.Event
 import com.yanyushkin.kudago.network.*
@@ -33,8 +29,6 @@ class MainActivity : AppCompatActivity() {
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
     private val REQUEST_CODE_MESSAGE = 1000
     private var collapsed = false
-    private var imagesOfEvents: ArrayList<ArrayList<String>> = ArrayList()
-    private var placeOfEvents: ArrayList<Place?> = ArrayList()
     private var isLoading = false
     private lateinit var pref: SharedPreferences
     private val APP_PREFERENCES = "settings"
@@ -139,8 +133,6 @@ class MainActivity : AppCompatActivity() {
     private fun showEvents() {
         if (events.size == 0) {
             events = ArrayList()
-            imagesOfEvents = ArrayList()
-            placeOfEvents = ArrayList()
             page = 1
             initData()
         }
@@ -179,8 +171,6 @@ class MainActivity : AppCompatActivity() {
         layout_swipe_events.setColorSchemeResources(R.color.colorRed)
         layout_swipe_events.setOnRefreshListener {
             events = ArrayList()
-            imagesOfEvents = ArrayList()
-            placeOfEvents = ArrayList()
             page = 1
             initData()
         }
@@ -192,12 +182,18 @@ class MainActivity : AppCompatActivity() {
             if (Math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
                 if (!collapsed) {
                     collapsed = true
+                    imageLogo.y += 35
+                    textCity.y += 35
+                    button_choiceCity.y += 35
                     imageLogo.scaleX = 0.9f
                     imageLogo.scaleY = 0.9f
                 }
             } else {
                 if (collapsed) {
                     collapsed = false
+                    imageLogo.y -= 35
+                    textCity.y -= 35
+                    button_choiceCity.y -= 35
                     imageLogo.scaleX = 1.0f
                     imageLogo.scaleY = 1.0f
                 }
@@ -223,8 +219,6 @@ class MainActivity : AppCompatActivity() {
                         shortEnglishNameOfCurrentCity = data.getStringExtra("shortEnglishNameOfSelectedCity")
                         textCity.text = nameOfCurrentCity
                         events = ArrayList()
-                        imagesOfEvents = ArrayList()
-                        placeOfEvents = ArrayList()
                         page = 1
                         initData()
                     }
@@ -235,13 +229,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun initData() {
         progressBar_events.visibility = View.VISIBLE
-
+        var imagesUrlOfEvent: ArrayList<String>
         isLoading = true
+
         /*get actual events on installed language from selected city from necessary page and add it to ArrayList of events*/
         Repository.instance.getEvents(
             object : ResponseCallback<EventsResponse> {
                 override fun onSuccess(apiResponse: EventsResponse) {
                     apiResponse.events.forEach {
+                        imagesUrlOfEvent = ArrayList()
+                        it.images.forEach {
+                            imagesUrlOfEvent.add(it.image)
+                        }
+
                         events.add(
                             Event(
                                 it.id,
@@ -255,18 +255,10 @@ class MainActivity : AppCompatActivity() {
                                 )
                                 ,
                                 it.price,
-                                it.images[0].image
+                                imagesUrlOfEvent,
+                                Tools.getLatAndLon(it.place)
                             )
                         )
-
-                        val urls = ArrayList<String>()
-                        it.images.forEach {
-                            urls.add(it.image)
-                        }
-
-                        /*remember images and place for each event*/
-                        imagesOfEvents.add(urls)
-                        placeOfEvents.add(it.place)
                     }
 
                     isLoading = false
@@ -276,7 +268,7 @@ class MainActivity : AppCompatActivity() {
                         recyclerView_events.adapter!!.notifyItemInserted(events.size - 1)
                     } else {
                         adapter.setItems(events)
-                        recyclerView_events.adapter=adapter
+                        recyclerView_events.adapter = adapter
                     }
                     layout_swipe_events.isRefreshing = false
                     progressBar_events.visibility = View.INVISIBLE
@@ -299,17 +291,7 @@ class MainActivity : AppCompatActivity() {
         adapter = EventDataAdapter(events, object : OnClickListener {
             override fun onCardViewClick(position: Int) {
                 val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
-                intentDetailingEvent.putExtra("id", events[position].idInfo)
-                intentDetailingEvent.putExtra("title", events[position].titleInfo)
-                intentDetailingEvent.putExtra("description", events[position].descriptionInfo)
-                intentDetailingEvent.putExtra("fullDescription", events[position].fullDescriptionInfo)
-                intentDetailingEvent.putExtra("place", events[position].placeInfo)
-                intentDetailingEvent.putExtra("date", events[position].datesInfo)
-                intentDetailingEvent.putExtra("price", events[position].priceInfo)
-                intentDetailingEvent.putExtra("images", imagesOfEvents[position])
-                 intentDetailingEvent.putExtra("coords", Tools.getLatAndLon(placeOfEvents[position]))
-                //intentDetailingEvent.putExtra(Event::class.java.simpleName, events[position])
-                /*pass the necessary data to detailing activity*/
+                intentDetailingEvent.putExtra("event", events[position])
                 startActivity(intentDetailingEvent)
             }
         })
