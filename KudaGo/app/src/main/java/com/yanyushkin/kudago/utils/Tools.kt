@@ -7,6 +7,8 @@ import android.graphics.Canvas
 import android.support.v4.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.yanyushkin.kudago.models.Event
+import com.yanyushkin.kudago.network.EventsResponse
 import com.yanyushkin.kudago.network.Place
 import java.util.*
 

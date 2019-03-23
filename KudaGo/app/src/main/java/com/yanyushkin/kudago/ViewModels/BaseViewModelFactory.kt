@@ -1,4 +1,4 @@
-package com.yanyushkin.kudago.ViewModels
+package com.yanyushkin.kudago.viewmodels
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

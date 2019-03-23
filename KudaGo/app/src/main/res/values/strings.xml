@@ -7,6 +7,7 @@
     <string name="kudaGo">Куда сходить</string>
     <string name="textChoiceCity">Выберите город</string>
     <string name="textForButtonRoute">Проложить маршрут</string>
+    <string name="textForButtonNoRoute">Нет маршрута</string>
     <string name="errorMassageGetEvents">Getting events error</string>
     <string name="errorMassageGetCities">Getting cities error</string>
     <string name="apiKeyForGoogleMaps">AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM</string>

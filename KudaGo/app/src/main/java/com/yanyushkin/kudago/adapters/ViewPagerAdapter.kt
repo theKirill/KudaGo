@@ -10,17 +10,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import com.yanyushkin.kudago.R
-import com.yanyushkin.kudago.network.Image
 
 class ViewPagerAdapter(private val context: Context, private val images: ArrayList<String>) : PagerAdapter() {
 
-    override fun getCount(): Int {
-        return images.size
-    }
+    override fun getCount(): Int = images.size
 
-    override fun isViewFromObject(view: View, any: Any): Boolean {
-        return view == (any as View)
-    }
+    override fun isViewFromObject(view: View, any: Any): Boolean = view == (any as View)
 
     /*adding imageView with a photo to ViewPager on each page*/
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -40,5 +35,4 @@ class ViewPagerAdapter(private val context: Context, private val images: ArrayLi
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         (container as ViewPager).removeView(`object` as AppCompatImageView)
     }
-
 }

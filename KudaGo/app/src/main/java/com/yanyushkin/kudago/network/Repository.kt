@@ -32,7 +32,7 @@ class Repository {
                         val eventsResponse = response.body()
 
                         if (eventsResponse!=null)
-                        responseCallback.onSuccess(eventsResponse)//take the parsed data
+                            responseCallback.onSuccess(eventsResponse)//take the parsed data
                     } else {
                         responseCallback.onFailure("Getting events error")
                     }
@@ -44,7 +44,6 @@ class Repository {
         /*async data acquisition*/
         NetworkService.instance.service.getCities(lang).enqueue(object : Callback<ArrayList<CitiesResponse>> {
             override fun onFailure(call: Call<ArrayList<CitiesResponse>>, t: Throwable) {
-                responseCallback.onFailure("Getting cities error")
             }
 
             override fun onResponse(

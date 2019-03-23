@@ -78,8 +78,6 @@
                     android:layout_below="@+id/shortDescription_event"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
-                    android:autoLink="web|none"
-                    android:linksClickable="true"
                     tools:text="Спустя полгода сочинский курорт «Роза Хутор» снова приглашает меломанов на музыкальный фестиваль LiveFest Summer, в котором объединятся все радости южного отдыха: тёплое море, головокружительные горы, зажигательные танцы и сочные песни от талантливых молодых исполнителей.
 Главная сцена фестиваля расположится на высоте более полутора тысяч метров над уровнем моря, а гостей туда доставит канатная дорогая «Стрела». К ней присоединятся и другие площадки горного курорта, на которых в последнюю ночь фестиваля состоятся джем-сейшены и невероятные вечеринки.
 
@@ -95,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_below="@+id/fullDescription_event"
-            android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp">
 
                 <FrameLayout
                         android:id="@+id/container_for_location_event"

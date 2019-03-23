@@ -19,9 +19,9 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
     override fun getItemCount() = events.size
 
     /*init of ViewHolder*/
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.card_view, viewGroup, false))
-    }
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.card_view, viewGroup, false))
+
 
     /*full data for each element of RV*/
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -31,6 +31,10 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
     fun setItems(_events: ArrayList<Event>) {
         events = _events
         notifyDataSetChanged()
+    }
+
+    fun addItems() {
+        notifyItemInserted(events.size - 1)
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {

@@ -11,7 +11,9 @@ class NetworkService {
     private val okHttpClient: OkHttpClient
     val service: ResponseService
 
-    private object Holder { val INSTANCE = NetworkService() }
+    private object Holder {
+        val INSTANCE = NetworkService()
+    }
 
     companion object {
         val instance: NetworkService by lazy { Holder.INSTANCE }
@@ -33,7 +35,7 @@ class NetworkService {
         return okHttpClientBuilder.build()
     }
 
-    private fun makeService(okHttpClient: OkHttpClient): ResponseService{
+    private fun makeService(okHttpClient: OkHttpClient): ResponseService {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

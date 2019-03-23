@@ -12,7 +12,7 @@
             android:id="@+id/layout_main_events"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="invisible"
             android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
@@ -97,7 +97,7 @@
                 android:layout_centerInParent="true"
                 android:indeterminateDrawable="@drawable/spinner_progress_bar"
                 android:indeterminateOnly="true"
-                android:visibility="visible"/>
+                android:visibility="invisible"/>
 
     </RelativeLayout>
 

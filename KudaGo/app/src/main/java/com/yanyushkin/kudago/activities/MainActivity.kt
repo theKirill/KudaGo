@@ -11,12 +11,12 @@ import android.view.View
 import android.widget.LinearLayout
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.EventDataAdapter
+import com.yanyushkin.kudago.models.City
 import com.yanyushkin.kudago.models.Event
 import com.yanyushkin.kudago.network.*
 import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import com.yanyushkin.kudago.utils.OnClickListener
-import com.yanyushkin.kudago.utils.Tools
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
@@ -34,12 +34,17 @@ class MainActivity : AppCompatActivity() {
     private val APP_PREFERENCES = "settings"
     private val APP_PREFERENCES_NAME_CITY = "nameOfCurrentCity"
     private val APP_PREFERENCES_SHORTNAME_CITY = "shortEnglishNameOfCurrentCity"
+    private val APP_EVENTS = "events"
     private lateinit var nameOfCurrentCity: String
     private lateinit var shortEnglishNameOfCurrentCity: String
     private var page = 1
     private var lang = "en"
     private var actualSince: Long = 0
     private lateinit var adapter: EventDataAdapter
+    private val repository: Repository = Repository.instance
+    private var mScrollY: Int = 0
+    private var mStateScrollY: Int = 0
+    private val ARGS_SCROLL_Y = "scrollY"
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -80,12 +85,7 @@ class MainActivity : AppCompatActivity() {
 
         setCharacteristicsForRequests()
 
-        /*check for saved state*/
-        if (savedInstanceState == null || !!savedInstanceState.containsKey(APP_PREFERENCES_NAME_CITY)) {
-            getSavedLastSelectedCity()
-        } else {
-            textCity.text = savedInstanceState.getSerializable(APP_PREFERENCES_NAME_CITY).toString()
-        }
+        getSavedState(savedInstanceState)
 
         initSwipeRefreshListener()
 
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity() {
         editor.putString(APP_PREFERENCES_NAME_CITY, nameOfCurrentCity)
         editor.putString(APP_PREFERENCES_SHORTNAME_CITY, shortEnglishNameOfCurrentCity)
         editor.apply()
-
+        mStateScrollY = mScrollY
         unregisterReceiver(receiver)
         super.onPause()
     }
@@ -119,13 +119,38 @@ class MainActivity : AppCompatActivity() {
         if (outState != null) {
             outState.clear()
             outState.putSerializable(APP_PREFERENCES_NAME_CITY, nameOfCurrentCity)
+            outState.putSerializable(APP_EVENTS, events)
+            outState.putInt(ARGS_SCROLL_Y, mScrollY)
         }
     }
 
-    private fun showErrorNoInternet() {
+    private fun showErrorLayout() {
         layout_main_events.visibility = View.INVISIBLE
         layout_error_internet_events.visibility = View.VISIBLE
+    }
+
+    private fun hideErrorLayout() {
+        layout_error_internet_events.visibility = View.INVISIBLE
+    }
+
+    private fun showProgress() {
+        if (!layout_swipe_events.isRefreshing)
+            progressBar_events.visibility = View.VISIBLE
+    }
+
+    private fun hideProgress() {
+        layout_swipe_events.isRefreshing = false
         progressBar_events.visibility = View.INVISIBLE
+    }
+
+    private fun showEventsLayout() {
+        layout_main_events.visibility = View.VISIBLE
+        layout_error_internet_events.visibility = View.INVISIBLE
+    }
+
+    private fun showErrorNoInternet() {
+        showErrorLayout()
+        hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_events)
         sbError.show(this)
     }
@@ -135,9 +160,12 @@ class MainActivity : AppCompatActivity() {
             events = ArrayList()
             page = 1
             initData()
+        } else {
+            adapter.setItems(events)
+            showEventsLayout()
+            recyclerView_events.adapter = adapter
+            recyclerView_events.scrollBy(0, mStateScrollY)
         }
-        layout_main_events.visibility = View.VISIBLE
-        layout_error_internet_events.visibility = View.INVISIBLE
     }
 
     private fun setCharacteristicsForRequests() {
@@ -149,6 +177,24 @@ class MainActivity : AppCompatActivity() {
         * else in English*/
         if (Locale.getDefault().language == "ru") {
             lang = "ru"
+        }
+    }
+
+    fun getSavedState(savedInstanceState: Bundle?) {
+        /*check for saved state*/
+        if (savedInstanceState == null || !!savedInstanceState.containsKey(APP_PREFERENCES_NAME_CITY)) {
+            getSavedLastSelectedCity()
+        } else {
+            textCity.text = savedInstanceState.getSerializable(APP_PREFERENCES_NAME_CITY).toString()
+        }
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey("events")) {
+                events = savedInstanceState.getSerializable(APP_EVENTS) as ArrayList<Event>
+            }
+            if (savedInstanceState.containsKey(ARGS_SCROLL_Y)) {
+                mStateScrollY =
+                    savedInstanceState.getInt(ARGS_SCROLL_Y, 0) //look where we stopped before the change of orientation
+            }
         }
     }
 
@@ -215,11 +261,13 @@ class MainActivity : AppCompatActivity() {
             when (requestCode) {
                 REQUEST_CODE_MESSAGE -> {
                     if (data != null) {
-                        nameOfCurrentCity = data.getStringExtra("nameOfSelectedCity")
-                        shortEnglishNameOfCurrentCity = data.getStringExtra("shortEnglishNameOfSelectedCity")
+                        val selectedCity = data.getSerializableExtra("city") as City
+                        nameOfCurrentCity = selectedCity.nameInfo
+                        shortEnglishNameOfCurrentCity = selectedCity.shortEnglishNameInfo
                         textCity.text = nameOfCurrentCity
                         events = ArrayList()
                         page = 1
+                        mStateScrollY = 0
                         initData()
                     }
                 }
@@ -227,55 +275,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initData() {
-        progressBar_events.visibility = View.VISIBLE
-        var imagesUrlOfEvent: ArrayList<String>
-        isLoading = true
-
+    private fun getEvents() {
         /*get actual events on installed language from selected city from necessary page and add it to ArrayList of events*/
-        Repository.instance.getEvents(
+        repository.getEvents(
             object : ResponseCallback<EventsResponse> {
                 override fun onSuccess(apiResponse: EventsResponse) {
                     apiResponse.events.forEach {
-                        imagesUrlOfEvent = ArrayList()
-                        it.images.forEach {
-                            imagesUrlOfEvent.add(it.image)
-                        }
-
-                        events.add(
-                            Event(
-                                it.id,
-                                it.title,
-                                it.description,
-                                it.body_text,
-                                Tools.translatePlace(it.place),
-                                Tools.translateDate(
-                                    it.date[0].start_date,
-                                    it.date[0].end_date
-                                )
-                                ,
-                                it.price,
-                                imagesUrlOfEvent,
-                                Tools.getLatAndLon(it.place)
-                            )
-                        )
+                        events.add(it.transfrom())
                     }
 
                     isLoading = false
 
                     if (page > 1) {
                         /*don`t move to top of the RV, because we add data to end*/
-                        recyclerView_events.adapter!!.notifyItemInserted(events.size - 1)
+                        adapter.addItems()
+
                     } else {
                         adapter.setItems(events)
                         recyclerView_events.adapter = adapter
+                        recyclerView_events.scrollBy(0, mStateScrollY)
                     }
-                    layout_swipe_events.isRefreshing = false
-                    progressBar_events.visibility = View.INVISIBLE
+                    showEventsLayout()
+                    hideProgress()
                 }
 
                 override fun onFailure(errorMessage: String) {
-                    progressBar_events.visibility = View.INVISIBLE
+                    hideProgress()
                     isLoading = false
                 }
             },
@@ -284,6 +309,13 @@ class MainActivity : AppCompatActivity() {
             shortEnglishNameOfCurrentCity,
             page
         )
+    }
+
+    private fun initData() {
+        hideErrorLayout()
+        showProgress()
+        isLoading = true
+        getEvents()
     }
 
     private fun initAdapter() {
@@ -314,6 +346,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView_events.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+                mScrollY += dy
 
                 val visibleItemsCount = layoutManagerForRV.childCount//how many elements on the screen
                 val totalItemsCount = layoutManagerForRV.itemCount//how many elements total
@@ -323,14 +356,12 @@ class MainActivity : AppCompatActivity() {
                 if (!isLoading) {
                     if ((visibleItemsCount + positionOfFirstVisibleItem) >= totalItemsCount) {
                         page++
-                        progressBar_events.visibility = View.VISIBLE
+                        showProgress()
                         initData()
                     }
                 }
             }
         })
-
-        layout_swipe_events.isRefreshing = false
-        progressBar_events.visibility = View.INVISIBLE
+        hideProgress()
     }
 }

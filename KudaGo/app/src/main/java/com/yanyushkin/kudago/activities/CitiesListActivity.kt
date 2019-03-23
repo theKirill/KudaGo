@@ -9,10 +9,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.yanyushkin.kudago.R
-import com.yanyushkin.kudago.ViewModels.BaseViewModelFactory
-import com.yanyushkin.kudago.ViewModels.CitiesViewModel
+import com.yanyushkin.kudago.viewmodels.BaseViewModelFactory
+import com.yanyushkin.kudago.viewmodels.CitiesViewModel
 import com.yanyushkin.kudago.adapters.CityDataAdapter
 import com.yanyushkin.kudago.models.City
 import com.yanyushkin.kudago.utils.CheckInternet
@@ -27,12 +28,13 @@ import kotlin.collections.ArrayList
 class CitiesListActivity : AppCompatActivity() {
     private var cities: ArrayList<City> = ArrayList()
     private var lang = "en"
-    private val CITIES = "cities"
     private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
     private lateinit var adapter: CityDataAdapter
     private lateinit var viewModel: CitiesViewModel
-    private var loaded: Boolean = false
+    private var mScrollY: Int = 0
+    private var mStateScrollY: Int = 0
+    private val ARGS_SCROLL_Y = "scrollY"
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -69,22 +71,22 @@ class CitiesListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cities_list)
         setSupportActionBar(toolbar_cities)
 
-        /*getting of current language of system
-        * if Russian language, we will make requests in Russian
-        * else in English*/
-        if (Locale.getDefault().language == "ru") {
-            lang = "ru"
-        }
+        initLang()
 
-        /*check for saved state*/
-        if (savedInstanceState != null && savedInstanceState.containsKey(CITIES)) {
-            cities = savedInstanceState.getParcelableArrayList(CITIES)
-        }
-
-        registerReceiver(receiver, intentFilter)
         initAdapter()
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(ARGS_SCROLL_Y)) {
+            mStateScrollY =
+                savedInstanceState.getInt(ARGS_SCROLL_Y, 0) //look where we stopped before the change of orientation
+        } else
+            showProgress()
+
         button_closeCities.setOnClickListener { finish() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        registerReceiver(receiver, intentFilter)
     }
 
     override fun onPause() {
@@ -94,11 +96,16 @@ class CitiesListActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
+        if (outState != null)
+            outState.putInt(ARGS_SCROLL_Y, mScrollY)
+    }
 
-        /*save state*/
-        if (outState != null) {
-            outState.clear()
-            outState.putParcelableArrayList(CITIES, cities)
+    private fun initLang() {
+        /*getting of current language of system
+       * if Russian language, we will make requests in Russian
+       * else in English*/
+        if (Locale.getDefault().language == "ru") {
+            lang = "ru"
         }
     }
 
@@ -135,12 +142,11 @@ class CitiesListActivity : AppCompatActivity() {
 
         viewModel.getCities().observe(this, object : Observer<ArrayList<City>> {
             override fun onChanged(citiesList: ArrayList<City>?) {
-                if (citiesList != null && cities!=citiesList) {
-                    showProgress()
+                if (citiesList != null && cities != citiesList) {
                     cities = citiesList
                     adapter.setItems(cities)
-                    loaded = true
                 }
+                recyclerView_cities.scrollBy(0, mStateScrollY)
                 hideProgress()
             }
         })
@@ -154,10 +160,7 @@ class CitiesListActivity : AppCompatActivity() {
         adapter = CityDataAdapter(cities, object : OnClickListener {
             override fun onCardViewClick(position: Int) {
                 val intentRes = Intent()
-                // val selectedCity = City(cities[position].nameInfo, cities[position].shortEnglishNameInfo)
-                intentRes.putExtra("nameOfSelectedCity", cities[position].nameInfo)
-                intentRes.putExtra("shortEnglishNameOfSelectedCity", cities[position].shortEnglishNameInfo)
-                //intentRes.putExtra("", selectedCity)
+                intentRes.putExtra("city", cities[position])
                 /*remember the selected city and pass to main activity*/
                 setResult(Activity.RESULT_OK, intentRes)
                 finish()
@@ -165,5 +168,12 @@ class CitiesListActivity : AppCompatActivity() {
         }, currentCity)
 
         recyclerView_cities.adapter = adapter
+
+        recyclerView_cities.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                mScrollY += dy
+            }
+        })
     }
 }

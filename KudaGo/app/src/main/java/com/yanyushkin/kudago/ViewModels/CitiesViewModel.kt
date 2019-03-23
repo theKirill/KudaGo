@@ -1,4 +1,4 @@
-package com.yanyushkin.kudago.ViewModels
+package com.yanyushkin.kudago.viewmodels
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import com.yanyushkin.kudago.network.CitiesResponse
 import com.yanyushkin.kudago.network.Repository
 import com.yanyushkin.kudago.network.ResponseCallback
 
-class CitiesViewModel(private val lang: String): ViewModel() {
+class CitiesViewModel(private val lang: String) : ViewModel() {
     private lateinit var cities: MutableLiveData<ArrayList<City>>
 
     init {
@@ -24,15 +24,15 @@ class CitiesViewModel(private val lang: String): ViewModel() {
         val citiesFromServer: ArrayList<City> = ArrayList()
         /*make request (async)*/
         Repository.instance.getCities(object : ResponseCallback<java.util.ArrayList<CitiesResponse>> {
+            override fun onFailure(errorMessage: String) {
+            }
+
             override fun onSuccess(apiResponse: java.util.ArrayList<CitiesResponse>) {
                 /*init data for RV from request*/
                 apiResponse.forEach {
-                    citiesFromServer.add(City(it.name, it.slug))
+                    citiesFromServer.add(it.transfrom())
                 }
-                cities.value=citiesFromServer
-            }
-
-            override fun onFailure(errorMessage: String) {
+                cities.value = citiesFromServer
             }
 
         }, lang)

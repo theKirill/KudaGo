@@ -50,7 +50,7 @@ class DetailingEventActivity : AppCompatActivity() {
     }
 
     private fun setImages() {
-        val images =event.imagesURLInfo
+        val images = event.imagesURLInfo
         if (images.size > 0) {
             val viewPager = pager
 
@@ -71,21 +71,24 @@ class DetailingEventActivity : AppCompatActivity() {
         val shortDescriptionWithHtml = event.descriptionInfo
         /*replacing tags*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY).trim()
+            shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY)
         } else {
-            shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml).trim()
+            shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml)
         }
+        shortDescription_event.movementMethod = LinkMovementMethod.getInstance()
+        shortDescription_event.text = shortDescription_event.text.trim()
     }
 
     private fun setFullDescription() {
         val fullDescriptionWithHtml = event.fullDescriptionInfo
-        //fullDescription_event.movementMethod = LinkMovementMethod.getInstance()
         /*replacing tags*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY)
         } else {
-            fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml).trim()
+            fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml)
         }
+        fullDescription_event.movementMethod = LinkMovementMethod.getInstance()
+        fullDescription_event.text = shortDescription_event.text.trim()
     }
 
     private fun setPlace() {
@@ -134,6 +137,9 @@ class DetailingEventActivity : AppCompatActivity() {
 
             val maps = Maps(lat, lon, this)
             maps.createMapView(mapFragment)
+        } else {
+            button_showRoute.text = resources.getText(R.string.textForButtonNoRoute)
+            button_showRoute.isEnabled = false
         }
     }
 

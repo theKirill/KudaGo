@@ -12,7 +12,7 @@ class Event(
     private val price: String,
     private val imagesURL: ArrayList<String>,
     private val coords: ArrayList<Double>
-): @kotlin.jvm.Transient Serializable {
+) : Serializable {
 
     val idInfo: Int
         get() = id
