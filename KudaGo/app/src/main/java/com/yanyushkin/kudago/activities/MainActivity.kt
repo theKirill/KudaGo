@@ -129,8 +129,17 @@ class MainActivity : AppCompatActivity() {
         layout_error_internet_events.visibility = View.VISIBLE
     }
 
+    private fun showEventsLayout() {
+        layout_main_events.visibility = View.VISIBLE
+        layout_error_internet_events.visibility = View.INVISIBLE
+    }
+
     private fun hideErrorLayout() {
         layout_error_internet_events.visibility = View.INVISIBLE
+    }
+
+    private fun hideMainLayout() {
+        layout_main_events.visibility = View.INVISIBLE
     }
 
     private fun showProgress() {
@@ -141,11 +150,6 @@ class MainActivity : AppCompatActivity() {
     private fun hideProgress() {
         layout_swipe_events.isRefreshing = false
         progressBar_events.visibility = View.INVISIBLE
-    }
-
-    private fun showEventsLayout() {
-        layout_main_events.visibility = View.VISIBLE
-        layout_error_internet_events.visibility = View.INVISIBLE
     }
 
     private fun showErrorNoInternet() {
@@ -268,6 +272,7 @@ class MainActivity : AppCompatActivity() {
                         events = ArrayList()
                         page = 1
                         mStateScrollY = 0
+                        hideMainLayout()
                         initData()
                     }
                 }
