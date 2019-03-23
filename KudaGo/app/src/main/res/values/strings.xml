@@ -10,5 +10,7 @@
     <string name="textForButtonNoRoute">Нет маршрута</string>
     <string name="errorMassageGetEvents">Getting events error</string>
     <string name="errorMassageGetCities">Getting cities error</string>
+    <string name="aboutMe">О разработчике</string>
+    <string name="aboutMeFull">Разработчик: Кирилл Янюшкин\nЗаказчик: ВятГУ (IT-Univer)\nг.Киров\n2018</string>
     <string name="apiKeyForGoogleMaps">AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM</string>
 </resources>

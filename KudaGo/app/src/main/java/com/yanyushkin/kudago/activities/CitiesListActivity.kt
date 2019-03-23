@@ -109,9 +109,19 @@ class CitiesListActivity : AppCompatActivity() {
         }
     }
 
-    private fun showErrorNoInternet() {
+    private fun showErrorLayout() {
         layout_main_cities.visibility = View.INVISIBLE
         layout_error_internet_cities.visibility = View.VISIBLE
+    }
+
+    private fun showCitiesLayout() {
+        layout_main_cities.visibility = View.VISIBLE
+        layout_error_internet_cities.visibility = View.INVISIBLE
+    }
+
+    private fun showErrorNoInternet() {
+        if (cities.size == 0)
+            showErrorLayout()
         hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_cities)
         sbError.show(this)
@@ -124,8 +134,7 @@ class CitiesListActivity : AppCompatActivity() {
         } else {
             hideProgress()
         }
-        layout_main_cities.visibility = View.VISIBLE
-        layout_error_internet_cities.visibility = View.INVISIBLE
+        showCitiesLayout()
     }
 
     private fun showProgress() {

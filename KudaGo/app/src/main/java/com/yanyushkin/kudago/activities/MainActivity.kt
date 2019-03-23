@@ -5,10 +5,12 @@ import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.EventDataAdapter
 import com.yanyushkin.kudago.models.City
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private var mScrollY: Int = 0
     private var mStateScrollY: Int = 0
     private val ARGS_SCROLL_Y = "scrollY"
+    private var isHasInternet: Boolean = false
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
                 when (action) {
                     BROADCAST_ACTION -> {
-                        var isHasInternet = false
+                        isHasInternet = false
 
                         val check = CoroutineScope(Dispatchers.IO).async {
                             //using Coroutines
@@ -153,7 +156,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showErrorNoInternet() {
-        showErrorLayout()
+        if (events.size == 0)
+            showErrorLayout()
         hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_events)
         sbError.show(this)
@@ -220,9 +224,12 @@ class MainActivity : AppCompatActivity() {
     private fun initSwipeRefreshListener() {
         layout_swipe_events.setColorSchemeResources(R.color.colorRed)
         layout_swipe_events.setOnRefreshListener {
-            events = ArrayList()
-            page = 1
-            initData()
+            if (isHasInternet) {
+                events = ArrayList()
+                page = 1
+                initData()
+            } else
+                layout_swipe_events.isRefreshing = false
         }
     }
 
@@ -358,7 +365,7 @@ class MainActivity : AppCompatActivity() {
                 val positionOfFirstVisibleItem =
                     layoutManagerForRV.findFirstVisibleItemPosition()//position of the 1st element
 
-                if (!isLoading) {
+                if (!isLoading && isHasInternet) {
                     if ((visibleItemsCount + positionOfFirstVisibleItem) >= totalItemsCount) {
                         page++
                         showProgress()
