@@ -59,17 +59,9 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
         private fun setHeader(position: Int) {
             /*Visibility of Header*/
             if (position == 0) {
-                itemView.container_for_header.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    1.0f
-                )
+                itemView.text_header.visibility = View.VISIBLE
             } else {
-                itemView.container_for_header.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0.0f
-                )
+                itemView.text_header.visibility = View.GONE
             }
         }
 
@@ -95,51 +87,27 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
             /*if we have the right data, insert it in views and show, else not show*/
             if (event.placeInfo != "") {
                 itemView.textLocation.text = event.placeInfo
-                itemView.container_for_location.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    1.0f
-                )
+                itemView.container_for_location.visibility = View.VISIBLE
             } else {
-                itemView.container_for_location.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0.0f
-                )
+                itemView.container_for_location.visibility = View.GONE
             }
         }
 
         private fun setDate(event: Event) {
             if (event.datesInfo != "") {
                 itemView.textDay.text = event.datesInfo
-                itemView.container_for_date.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    1.0f
-                )
+                itemView.container_for_date.visibility = View.VISIBLE
             } else {
-                itemView.container_for_date.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0.0f
-                )
+                itemView.container_for_date.visibility = View.GONE
             }
         }
 
         private fun setPrice(event: Event) {
             if (event.priceInfo != "") {
                 itemView.textPrice.text = event.priceInfo
-                itemView.container_for_price.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    1.0f
-                )
+                itemView.container_for_price.visibility = View.VISIBLE
             } else {
-                itemView.container_for_price.layoutParams = LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    0,
-                    0.0f
-                )
+                itemView.container_for_price.visibility = View.GONE
             }
         }
     }

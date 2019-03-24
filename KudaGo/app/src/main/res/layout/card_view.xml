@@ -9,31 +9,17 @@
         android:orientation="vertical"
         android:background="@color/colorWhite">
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0"
-            android:id="@+id/container_for_header">
-
-        <TextView android:id="@+id/text_kudaGo"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:text="@string/kudaGo"
-                  style="@style/ForMainText"
-                  android:textSize="30sp"
-                  android:textStyle="bold"
-                  android:gravity="center_vertical"
-                  android:layout_marginStart="16dp"
-                  android:layout_marginTop="16dp"/>
-
-    </LinearLayout>
-
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/container_for_cardView"
-            android:paddingTop="16dp">
+    <TextView android:id="@+id/text_header"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:visibility="gone"
+              android:text="@string/kudaGo"
+              style="@style/ForMainText"
+              android:textSize="30sp"
+              android:textStyle="bold"
+              android:gravity="center_vertical"
+              android:layout_marginStart="16dp"
+              android:layout_marginTop="16dp"/>
 
         <android.support.v7.widget.CardView
                 android:id="@+id/cv_of_event"
@@ -43,7 +29,7 @@
                 app:cardElevation="2dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="3dp">
 
             <LinearLayout
@@ -90,8 +76,8 @@
 
                 <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:id="@+id/container_for_location">
 
                     <android.support.v7.widget.AppCompatImageView
@@ -115,8 +101,8 @@
 
                 <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:id="@+id/container_for_date">
 
                     <android.support.v7.widget.AppCompatImageView
@@ -141,8 +127,8 @@
 
                 <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="0"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:id="@+id/container_for_price">
 
                     <android.support.v7.widget.AppCompatImageView
@@ -168,7 +154,5 @@
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
-
-    </FrameLayout>
 
 </LinearLayout>

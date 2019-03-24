@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.view.View
 import android.widget.LinearLayout
 import com.google.android.gms.maps.*
 import com.yanyushkin.kudago.R
@@ -75,6 +76,7 @@ class DetailingEventActivity : AppCompatActivity() {
         } else {
             shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml)
         }
+        /*to follow links*/
         shortDescription_event.movementMethod = LinkMovementMethod.getInstance()
         shortDescription_event.text = shortDescription_event.text.trim()
     }
@@ -87,6 +89,7 @@ class DetailingEventActivity : AppCompatActivity() {
         } else {
             fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml)
         }
+        /*to follow links*/
         fullDescription_event.movementMethod = LinkMovementMethod.getInstance()
         fullDescription_event.text = shortDescription_event.text.trim()
     }
@@ -96,11 +99,7 @@ class DetailingEventActivity : AppCompatActivity() {
         val place = event.placeInfo
         if (place != "") {
             textLocation_event.text = place
-            container_for_location_event.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f
-            )
+            container_for_location_event.visibility = View.VISIBLE
         }
     }
 
@@ -108,11 +107,7 @@ class DetailingEventActivity : AppCompatActivity() {
         val date = event.datesInfo
         if (date != "") {
             textDay_event.text = date
-            container_for_date_event.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f
-            )
+            container_for_date_event.visibility = View.VISIBLE
         }
     }
 
@@ -120,11 +115,7 @@ class DetailingEventActivity : AppCompatActivity() {
         val price = event.priceInfo
         if (price != "") {
             textPrice_event.text = price
-            container_for_price_event.layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f
-            )
+            container_for_price_event.visibility = View.VISIBLE
         }
     }
 
