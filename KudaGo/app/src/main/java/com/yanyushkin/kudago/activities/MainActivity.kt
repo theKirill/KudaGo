@@ -44,10 +44,9 @@ class MainActivity : AppCompatActivity() {
     private var actualSince: Long = 0
     private lateinit var adapter: EventDataAdapter
     private val repository: Repository = Repository.instance
-    private var mScrollY: Int = 0
-    private var mStateScrollY: Int = 0
-    private val ARGS_SCROLL_Y = "scrollY"
     private var isHasInternet: Boolean = false
+    private var positionOfFirstVisibleItem = 0
+    private val ARGS_SCROLL_POSITION = "position"
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -92,8 +91,6 @@ class MainActivity : AppCompatActivity() {
 
         initSwipeRefreshListener()
 
-        changingLogoSize()
-
         textCity.setOnClickListener { selectCity() }
         button_choiceCity.setOnClickListener { selectCity() }
 
@@ -111,7 +108,6 @@ class MainActivity : AppCompatActivity() {
         editor.putString(APP_PREFERENCES_NAME_CITY, nameOfCurrentCity)
         editor.putString(APP_PREFERENCES_SHORTNAME_CITY, shortEnglishNameOfCurrentCity)
         editor.apply()
-        mStateScrollY = mScrollY
         unregisterReceiver(receiver)
         super.onPause()
     }
@@ -123,7 +119,8 @@ class MainActivity : AppCompatActivity() {
             outState.clear()
             outState.putSerializable(APP_PREFERENCES_NAME_CITY, nameOfCurrentCity)
             outState.putSerializable(APP_EVENTS, events)
-            outState.putInt(ARGS_SCROLL_Y, mScrollY)
+            val layoutManagerForRV = recyclerView_events.layoutManager as LinearLayoutManager
+            outState.putInt(ARGS_SCROLL_POSITION, layoutManagerForRV.findFirstVisibleItemPosition())
         }
     }
 
@@ -172,8 +169,8 @@ class MainActivity : AppCompatActivity() {
             adapter.setItems(events)
             showEventsLayout()
             recyclerView_events.adapter = adapter
-            recyclerView_events.scrollBy(0, mStateScrollY)
         }
+        recyclerView_events.scrollToPosition(positionOfFirstVisibleItem)
     }
 
     private fun setCharacteristicsForRequests() {
@@ -199,9 +196,8 @@ class MainActivity : AppCompatActivity() {
             if (savedInstanceState.containsKey("events")) {
                 events = savedInstanceState.getSerializable(APP_EVENTS) as ArrayList<Event>
             }
-            if (savedInstanceState.containsKey(ARGS_SCROLL_Y)) {
-                mStateScrollY =
-                    savedInstanceState.getInt(ARGS_SCROLL_Y, 0) //look where we stopped before the change of orientation
+            if (savedInstanceState.containsKey(ARGS_SCROLL_POSITION)) {
+                positionOfFirstVisibleItem=savedInstanceState.getInt(ARGS_SCROLL_POSITION) //look where we stopped before the change of orientation
             }
         }
     }
@@ -233,31 +229,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*changing logo size when scrolling*/
-    private fun changingLogoSize() {
-        appbar_events.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            if (Math.abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
-                if (!collapsed) {
-                    collapsed = true
-                    imageLogo.y += 35
-                    textCity.y += 35
-                    button_choiceCity.y += 35
-                    imageLogo.scaleX = 0.9f
-                    imageLogo.scaleY = 0.9f
-                }
-            } else {
-                if (collapsed) {
-                    collapsed = false
-                    imageLogo.y -= 35
-                    textCity.y -= 35
-                    button_choiceCity.y -= 35
-                    imageLogo.scaleX = 1.0f
-                    imageLogo.scaleY = 1.0f
-                }
-            }
-        })
-    }
-
     private fun selectCity() {
         val intentSelectCity = Intent(this, CitiesListActivity::class.java)
         intentSelectCity.putExtra("currentCity", shortEnglishNameOfCurrentCity)
@@ -278,7 +249,6 @@ class MainActivity : AppCompatActivity() {
                         textCity.text = nameOfCurrentCity
                         events = ArrayList()
                         page = 1
-                        mStateScrollY = 0
                         hideMainLayout()
                         initData()
                     }
@@ -305,8 +275,8 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         adapter.setItems(events)
                         recyclerView_events.adapter = adapter
-                        recyclerView_events.scrollBy(0, mStateScrollY)
                     }
+
                     showEventsLayout()
                     hideProgress()
                 }
@@ -358,11 +328,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView_events.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                mScrollY += dy
 
                 val visibleItemsCount = layoutManagerForRV.childCount//how many elements on the screen
                 val totalItemsCount = layoutManagerForRV.itemCount//how many elements total
-                val positionOfFirstVisibleItem =
+                positionOfFirstVisibleItem =
                     layoutManagerForRV.findFirstVisibleItemPosition()//position of the 1st element
 
                 if (!isLoading && isHasInternet) {

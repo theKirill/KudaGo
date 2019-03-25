@@ -18,7 +18,7 @@
         <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar_events"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:background="@color/colorWhite"
                 app:elevation="0dp">
 
@@ -26,9 +26,7 @@
                     layout="@layout/toolbar"
                     android:id="@+id/toolbar_for_events"
                     android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    app:layout_collapseMode="pin"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed"/>
+                    android:layout_width="match_parent"/>
 
         </android.support.design.widget.AppBarLayout>
 
