@@ -1,8 +1,10 @@
 package com.yanyushkin.kudago.network
 
 import com.google.gson.annotations.SerializedName
+import com.yanyushkin.kudago.getLatAndLon
 import com.yanyushkin.kudago.models.Event
-import com.yanyushkin.kudago.utils.Tools
+import com.yanyushkin.kudago.translateDate
+import com.yanyushkin.kudago.translatePlace
 
 data class EventsResponse(
     @SerializedName("count")
@@ -40,15 +42,15 @@ data class EventFromServer(
             this.title,
             this.description,
             this.body_text,
-            Tools.translatePlace(this.place),
-            Tools.translateDate(
+            translatePlace(this.place),
+            translateDate(
                 this.date[0].start_date,
                 this.date[0].end_date
             )
             ,
             this.price,
             imagesUrlOfEvent,
-            Tools.getLatAndLon(this.place)
+            getLatAndLon(this.place)
         )
     }
 }
