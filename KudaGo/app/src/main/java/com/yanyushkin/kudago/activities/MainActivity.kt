@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
     private val REQUEST_CODE_MESSAGE = 1000
-    private var collapsed = false
     private var isLoading = false
     private lateinit var pref: SharedPreferences
     private val APP_PREFERENCES = "settings"
@@ -197,7 +196,8 @@ class MainActivity : AppCompatActivity() {
                 events = savedInstanceState.getSerializable(APP_EVENTS) as ArrayList<Event>
             }
             if (savedInstanceState.containsKey(ARGS_SCROLL_POSITION)) {
-                positionOfFirstVisibleItem=savedInstanceState.getInt(ARGS_SCROLL_POSITION) //look where we stopped before the change of orientation
+                positionOfFirstVisibleItem =
+                    savedInstanceState.getInt(ARGS_SCROLL_POSITION) //look where we stopped before the change of orientation
             }
         }
     }

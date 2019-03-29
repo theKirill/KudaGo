@@ -12,5 +12,6 @@
     <string name="errorMassageGetEvents">Getting events error</string>
     <string name="errorMassageGetCities">Getting cities error</string>
     <string name="aboutMe">About a developer</string>
+    <string name="aboutMeFull">Developer: Yanyushkin Kirill\For: VyatSU (IT-Univer)\nKirov\n2019</string>
     <string name="apiKeyForGoogleMaps">AIzaSyBPaZ9kB3R4qjzjafvMGeZHyVax9LPucxM</string>
 </resources>
