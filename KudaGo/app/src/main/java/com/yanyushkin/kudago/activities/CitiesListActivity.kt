@@ -96,8 +96,7 @@ class CitiesListActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        if (outState != null)
-            outState.putInt(ARGS_SCROLL_Y, mScrollY)
+        outState?.let { outState.putInt(ARGS_SCROLL_Y, mScrollY) }
     }
 
     private fun initLang() {
@@ -151,10 +150,13 @@ class CitiesListActivity : AppCompatActivity() {
 
         viewModel.getCities().observe(this, object : Observer<ArrayList<City>> {
             override fun onChanged(citiesList: ArrayList<City>?) {
-                if (citiesList != null && cities != citiesList) {
-                    cities = citiesList
-                    adapter.setItems(cities)
+                citiesList?.let {
+                    if (cities != citiesList) {
+                        cities = citiesList
+                        adapter.setItems(cities)
+                    }
                 }
+
                 recyclerView_cities.scrollBy(0, mStateScrollY)
                 hideProgress()
             }

@@ -22,7 +22,6 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.card_view, viewGroup, false))
 
-
     /*full data for each element of RV*/
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         viewHolder.bind(position)

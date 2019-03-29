@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
 
-        if (outState != null) {
+        outState?.let {
             outState.clear()
             outState.putSerializable(APP_PREFERENCES_NAME_CITY, nameOfCurrentCity)
             outState.putSerializable(APP_EVENTS, events)
@@ -191,7 +191,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             textCity.text = savedInstanceState.getSerializable(APP_PREFERENCES_NAME_CITY).toString()
         }
-        if (savedInstanceState != null) {
+
+        savedInstanceState?.let {
             if (savedInstanceState.containsKey("events")) {
                 events = savedInstanceState.getSerializable(APP_EVENTS) as ArrayList<Event>
             }
@@ -242,7 +243,7 @@ class MainActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_MESSAGE -> {
-                    if (data != null) {
+                    data?.let {
                         val selectedCity = data.getSerializableExtra("city") as City
                         nameOfCurrentCity = selectedCity.nameInfo
                         shortEnglishNameOfCurrentCity = selectedCity.shortEnglishNameInfo

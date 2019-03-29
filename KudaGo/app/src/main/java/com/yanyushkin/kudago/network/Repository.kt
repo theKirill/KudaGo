@@ -24,15 +24,13 @@ class Repository {
         NetworkService.instance.service.getEvents(actual_since, lang, location, page)
             .enqueue(object : Callback<EventsResponse> {
                 override fun onFailure(call: Call<EventsResponse>, t: Throwable) {
-                    responseCallback.onFailure("Getting events error")
                 }
 
                 override fun onResponse(call: Call<EventsResponse>, response: Response<EventsResponse>) {
                     if (response.isSuccessful) {
                         val eventsResponse = response.body()
 
-                        if (eventsResponse!=null)
-                            responseCallback.onSuccess(eventsResponse)//take the parsed data
+                        eventsResponse?.let { responseCallback.onSuccess(eventsResponse) }//take the parsed data
                     } else {
                         responseCallback.onFailure("Getting events error")
                     }
@@ -50,10 +48,10 @@ class Repository {
                 call: Call<ArrayList<CitiesResponse>>,
                 response: Response<ArrayList<CitiesResponse>>
             ) {
-                val citiesResponse = response.body()
+                if (response.isSuccessful) {
+                    val citiesResponse = response.body()
 
-                if (citiesResponse != null && response.isSuccessful) {
-                    responseCallback.onSuccess(citiesResponse)//take the parsed data
+                    citiesResponse?.let { responseCallback.onSuccess(citiesResponse) } //take the parsed data
                 } else {
                     responseCallback.onFailure("Getting cities error")
                 }

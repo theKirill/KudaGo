@@ -33,7 +33,7 @@ fun translateDate(badStartDate: String?, badEndDate: String?): String {
 
     val calendar = Calendar.getInstance()
 
-    if (badStartDate != null) {
+    badStartDate?.let {
         calendar.set(
             Calendar.MONTH, Integer.parseInt(
                 badStartDate.substring(
@@ -50,7 +50,7 @@ fun translateDate(badStartDate: String?, badEndDate: String?): String {
         ) + " " + badStartDate.substring(0, 4)
     }
 
-    if (badEndDate != null) {
+    badEndDate?.let {
         if (resDate.isNotEmpty())
             resDate += " - "
         else
@@ -76,7 +76,7 @@ fun translateDate(badStartDate: String?, badEndDate: String?): String {
 }
 
 fun translatePlace(badPlace: Place?): String {
-    if (badPlace != null) {
+    badPlace?.let {
         if (badPlace.title != null)
             return badPlace.title
         if (badPlace.address != null)
@@ -89,7 +89,7 @@ fun translatePlace(badPlace: Place?): String {
 fun getLatAndLon(place: Place?): ArrayList<Double> {
     val res: ArrayList<Double> = ArrayList()
 
-    if (place != null && place.coords != null) {
+    place?.coords?.let {
         if (place.coords.lat != null)
             res.add(place.coords.lat)
 

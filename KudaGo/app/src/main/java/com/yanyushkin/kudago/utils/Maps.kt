@@ -19,7 +19,7 @@ class Maps(private val lat: Double, private val lon: Double, private val context
 
     /*callback of receiving the map*/
     override fun onMapReady(_googleMap: GoogleMap?) {
-        if (_googleMap != null) {
+        _googleMap?.let {
             googleMap = _googleMap
             googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
             addMarkerOnMap()
