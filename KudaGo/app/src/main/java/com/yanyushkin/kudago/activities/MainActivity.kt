@@ -32,10 +32,13 @@ class MainActivity : AppCompatActivity() {
     private val REQUEST_CODE_MESSAGE = 1000
     private var isLoading = false
     private lateinit var pref: SharedPreferences
-    private val APP_PREFERENCES = "settings"
-    private val APP_PREFERENCES_NAME_CITY = "nameOfCurrentCity"
-    private val APP_PREFERENCES_SHORTNAME_CITY = "shortEnglishNameOfCurrentCity"
-    private val APP_EVENTS = "events"
+    private val APP_PREFERENCES_KEY = "settings"
+    private val APP_PREFERENCES_NAME_CITY_KEY = "nameOfCurrentCity"
+    private val APP_PREFERENCES_SHORTNAME_CITY_KEY = "shortEnglishNameOfCurrentCity"
+    private val EVENTS_KEY = "events"
+    private val EVENT_KEY= "event"
+    private val CURRENT_CITY_KEY = "currentCity"
+    private val CITY_KEY = "city"
     private lateinit var nameOfCurrentCity: String
     private lateinit var shortEnglishNameOfCurrentCity: String
     private var page = 1
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private val repository: Repository = Repository.instance
     private var isHasInternet: Boolean = false
     private var positionOfFirstVisibleItem = 0
-    private val ARGS_SCROLL_POSITION = "position"
+    private val SCROLL_POSITION_KEY = "position"
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -104,8 +107,8 @@ class MainActivity : AppCompatActivity() {
     /*saving the settings of app (selected city)*/
     override fun onPause() {
         val editor = pref.edit()
-        editor.putString(APP_PREFERENCES_NAME_CITY, nameOfCurrentCity)
-        editor.putString(APP_PREFERENCES_SHORTNAME_CITY, shortEnglishNameOfCurrentCity)
+        editor.putString(APP_PREFERENCES_NAME_CITY_KEY, nameOfCurrentCity)
+        editor.putString(APP_PREFERENCES_SHORTNAME_CITY_KEY, shortEnglishNameOfCurrentCity)
         editor.apply()
         unregisterReceiver(receiver)
         super.onPause()
@@ -116,10 +119,10 @@ class MainActivity : AppCompatActivity() {
 
         outState?.let {
             outState.clear()
-            outState.putSerializable(APP_PREFERENCES_NAME_CITY, nameOfCurrentCity)
-            outState.putSerializable(APP_EVENTS, events)
+            outState.putSerializable(APP_PREFERENCES_NAME_CITY_KEY, nameOfCurrentCity)
+            outState.putSerializable(EVENTS_KEY, events)
             val layoutManagerForRV = recyclerView_events.layoutManager as LinearLayoutManager
-            outState.putInt(ARGS_SCROLL_POSITION, layoutManagerForRV.findFirstVisibleItemPosition())
+            outState.putInt(SCROLL_POSITION_KEY, layoutManagerForRV.findFirstVisibleItemPosition())
         }
     }
 
@@ -186,31 +189,31 @@ class MainActivity : AppCompatActivity() {
 
     fun getSavedState(savedInstanceState: Bundle?) {
         /*check for saved state*/
-        if (savedInstanceState == null || !!savedInstanceState.containsKey(APP_PREFERENCES_NAME_CITY)) {
+        if (savedInstanceState == null || !!savedInstanceState.containsKey(APP_PREFERENCES_NAME_CITY_KEY)) {
             getSavedLastSelectedCity()
         } else {
-            textCity.text = savedInstanceState.getSerializable(APP_PREFERENCES_NAME_CITY).toString()
+            textCity.text = savedInstanceState.getSerializable(APP_PREFERENCES_NAME_CITY_KEY).toString()
         }
 
         savedInstanceState?.let {
-            if (savedInstanceState.containsKey("events")) {
-                events = savedInstanceState.getSerializable(APP_EVENTS) as ArrayList<Event>
+            if (savedInstanceState.containsKey(EVENTS_KEY)) {
+                events = savedInstanceState.getSerializable(EVENTS_KEY) as ArrayList<Event>
             }
-            if (savedInstanceState.containsKey(ARGS_SCROLL_POSITION)) {
+            if (savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
                 positionOfFirstVisibleItem =
-                    savedInstanceState.getInt(ARGS_SCROLL_POSITION) //look where we stopped before the change of orientation
+                    savedInstanceState.getInt(SCROLL_POSITION_KEY) //look where we stopped before the change of orientation
             }
         }
     }
 
     /*find out last selected city from SharedPreferences (if it exists)*/
     private fun getSavedLastSelectedCity() {
-        pref = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE)
+        pref = getSharedPreferences(APP_PREFERENCES_KEY, Context.MODE_PRIVATE)
 
-        if (pref.contains(APP_PREFERENCES_NAME_CITY) && pref.contains(APP_PREFERENCES_SHORTNAME_CITY)) {
-            nameOfCurrentCity = pref.getString(APP_PREFERENCES_NAME_CITY, getString(R.string.nameCityBegin))
+        if (pref.contains(APP_PREFERENCES_NAME_CITY_KEY) && pref.contains(APP_PREFERENCES_SHORTNAME_CITY_KEY)) {
+            nameOfCurrentCity = pref.getString(APP_PREFERENCES_NAME_CITY_KEY, getString(R.string.nameCityBegin))
             shortEnglishNameOfCurrentCity =
-                pref.getString(APP_PREFERENCES_SHORTNAME_CITY, getString(R.string.shortNameCityBegin))
+                pref.getString(APP_PREFERENCES_SHORTNAME_CITY_KEY, getString(R.string.shortNameCityBegin))
         } else {
             nameOfCurrentCity = getString(R.string.nameCityBegin)
             shortEnglishNameOfCurrentCity = getString(R.string.shortNameCityBegin)
@@ -232,7 +235,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun selectCity() {
         val intentSelectCity = Intent(this, CitiesListActivity::class.java)
-        intentSelectCity.putExtra("currentCity", shortEnglishNameOfCurrentCity)
+        intentSelectCity.putExtra(CURRENT_CITY_KEY, shortEnglishNameOfCurrentCity)
         startActivityForResult(intentSelectCity, REQUEST_CODE_MESSAGE)
     }
 
@@ -244,7 +247,7 @@ class MainActivity : AppCompatActivity() {
             when (requestCode) {
                 REQUEST_CODE_MESSAGE -> {
                     data?.let {
-                        val selectedCity = data.getSerializableExtra("city") as City
+                        val selectedCity = data.getSerializableExtra(CITY_KEY) as City
                         nameOfCurrentCity = selectedCity.nameInfo
                         shortEnglishNameOfCurrentCity = selectedCity.shortEnglishNameInfo
                         textCity.text = nameOfCurrentCity
@@ -306,7 +309,7 @@ class MainActivity : AppCompatActivity() {
         adapter = EventDataAdapter(events, object : OnClickListener {
             override fun onCardViewClick(position: Int) {
                 val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
-                intentDetailingEvent.putExtra("event", events[position])
+                intentDetailingEvent.putExtra(EVENT_KEY, events[position])
                 startActivity(intentDetailingEvent)
             }
         })

@@ -34,7 +34,9 @@ class CitiesListActivity : AppCompatActivity() {
     private lateinit var viewModel: CitiesViewModel
     private var mScrollY: Int = 0
     private var mStateScrollY: Int = 0
-    private val ARGS_SCROLL_Y = "scrollY"
+    private val CURRENT_CITY_KEY = "currentCity"
+    private val CITY_KEY = "city"
+    private val SCROLL_Y_KEY = "scrollY"
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -75,9 +77,9 @@ class CitiesListActivity : AppCompatActivity() {
 
         initAdapter()
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(ARGS_SCROLL_Y)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_Y_KEY)) {
             mStateScrollY =
-                savedInstanceState.getInt(ARGS_SCROLL_Y, 0) //look where we stopped before the change of orientation
+                savedInstanceState.getInt(SCROLL_Y_KEY, 0) //look where we stopped before the change of orientation
         } else
             showProgress()
 
@@ -96,7 +98,7 @@ class CitiesListActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        outState?.let { outState.putInt(ARGS_SCROLL_Y, mScrollY) }
+        outState?.let { outState.putInt(SCROLL_Y_KEY, mScrollY) }
     }
 
     private fun initLang() {
@@ -165,13 +167,13 @@ class CitiesListActivity : AppCompatActivity() {
 
     private fun initAdapter() {
         val arguments = intent.extras
-        val currentCity: String = arguments.getString("currentCity")
+        val currentCity: String = arguments.getString(CURRENT_CITY_KEY)
 
         /*Create adapter with listener of click on element*/
         adapter = CityDataAdapter(cities, object : OnClickListener {
             override fun onCardViewClick(position: Int) {
                 val intentRes = Intent()
-                intentRes.putExtra("city", cities[position])
+                intentRes.putExtra(CITY_KEY, cities[position])
                 /*remember the selected city and pass to main activity*/
                 setResult(Activity.RESULT_OK, intentRes)
                 finish()

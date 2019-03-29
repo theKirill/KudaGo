@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_detailing_event.*
 import kotlinx.android.synthetic.main.toolbar_detailing_event.*
 
 class DetailingEventActivity : AppCompatActivity() {
+    private val EVENT_KEY= "event"
     private var lat: Double = 0.0
     private var lon: Double = 0.0
     private lateinit var event: Event
@@ -37,7 +38,7 @@ class DetailingEventActivity : AppCompatActivity() {
     private fun fillingActivity() {
         /*get data from main activity about selected event*/
         val arguments = intent.extras
-        event = arguments.get("event") as Event
+        event = arguments.get(EVENT_KEY) as Event
 
         /*filling views*/
         setImages()
