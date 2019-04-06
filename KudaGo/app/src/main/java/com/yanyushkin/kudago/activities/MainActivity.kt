@@ -4,13 +4,10 @@ import android.app.Activity
 import android.content.*
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.EventDataAdapter
 import com.yanyushkin.kudago.models.City
@@ -19,6 +16,7 @@ import com.yanyushkin.kudago.network.*
 import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import com.yanyushkin.kudago.utils.OnClickListener
+import com.yanyushkin.kudago.utils.SettingsOfApp
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
@@ -31,12 +29,8 @@ class MainActivity : AppCompatActivity() {
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
     private val REQUEST_CODE_MESSAGE = 1000
     private var isLoading = false
-    private lateinit var pref: SharedPreferences
-    private val APP_PREFERENCES_KEY = "settings"
-    private val APP_PREFERENCES_NAME_CITY_KEY = "nameOfCurrentCity"
-    private val APP_PREFERENCES_SHORTNAME_CITY_KEY = "shortEnglishNameOfCurrentCity"
     private val EVENTS_KEY = "events"
-    private val EVENT_KEY= "event"
+    private val EVENT_KEY = "event"
     private val CURRENT_CITY_KEY = "currentCity"
     private val CITY_KEY = "city"
     private lateinit var nameOfCurrentCity: String
@@ -106,10 +100,7 @@ class MainActivity : AppCompatActivity() {
 
     /*saving the settings of app (selected city)*/
     override fun onPause() {
-        val editor = pref.edit()
-        editor.putString(APP_PREFERENCES_NAME_CITY_KEY, nameOfCurrentCity)
-        editor.putString(APP_PREFERENCES_SHORTNAME_CITY_KEY, shortEnglishNameOfCurrentCity)
-        editor.apply()
+        SettingsOfApp.saveSelectedCity(nameOfCurrentCity, shortEnglishNameOfCurrentCity)
         unregisterReceiver(receiver)
         super.onPause()
     }
@@ -119,7 +110,7 @@ class MainActivity : AppCompatActivity() {
 
         outState?.let {
             outState.clear()
-            outState.putSerializable(APP_PREFERENCES_NAME_CITY_KEY, nameOfCurrentCity)
+            outState.putSerializable(CURRENT_CITY_KEY, nameOfCurrentCity)
             outState.putSerializable(EVENTS_KEY, events)
             val layoutManagerForRV = recyclerView_events.layoutManager as LinearLayoutManager
             outState.putInt(SCROLL_POSITION_KEY, layoutManagerForRV.findFirstVisibleItemPosition())
@@ -157,6 +148,8 @@ class MainActivity : AppCompatActivity() {
     private fun showErrorNoInternet() {
         if (events.size == 0)
             showErrorLayout()
+        else
+            showEvents()
         hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_events)
         sbError.show(this)
@@ -189,10 +182,10 @@ class MainActivity : AppCompatActivity() {
 
     fun getSavedState(savedInstanceState: Bundle?) {
         /*check for saved state*/
-        if (savedInstanceState == null || !!savedInstanceState.containsKey(APP_PREFERENCES_NAME_CITY_KEY)) {
+        if (savedInstanceState == null || !!savedInstanceState.containsKey(CURRENT_CITY_KEY)) {
             getSavedLastSelectedCity()
         } else {
-            textCity.text = savedInstanceState.getSerializable(APP_PREFERENCES_NAME_CITY_KEY).toString()
+            textCity.text = savedInstanceState.getSerializable(CURRENT_CITY_KEY).toString()
         }
 
         savedInstanceState?.let {
@@ -206,18 +199,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*find out last selected city from SharedPreferences (if it exists)*/
     private fun getSavedLastSelectedCity() {
-        pref = getSharedPreferences(APP_PREFERENCES_KEY, Context.MODE_PRIVATE)
-
-        if (pref.contains(APP_PREFERENCES_NAME_CITY_KEY) && pref.contains(APP_PREFERENCES_SHORTNAME_CITY_KEY)) {
-            nameOfCurrentCity = pref.getString(APP_PREFERENCES_NAME_CITY_KEY, getString(R.string.nameCityBegin))
-            shortEnglishNameOfCurrentCity =
-                pref.getString(APP_PREFERENCES_SHORTNAME_CITY_KEY, getString(R.string.shortNameCityBegin))
-        } else {
-            nameOfCurrentCity = getString(R.string.nameCityBegin)
-            shortEnglishNameOfCurrentCity = getString(R.string.shortNameCityBegin)
-        }
+        val currentCity = SettingsOfApp.getSavedLastSelectedCity(this)
+        nameOfCurrentCity = currentCity.nameInfo
+        shortEnglishNameOfCurrentCity = currentCity.shortEnglishNameInfo
         textCity.text = nameOfCurrentCity
     }
 
@@ -275,7 +260,6 @@ class MainActivity : AppCompatActivity() {
                     if (page > 1) {
                         /*don`t move to top of the RV, because we add data to end*/
                         adapter.addItems()
-
                     } else {
                         adapter.setItems(events)
                         recyclerView_events.adapter = adapter
@@ -341,7 +325,6 @@ class MainActivity : AppCompatActivity() {
                 if (!isLoading && isHasInternet) {
                     if ((visibleItemsCount + positionOfFirstVisibleItem) >= totalItemsCount) {
                         page++
-                        showProgress()
                         initData()
                     }
                 }
