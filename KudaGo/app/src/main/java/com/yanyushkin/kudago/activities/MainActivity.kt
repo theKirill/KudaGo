@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.LinearLayout
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.EventDataAdapter
+import com.yanyushkin.kudago.App
 import com.yanyushkin.kudago.models.City
 import com.yanyushkin.kudago.models.Event
 import com.yanyushkin.kudago.network.*
@@ -22,8 +23,12 @@ import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
+import io.realm.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+    @Inject
+    lateinit var repository: Repository
     private var events: ArrayList<Event> = ArrayList()
     private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
@@ -39,10 +44,10 @@ class MainActivity : AppCompatActivity() {
     private var lang = "en"
     private var actualSince: Long = 0
     private lateinit var adapter: EventDataAdapter
-    private val repository: Repository = Repository.instance
     private var isHasInternet: Boolean = false
     private var positionOfFirstVisibleItem = 0
     private val SCROLL_POSITION_KEY = "position"
+    private lateinit var realm: Realm
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -78,6 +83,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        /*get repository with dagger*/
+        (application as App).getAppComponent().injectsMainActivity(this)
+
+        initRealm()
 
         setSupportActionBar(toolbar)
 
@@ -117,6 +127,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
+    private fun initRealm() {
+        Realm.init(this)
+        val config = RealmConfiguration.Builder().build()
+        Realm.setDefaultConfiguration(config)
+        // Get a Realm instance for this thread
+        realm = Realm.getDefaultInstance()
+    }
+
     private fun showErrorLayout() {
         layout_main_events.visibility = View.INVISIBLE
         layout_error_internet_events.visibility = View.VISIBLE
@@ -147,12 +170,34 @@ class MainActivity : AppCompatActivity() {
 
     private fun showErrorNoInternet() {
         if (events.size == 0)
-            showErrorLayout()
+            showDataFromDB()
         else
             showEvents()
+
         hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_events)
         sbError.show(this)
+    }
+
+    private fun showDataFromDB() {
+        /* val eventsFromDB =
+             realm.where(EventObj::class.java).equalTo(CITY_KEY, shortEnglishNameOfCurrentCity).findAll()
+
+         eventsFromDB.forEach {
+             events.add(
+                 Event(
+                     it.id,
+                     it.title,
+                     it.description,
+                     it.fullDescription,
+                     it.place,
+                     it.dates,
+                     it.price,
+                     arrayListOf(),
+                     arrayListOf()
+                 )
+             )
+         }*/
     }
 
     private fun showEvents() {
@@ -247,12 +292,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getEvents() {
+        /*  if (page == 1) {
+              val oldEventsFromDB =
+                  realm.where(EventObj::class.java).equalTo(CITY_KEY, shortEnglishNameOfCurrentCity).findAll()
+              oldEventsFromDB.deleteAllFromRealm()
+          }*/
+
         /*get actual events on installed language from selected city from necessary page and add it to ArrayList of events*/
         repository.getEvents(
             object : ResponseCallback<EventsResponse> {
                 override fun onSuccess(apiResponse: EventsResponse) {
                     apiResponse.events.forEach {
-                        events.add(it.transfrom())
+                        val currentEvent = it.transfrom()
+                        events.add(currentEvent)
+
+                        /* realm.executeTransactionAsync {
+                             val eventRealm = it.createObject(EventObj::class.java)
+                             eventRealm.id = currentEvent.idInfo
+                             eventRealm.title = currentEvent.titleInfo
+                             eventRealm.description = currentEvent.descriptionInfo
+                             eventRealm.fullDescription = currentEvent.fullDescriptionInfo
+                             eventRealm.dates = currentEvent.datesInfo
+                             eventRealm.place = currentEvent.placeInfo
+                             eventRealm.price = currentEvent.priceInfo
+
+                             /*val cityRealm = realm.createObject(CityObj::class.java)
+                             cityRealm.name = nameOfCurrentCity
+                             cityRealm.shortEnglishName = shortEnglishNameOfCurrentCity
+
+                             eventRealm.city = cityRealm*/
+                         }*/
                     }
 
                     isLoading = false

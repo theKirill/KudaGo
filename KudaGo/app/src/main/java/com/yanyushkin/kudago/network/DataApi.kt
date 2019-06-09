@@ -4,7 +4,9 @@ import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface ResponseService {
+const val BASE_URL = "https://kudago.com/public-api/v1.4/"
+
+interface DataApi {
     @GET("events/?fields=id,title,description,body_text,dates,place,price,images&page_size=100&expand=dates,place&order_by=-publication_date")
     fun getEvents(
         @Query("actual_since") actual_since: Long,

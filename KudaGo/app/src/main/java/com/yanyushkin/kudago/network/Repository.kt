@@ -3,15 +3,11 @@ package com.yanyushkin.kudago.network
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Repository {
-    private object Holder {
-        val INSTANCE = Repository()
-    }
-
-    companion object {
-        val instance: Repository by lazy { Holder.INSTANCE }
-    }
+@Singleton
+class Repository @Inject constructor(private val dataApi: DataApi) {
 
     fun getEvents(
         responseCallback: ResponseCallback<EventsResponse>,
@@ -21,7 +17,7 @@ class Repository {
         page: Int
     ) {
         /*async data acquisition*/
-        NetworkService.instance.service.getEvents(actual_since, lang, location, page)
+        dataApi.getEvents(actual_since, lang, location, page)
             .enqueue(object : Callback<EventsResponse> {
                 override fun onFailure(call: Call<EventsResponse>, t: Throwable) {
                 }
@@ -40,7 +36,7 @@ class Repository {
 
     fun getCities(responseCallback: ResponseCallback<ArrayList<CitiesResponse>>, lang: String) {
         /*async data acquisition*/
-        NetworkService.instance.service.getCities(lang).enqueue(object : Callback<ArrayList<CitiesResponse>> {
+        dataApi.getCities(lang).enqueue(object : Callback<ArrayList<CitiesResponse>> {
             override fun onFailure(call: Call<ArrayList<CitiesResponse>>, t: Throwable) {
             }
 

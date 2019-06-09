@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.yanyushkin.kudago.App
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.viewmodels.BaseViewModelFactory
 import com.yanyushkin.kudago.viewmodels.CitiesViewModel
@@ -19,24 +20,28 @@ import com.yanyushkin.kudago.models.City
 import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import com.yanyushkin.kudago.utils.OnClickListener
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_cities_list.*
 import kotlinx.android.synthetic.main.toolbar_cities.*
 import kotlinx.coroutines.*
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class CitiesListActivity : AppCompatActivity() {
+    private lateinit var viewModel: CitiesViewModel
     private var cities: ArrayList<City> = ArrayList()
     private var lang = "en"
     private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
     private lateinit var adapter: CityDataAdapter
-    private lateinit var viewModel: CitiesViewModel
     private var mScrollY: Int = 0
     private var mStateScrollY: Int = 0
     private val CURRENT_CITY_KEY = "currentCity"
     private val CITY_KEY = "city"
     private val SCROLL_Y_KEY = "scrollY"
+    private lateinit var realm: Realm
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -72,6 +77,11 @@ class CitiesListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cities_list)
         setSupportActionBar(toolbar_cities)
+
+        val config = RealmConfiguration.Builder().build()
+        Realm.setDefaultConfiguration(config)
+        // Get a Realm instance for this thread
+        realm = Realm.getDefaultInstance()
 
         initLang()
 
@@ -148,7 +158,8 @@ class CitiesListActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel =
-            ViewModelProviders.of(this, BaseViewModelFactory { CitiesViewModel(lang) }).get(CitiesViewModel::class.java)
+            ViewModelProviders.of(this, BaseViewModelFactory { CitiesViewModel((application as App), lang) })
+                .get(CitiesViewModel::class.java)
 
         viewModel.getCities().observe(this, object : Observer<ArrayList<City>> {
             override fun onChanged(citiesList: ArrayList<City>?) {
