@@ -17,11 +17,10 @@ import com.yanyushkin.kudago.viewmodels.BaseViewModelFactory
 import com.yanyushkin.kudago.viewmodels.CitiesViewModel
 import com.yanyushkin.kudago.adapters.CityDataAdapter
 import com.yanyushkin.kudago.models.City
+import com.yanyushkin.kudago.database.DatabaseService
 import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
 import com.yanyushkin.kudago.utils.OnClickListener
-import io.realm.Realm
-import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_cities_list.*
 import kotlinx.android.synthetic.main.toolbar_cities.*
 import kotlinx.coroutines.*
@@ -30,6 +29,8 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class CitiesListActivity : AppCompatActivity() {
+    @Inject
+    lateinit var service: DatabaseService
     private lateinit var viewModel: CitiesViewModel
     private var cities: ArrayList<City> = ArrayList()
     private var lang = "en"
@@ -41,7 +42,6 @@ class CitiesListActivity : AppCompatActivity() {
     private val CURRENT_CITY_KEY = "currentCity"
     private val CITY_KEY = "city"
     private val SCROLL_Y_KEY = "scrollY"
-    private lateinit var realm: Realm
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -62,7 +62,7 @@ class CitiesListActivity : AppCompatActivity() {
                         GlobalScope.launch(Dispatchers.Main) {
                             isHasInternet = check.await()
                             if (!isHasInternet) {
-                                showErrorNoInternet()
+                                doWithoutInternet()
                             } else {
                                 showCities()
                             }
@@ -78,10 +78,7 @@ class CitiesListActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cities_list)
         setSupportActionBar(toolbar_cities)
 
-        val config = RealmConfiguration.Builder().build()
-        Realm.setDefaultConfiguration(config)
-        // Get a Realm instance for this thread
-        realm = Realm.getDefaultInstance()
+        (application as App).getAppComponent().injectsCitiesListActivity(this)
 
         initLang()
 
@@ -130,9 +127,20 @@ class CitiesListActivity : AppCompatActivity() {
         layout_error_internet_cities.visibility = View.INVISIBLE
     }
 
-    private fun showErrorNoInternet() {
-        if (cities.size == 0)
+    private fun doWithoutInternet() {
+        val citiesFromDB = service.getCities()
+
+        if (cities.size == 0 && citiesFromDB.size == 0)
             showErrorLayout()
+        else
+            if (cities.size == 0 && citiesFromDB.size >= 0) {
+                cities = citiesFromDB
+                adapter.setItems(cities)
+                showCitiesLayout()
+            } else {
+                showCities()
+            }
+
         hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_cities)
         sbError.show(this)

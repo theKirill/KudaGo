@@ -6,6 +6,7 @@ import kotlinx.coroutines.delay
 import java.lang.Exception
 
 class CheckInternet {
+
     companion object {
         /*check network*/
         private fun isNetworkConnectivity(context: Context): Boolean {

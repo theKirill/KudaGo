@@ -4,19 +4,21 @@ import android.app.Application
 import com.yanyushkin.kudago.di.AppComponent
 import com.yanyushkin.kudago.di.DaggerAppComponent
 import com.yanyushkin.kudago.di.NetworkModule
+import io.realm.Realm
 
-class App: Application() {
+class App : Application() {
     lateinit var component: AppComponent
 
     override fun onCreate() {
         super.onCreate()
-       component= DaggerAppComponent.builder()
-           .networkModule(NetworkModule())
-           .build()
+        Realm.init(this)
+
+        component = DaggerAppComponent.builder()
+            .networkModule(NetworkModule())
+            .build()
     }
 
-    fun getAppComponent(): AppComponent
-    {
+    fun getAppComponent(): AppComponent {
         return component
     }
 }

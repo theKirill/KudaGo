@@ -64,8 +64,13 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
             }
         }
 
-        private fun setImage(event: Event) =
-            Glide.with(itemView.cv_of_event).load(event.imagesURLInfo[0]).into(itemView.imagePhoto)
+        private fun setImage(event: Event) {
+            if (event.imagesURLInfo.size > 0) {
+                Glide.with(itemView.cv_of_event).load(event.imagesURLInfo[0]).into(itemView.imagePhoto)
+            } else {
+                itemView.imagePhoto.visibility = View.GONE
+            }
+        }
 
         private fun setTitle(event: Event) {
             itemView.textTitle.text = event.titleInfo

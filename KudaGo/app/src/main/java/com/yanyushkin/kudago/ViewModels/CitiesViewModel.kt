@@ -18,13 +18,13 @@ class CitiesViewModel(private val application: App, private val lang: String) : 
     init {
         if (!::cities.isInitialized) {
             cities = MutableLiveData()
-            loadCities()
+            loadCitiesFromServer()
         }
     }
 
     fun getCities(): LiveData<ArrayList<City>> = cities
 
-    private fun loadCities() {
+    private fun loadCitiesFromServer() {
         val citiesFromServer: ArrayList<City> = ArrayList()
 
         application.getAppComponent().injectsCitiesViewModel(this)
@@ -37,7 +37,7 @@ class CitiesViewModel(private val application: App, private val lang: String) : 
             override fun onSuccess(apiResponse: java.util.ArrayList<CitiesResponse>) {
                 /*init data for RV from request*/
                 apiResponse.forEach {
-                    citiesFromServer.add(it.transfrom())
+                    citiesFromServer.add(it.transform())
                 }
                 cities.value = citiesFromServer
             }

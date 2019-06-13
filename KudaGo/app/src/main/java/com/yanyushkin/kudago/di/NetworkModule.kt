@@ -29,23 +29,19 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(okHttpClient)
-            .build()
-    }
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
+        .build()
+
 
     @Singleton
     @Provides
-    fun provideEventsApi(retrofit: Retrofit): DataApi {
-        return retrofit.create(DataApi::class.java)
-    }
+    fun provideEventsApi(retrofit: Retrofit): DataApi = retrofit.create(DataApi::class.java)
+
 
     @Singleton
     @Provides
-    fun provideRepository(dataApi: DataApi): Repository {
-        return Repository(dataApi)
-    }
+    fun provideRepository(dataApi: DataApi): Repository = Repository(dataApi)
 }

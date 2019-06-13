@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.View
-import android.widget.LinearLayout
 import com.google.android.gms.maps.*
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.ViewPagerAdapter
@@ -18,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_detailing_event.*
 import kotlinx.android.synthetic.main.toolbar_detailing_event.*
 
 class DetailingEventActivity : AppCompatActivity() {
-    private val EVENT_KEY= "event"
+    private val EVENT_KEY = "event"
     private var lat: Double = 0.0
     private var lon: Double = 0.0
     private lateinit var event: Event
@@ -62,6 +61,8 @@ class DetailingEventActivity : AppCompatActivity() {
 
             val circleIndicator = indicator
             circleIndicator.setViewPager(viewPager)
+        } else {
+            pager.visibility = View.GONE
         }
     }
 
@@ -92,7 +93,7 @@ class DetailingEventActivity : AppCompatActivity() {
         }
         /*to follow links*/
         fullDescription_event.movementMethod = LinkMovementMethod.getInstance()
-        fullDescription_event.text = shortDescription_event.text.trim()
+        fullDescription_event.text = fullDescription_event.text.trim()
     }
 
     private fun setPlace() {
@@ -130,8 +131,8 @@ class DetailingEventActivity : AppCompatActivity() {
             val maps = Maps(lat, lon, this)
             maps.createMapView(mapFragment)
         } else {
-            button_showRoute.text = resources.getText(R.string.textForButtonNoRoute)
-            button_showRoute.isEnabled = false
+            container_for_map.visibility = View.GONE
+            container_for_bottom.visibility = View.VISIBLE
         }
     }
 

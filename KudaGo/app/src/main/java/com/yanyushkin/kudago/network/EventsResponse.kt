@@ -31,7 +31,7 @@ data class EventFromServer(
     @SerializedName("images")
     val images: ArrayList<Image>
 ) {
-    fun transfrom(): Event {
+    fun transform(): Event {
         val imagesUrlOfEvent: ArrayList<String> = ArrayList()
         this.images.forEach {
             imagesUrlOfEvent.add(it.image)

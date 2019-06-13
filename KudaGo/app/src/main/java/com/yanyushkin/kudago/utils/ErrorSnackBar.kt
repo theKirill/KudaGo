@@ -21,7 +21,7 @@ class ErrorSnackBar(v: View) {
 
         val snackTextView = snackbarView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
         snackTextView.setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
-        snackTextView.textSize = 14.0f
+        snackTextView.textSize = 10.0f
 
         sb.duration = 5000
         sb.show()

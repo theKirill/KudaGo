@@ -51,7 +51,7 @@
                     android:textAllCaps="true"
                     tools:text="Музыкальный фестиваль LIVEFEST SUMMER"
                     android:layout_below="@+id/pager"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="38dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"/>
 
@@ -171,6 +171,15 @@
                 </FrameLayout>
 
             </LinearLayout>
+
+            <FrameLayout
+                    android:id="@+id/container_for_bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_below="@+id/layout_additionalInfo_event"
+                    android:visibility="gone">
+
+            </FrameLayout>
 
             <FrameLayout
                     android:id="@+id/container_for_map"

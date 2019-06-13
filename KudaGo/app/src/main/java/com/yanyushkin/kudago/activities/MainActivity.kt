@@ -13,6 +13,7 @@ import com.yanyushkin.kudago.adapters.EventDataAdapter
 import com.yanyushkin.kudago.App
 import com.yanyushkin.kudago.models.City
 import com.yanyushkin.kudago.models.Event
+import com.yanyushkin.kudago.database.DatabaseService
 import com.yanyushkin.kudago.network.*
 import com.yanyushkin.kudago.utils.CheckInternet
 import com.yanyushkin.kudago.utils.ErrorSnackBar
@@ -29,6 +30,10 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var repository: Repository
+    @Inject
+    lateinit var realm: Realm
+    @Inject
+    lateinit var service: DatabaseService
     private var events: ArrayList<Event> = ArrayList()
     private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
@@ -47,7 +52,6 @@ class MainActivity : AppCompatActivity() {
     private var isHasInternet: Boolean = false
     private var positionOfFirstVisibleItem = 0
     private val SCROLL_POSITION_KEY = "position"
-    private lateinit var realm: Realm
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -69,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                         GlobalScope.launch(Dispatchers.Main) {
                             isHasInternet = check.await()
                             if (!isHasInternet) {
-                                showErrorNoInternet()
+                                doWithoutInternet()
                             } else {
                                 showEvents()
                             }
@@ -84,10 +88,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*get repository with dagger*/
+        /*get repository, realm, databaseService with dagger*/
         (application as App).getAppComponent().injectsMainActivity(this)
-
-        initRealm()
 
         setSupportActionBar(toolbar)
 
@@ -132,14 +134,6 @@ class MainActivity : AppCompatActivity() {
         realm.close()
     }
 
-    private fun initRealm() {
-        Realm.init(this)
-        val config = RealmConfiguration.Builder().build()
-        Realm.setDefaultConfiguration(config)
-        // Get a Realm instance for this thread
-        realm = Realm.getDefaultInstance()
-    }
-
     private fun showErrorLayout() {
         layout_main_events.visibility = View.INVISIBLE
         layout_error_internet_events.visibility = View.VISIBLE
@@ -168,36 +162,23 @@ class MainActivity : AppCompatActivity() {
         progressBar_events.visibility = View.INVISIBLE
     }
 
-    private fun showErrorNoInternet() {
-        if (events.size == 0)
-            showDataFromDB()
+    private fun doWithoutInternet() {
+        val eventsFromDB = service.getEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
+
+        if (events.size == 0 && eventsFromDB.size == 0)
+            showErrorLayout()
         else
-            showEvents()
+            if (events.size == 0 && eventsFromDB.size > 0) {
+                events = eventsFromDB
+                adapter.setItems(events)
+                showEventsLayout()
+                recyclerView_events.adapter = adapter
+            } else
+                showEvents()
 
         hideProgress()
         val sbError = ErrorSnackBar(layout_error_internet_events)
         sbError.show(this)
-    }
-
-    private fun showDataFromDB() {
-        /* val eventsFromDB =
-             realm.where(EventObj::class.java).equalTo(CITY_KEY, shortEnglishNameOfCurrentCity).findAll()
-
-         eventsFromDB.forEach {
-             events.add(
-                 Event(
-                     it.id,
-                     it.title,
-                     it.description,
-                     it.fullDescription,
-                     it.place,
-                     it.dates,
-                     it.price,
-                     arrayListOf(),
-                     arrayListOf()
-                 )
-             )
-         }*/
     }
 
     private fun showEvents() {
@@ -225,7 +206,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getSavedState(savedInstanceState: Bundle?) {
+    private fun getSavedState(savedInstanceState: Bundle?) {
         /*check for saved state*/
         if (savedInstanceState == null || !!savedInstanceState.containsKey(CURRENT_CITY_KEY)) {
             getSavedLastSelectedCity()
@@ -284,45 +265,34 @@ class MainActivity : AppCompatActivity() {
                         events = ArrayList()
                         page = 1
                         hideMainLayout()
-                        initData()
                     }
                 }
             }
         }
     }
 
+    private fun initData() {
+        hideErrorLayout()
+        showProgress()
+        isLoading = true
+        getEvents()
+    }
+
     private fun getEvents() {
-        /*  if (page == 1) {
-              val oldEventsFromDB =
-                  realm.where(EventObj::class.java).equalTo(CITY_KEY, shortEnglishNameOfCurrentCity).findAll()
-              oldEventsFromDB.deleteAllFromRealm()
-          }*/
+        if (page == 1) {
+            service.deleteOldEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
+        }
 
         /*get actual events on installed language from selected city from necessary page and add it to ArrayList of events*/
         repository.getEvents(
             object : ResponseCallback<EventsResponse> {
                 override fun onSuccess(apiResponse: EventsResponse) {
+
                     apiResponse.events.forEach {
-                        val currentEvent = it.transfrom()
-                        events.add(currentEvent)
-
-                        /* realm.executeTransactionAsync {
-                             val eventRealm = it.createObject(EventObj::class.java)
-                             eventRealm.id = currentEvent.idInfo
-                             eventRealm.title = currentEvent.titleInfo
-                             eventRealm.description = currentEvent.descriptionInfo
-                             eventRealm.fullDescription = currentEvent.fullDescriptionInfo
-                             eventRealm.dates = currentEvent.datesInfo
-                             eventRealm.place = currentEvent.placeInfo
-                             eventRealm.price = currentEvent.priceInfo
-
-                             /*val cityRealm = realm.createObject(CityObj::class.java)
-                             cityRealm.name = nameOfCurrentCity
-                             cityRealm.shortEnglishName = shortEnglishNameOfCurrentCity
-
-                             eventRealm.city = cityRealm*/
-                         }*/
+                        events.add(it.transform())
                     }
+
+                    service.addEvents(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity), events)
 
                     isLoading = false
 
@@ -348,24 +318,6 @@ class MainActivity : AppCompatActivity() {
             shortEnglishNameOfCurrentCity,
             page
         )
-    }
-
-    private fun initData() {
-        hideErrorLayout()
-        showProgress()
-        isLoading = true
-        getEvents()
-    }
-
-    private fun initAdapter() {
-        /*Create adapter with listener of click on element*/
-        adapter = EventDataAdapter(events, object : OnClickListener {
-            override fun onCardViewClick(position: Int) {
-                val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
-                intentDetailingEvent.putExtra(EVENT_KEY, events[position])
-                startActivity(intentDetailingEvent)
-            }
-        })
     }
 
     private fun initRecyclerView() {
@@ -400,5 +352,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
         hideProgress()
+    }
+
+    private fun initAdapter() {
+        /*Create adapter with listener of click on element*/
+        adapter = EventDataAdapter(events, object : OnClickListener {
+            override fun onCardViewClick(position: Int) {
+                val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
+                intentDetailingEvent.putExtra(EVENT_KEY, events[position])
+                startActivity(intentDetailingEvent)
+            }
+        })
     }
 }
