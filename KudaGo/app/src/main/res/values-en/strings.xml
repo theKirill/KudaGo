@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KudaGo</string>
-    <string name="noConnectionMain">Error of loading data, check your Internet connection.</string>
-    <string name="noConnectionBottom">Impossible to load data from server, check your Internet connection. Loaded after-saved data</string>
+    <string name="noConnectionMain">Error of loading data, check your Internet connection</string>
+    <string name="noConnectionBottom">Impossible to load data from server, check your Internet connection.</string>
     <string name="nameCityBegin">Moscow</string>
     <string name="shortNameCityBegin">msk</string>
     <string name="kudaGo">Where to go</string>

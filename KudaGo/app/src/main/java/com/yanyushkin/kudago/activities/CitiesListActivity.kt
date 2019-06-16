@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.Toast
 import com.yanyushkin.kudago.App
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.viewmodels.BaseViewModelFactory
@@ -136,6 +137,7 @@ class CitiesListActivity : AppCompatActivity() {
             if (cities.size == 0 && citiesFromDB.size >= 0) {
                 cities = citiesFromDB
                 adapter.setItems(cities)
+                Toast.makeText(this, "Загружены последние сохранённые данные!", Toast.LENGTH_LONG).show()
                 showCitiesLayout()
             } else {
                 showCities()

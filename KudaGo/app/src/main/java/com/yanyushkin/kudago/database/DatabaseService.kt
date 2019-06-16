@@ -73,7 +73,9 @@ class DatabaseService(private val realm: Realm) {
             realm.where(EventDB::class.java).equalTo(CITY_KEY, city.shortEnglishNameInfo).findAll()
 
         try {
-            oldEventsFromDB.deleteAllFromRealm()
+            realm.executeTransaction {
+                oldEventsFromDB.deleteAllFromRealm()
+            }
         } catch (e: Exception) {
         }
     }

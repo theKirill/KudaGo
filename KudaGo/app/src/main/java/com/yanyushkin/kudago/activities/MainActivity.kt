@@ -2,12 +2,14 @@ package com.yanyushkin.kudago.activities
 
 import android.app.Activity
 import android.content.*
+import android.content.res.Resources
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.adapters.EventDataAdapter
 import com.yanyushkin.kudago.App
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var realm: Realm
     @Inject
-    lateinit var service: DatabaseService
+    lateinit var serviceDB: DatabaseService
     private var events: ArrayList<Event> = ArrayList()
     private val BROADCAST_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
     private val intentFilter = IntentFilter(BROADCAST_ACTION)
@@ -129,11 +131,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        realm.close()
-    }
-
     private fun showErrorLayout() {
         layout_main_events.visibility = View.INVISIBLE
         layout_error_internet_events.visibility = View.VISIBLE
@@ -163,7 +160,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun doWithoutInternet() {
-        val eventsFromDB = service.getEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
+        val eventsFromDB = serviceDB.getEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
 
         if (events.size == 0 && eventsFromDB.size == 0)
             showErrorLayout()
@@ -173,6 +170,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.setItems(events)
                 showEventsLayout()
                 recyclerView_events.adapter = adapter
+                Toast.makeText(this, "Загружены последние сохранённые данные!", Toast.LENGTH_LONG).show()
             } else
                 showEvents()
 
@@ -280,7 +278,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getEvents() {
         if (page == 1) {
-            service.deleteOldEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
+            serviceDB.deleteOldEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
         }
 
         /*get actual events on installed language from selected city from necessary page and add it to ArrayList of events*/
@@ -292,7 +290,7 @@ class MainActivity : AppCompatActivity() {
                         events.add(it.transform())
                     }
 
-                    service.addEvents(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity), events)
+                    serviceDB.addEvents(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity), events)
 
                     isLoading = false
 
