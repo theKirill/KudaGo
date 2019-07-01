@@ -23,9 +23,7 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
         ViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.card_view, viewGroup, false))
 
     /*full data for each element of RV*/
-    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(position)
-    }
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int): Unit = viewHolder.bind(position)
 
     fun setItems(_events: ArrayList<Event>) {
         events = _events
@@ -57,19 +55,17 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
 
         private fun setHeader(position: Int) {
             /*Visibility of Header*/
-            if (position == 0) {
+            if (position == 0)
                 itemView.text_header.visibility = View.VISIBLE
-            } else {
+            else
                 itemView.text_header.visibility = View.GONE
-            }
         }
 
         private fun setImage(event: Event) {
-            if (event.imagesURLInfo.size > 0) {
+            if (event.imagesURLInfo.size > 0)
                 Glide.with(itemView.cv_of_event).load(event.imagesURLInfo[0]).into(itemView.imagePhoto)
-            } else {
+            else
                 itemView.imagePhoto.visibility = View.GONE
-            }
         }
 
         private fun setTitle(event: Event) {
@@ -80,11 +76,10 @@ class EventDataAdapter(private var events: ArrayList<Event>, private val clickLi
             val descriptionEventWithHtml = event.descriptionInfo
 
             /*replacing tags*/
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                 itemView.textDescription.text = Html.fromHtml(descriptionEventWithHtml, Html.FROM_HTML_MODE_LEGACY)
-            } else {
+            else
                 itemView.textDescription.text = Html.fromHtml(descriptionEventWithHtml)
-            }
         }
 
         private fun setPlace(event: Event) {

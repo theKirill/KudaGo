@@ -8,6 +8,7 @@ import io.realm.Realm
 import io.realm.RealmResults
 
 class DatabaseService(private val realm: Realm) {
+
     private val SHORT_ENGLISH_NAME_KEY = "shortEnglishName"
     private val CITY_KEY = "city.shortEnglishName"
 

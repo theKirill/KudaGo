@@ -30,6 +30,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 class CitiesListActivity : AppCompatActivity() {
+
     @Inject
     lateinit var service: DatabaseService
     private lateinit var viewModel: CitiesViewModel
@@ -62,11 +63,11 @@ class CitiesListActivity : AppCompatActivity() {
 
                         GlobalScope.launch(Dispatchers.Main) {
                             isHasInternet = check.await()
-                            if (!isHasInternet) {
+
+                            if (!isHasInternet)
                                 doWithoutInternet()
-                            } else {
+                            else
                                 showCities()
-                            }
                         }
                     }
                 }
@@ -77,6 +78,7 @@ class CitiesListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cities_list)
+
         setSupportActionBar(toolbar_cities)
 
         (application as App).getAppComponent().injectsCitiesListActivity(this)
@@ -85,10 +87,10 @@ class CitiesListActivity : AppCompatActivity() {
 
         initAdapter()
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_Y_KEY)) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_Y_KEY))
             mStateScrollY =
                 savedInstanceState.getInt(SCROLL_Y_KEY, 0) //look where we stopped before the change of orientation
-        } else
+        else
             showProgress()
 
         button_closeCities.setOnClickListener { finish() }
@@ -113,9 +115,8 @@ class CitiesListActivity : AppCompatActivity() {
         /*getting of current language of system
        * if Russian language, we will make requests in Russian
        * else in English*/
-        if (Locale.getDefault().language == "ru") {
+        if (Locale.getDefault().language == "ru")
             lang = "ru"
-        }
     }
 
     private fun showErrorLayout() {

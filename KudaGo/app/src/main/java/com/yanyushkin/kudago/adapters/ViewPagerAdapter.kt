@@ -20,6 +20,7 @@ class ViewPagerAdapter(private val context: Context, private val images: ArrayLi
     /*adding imageView with a photo to ViewPager on each page*/
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = AppCompatImageView(context)
+
         imageView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorGray))
         imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 

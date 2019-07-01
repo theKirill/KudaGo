@@ -3,11 +3,12 @@ package com.yanyushkin.kudago
 import android.app.Application
 import com.yanyushkin.kudago.di.AppComponent
 import com.yanyushkin.kudago.di.DaggerAppComponent
+import com.yanyushkin.kudago.di.DatabaseModule
 import com.yanyushkin.kudago.di.NetworkModule
 import io.realm.Realm
 
 class App : Application() {
-    lateinit var component: AppComponent
+    private lateinit var component: AppComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -15,6 +16,7 @@ class App : Application() {
 
         component = DaggerAppComponent.builder()
             .networkModule(NetworkModule())
+            .databaseModule(DatabaseModule())
             .build()
     }
 

@@ -11,11 +11,8 @@ import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.getBitmapDescriptorFromVector
 
 class Maps(private val lat: Double, private val lon: Double, private val context: Context) : OnMapReadyCallback {
-    private lateinit var googleMap: GoogleMap
 
-    fun createMapView(mapFragment: SupportMapFragment) {
-        mapFragment.getMapAsync(this)
-    }
+    private lateinit var googleMap: GoogleMap
 
     /*callback of receiving the map*/
     override fun onMapReady(_googleMap: GoogleMap?) {
@@ -25,6 +22,8 @@ class Maps(private val lat: Double, private val lon: Double, private val context
             addMarkerOnMap()
         }
     }
+
+    fun createMapView(mapFragment: SupportMapFragment): Unit = mapFragment.getMapAsync(this)
 
     private fun addMarkerOnMap() {
         val position = LatLng(lat, lon)
@@ -37,5 +36,4 @@ class Maps(private val lat: Double, private val lon: Double, private val context
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 15.0F))
         googleMap.addMarker(marker)
     }
-
 }

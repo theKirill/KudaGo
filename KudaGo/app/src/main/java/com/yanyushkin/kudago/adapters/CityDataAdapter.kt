@@ -24,10 +24,7 @@ class CityDataAdapter(
 
 
     /*full data for each element of RV*/
-    override fun onBindViewHolder(viewHolder: ViewHolder, poistion: Int) {
-        val city = cities[poistion]
-        viewHolder.bind(city)
-    }
+    override fun onBindViewHolder(viewHolder: ViewHolder, poistion: Int): Unit = viewHolder.bind(cities[poistion])
 
     fun setItems(_cities: ArrayList<City>) {
         cities = _cities
@@ -45,11 +42,10 @@ class CityDataAdapter(
         fun bind(city: City) {
             itemView.nameCity.text = city.nameInfo
 
-            if (city.shortEnglishNameInfo == currentCity) {
+            if (city.shortEnglishNameInfo == currentCity)
                 itemView.selectedCity.visibility = View.VISIBLE
-            } else {
+            else
                 itemView.selectedCity.visibility = View.INVISIBLE
-            }
         }
     }
 }

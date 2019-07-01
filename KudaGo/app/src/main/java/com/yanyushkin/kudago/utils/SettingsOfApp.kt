@@ -6,6 +6,7 @@ import com.yanyushkin.kudago.R
 import com.yanyushkin.kudago.models.City
 
 object SettingsOfApp {
+
     private lateinit var pref: SharedPreferences
     private const val APP_PREFERENCES_KEY = "settings"
     private const val APP_PREFERENCES_NAME_CITY_KEY = "nameOfCurrentCity"

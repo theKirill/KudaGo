@@ -11,9 +11,10 @@ import com.yanyushkin.kudago.network.ResponseCallback
 import javax.inject.Inject
 
 class CitiesViewModel(private val application: App, private val lang: String) : ViewModel() {
-    private lateinit var cities: MutableLiveData<ArrayList<City>>
+
     @Inject
     lateinit var repository: Repository
+    private lateinit var cities: MutableLiveData<ArrayList<City>>
 
     init {
         if (!::cities.isInitialized) {

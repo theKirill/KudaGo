@@ -9,6 +9,7 @@ data class CitiesResponse(
     @SerializedName("name")
     val name: String
 ) {
+
     fun transform(): City {
         return City(
             this.name,

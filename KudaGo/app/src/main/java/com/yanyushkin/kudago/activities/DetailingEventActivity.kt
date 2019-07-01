@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_detailing_event.*
 import kotlinx.android.synthetic.main.toolbar_detailing_event.*
 
 class DetailingEventActivity : AppCompatActivity() {
+
     private val EVENT_KEY = "event"
     private var lat: Double = 0.0
     private var lon: Double = 0.0
@@ -52,6 +53,7 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun setImages() {
         val images = event.imagesURLInfo
+
         if (images.size > 0) {
             val viewPager = pager
 
@@ -72,12 +74,13 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun setShortDescription() {
         val shortDescriptionWithHtml = event.descriptionInfo
+
         /*replacing tags*/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY)
-        } else {
+        else
             shortDescription_event.text = Html.fromHtml(shortDescriptionWithHtml)
-        }
+
         /*to follow links*/
         shortDescription_event.movementMethod = LinkMovementMethod.getInstance()
         shortDescription_event.text = shortDescription_event.text.trim()
@@ -85,12 +88,13 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun setFullDescription() {
         val fullDescriptionWithHtml = event.fullDescriptionInfo
+
         /*replacing tags*/
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml, Html.FROM_HTML_MODE_LEGACY)
-        } else {
+        else
             fullDescription_event.text = Html.fromHtml(fullDescriptionWithHtml)
-        }
+
         /*to follow links*/
         fullDescription_event.movementMethod = LinkMovementMethod.getInstance()
         fullDescription_event.text = fullDescription_event.text.trim()
@@ -99,6 +103,7 @@ class DetailingEventActivity : AppCompatActivity() {
     private fun setPlace() {
         /*if we have the right data, insert it in views and show, else not show*/
         val place = event.placeInfo
+
         if (place != "") {
             textLocation_event.text = place
             container_for_location_event.visibility = View.VISIBLE
@@ -107,6 +112,7 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun setDate() {
         val date = event.datesInfo
+
         if (date != "") {
             textDay_event.text = date
             container_for_date_event.visibility = View.VISIBLE
@@ -115,6 +121,7 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun setPrice() {
         val price = event.priceInfo
+
         if (price != "") {
             textPrice_event.text = price
             container_for_price_event.visibility = View.VISIBLE
@@ -123,6 +130,7 @@ class DetailingEventActivity : AppCompatActivity() {
 
     private fun initMaps() {
         val coords = event.coordsInfo
+
         if (coords.size != 0) {
             lat = coords[0]
             lon = coords[1]
@@ -141,6 +149,7 @@ class DetailingEventActivity : AppCompatActivity() {
             "http://maps.google.com/maps?saddr=My+Location&daddr=" +
                     lat.toString() + "," + lon.toString()
         )
+
         val intentMap = Intent(Intent.ACTION_VIEW, address)
         startActivity(intentMap)
     }

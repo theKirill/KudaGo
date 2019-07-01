@@ -30,6 +30,7 @@ import io.realm.*
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
+
     @Inject
     lateinit var repository: Repository
     @Inject
@@ -54,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     private var isHasInternet: Boolean = false
     private var positionOfFirstVisibleItem = 0
     private val SCROLL_POSITION_KEY = "position"
+    private val PAGE_KEY = "page"
 
     /*receiver for monitoring connection changes*/
     private val receiver = object : BroadcastReceiver() {
@@ -74,11 +76,11 @@ class MainActivity : AppCompatActivity() {
 
                         GlobalScope.launch(Dispatchers.Main) {
                             isHasInternet = check.await()
-                            if (!isHasInternet) {
+
+                            if (!isHasInternet)
                                 doWithoutInternet()
-                            } else {
+                            else
                                 showEvents()
-                            }
                         }
                     }
                 }
@@ -124,10 +126,63 @@ class MainActivity : AppCompatActivity() {
 
         outState?.let {
             outState.clear()
-            outState.putSerializable(CURRENT_CITY_KEY, nameOfCurrentCity)
+            outState.putString(CURRENT_CITY_KEY, nameOfCurrentCity)
             outState.putSerializable(EVENTS_KEY, events)
+            outState.putInt(PAGE_KEY, page)
+
             val layoutManagerForRV = recyclerView_events.layoutManager as LinearLayoutManager
             outState.putInt(SCROLL_POSITION_KEY, layoutManagerForRV.findFirstVisibleItemPosition())
+        }
+    }
+
+    private fun setCharacteristicsForRequests() {
+        /*remember the actual time for requests (POSIX time)*/
+        actualSince = System.currentTimeMillis() / 1000L
+
+        /*getting of current language of system
+        * if Russian language, we will make requests in Russian
+        * else in English*/
+        if (Locale.getDefault().language == "ru")
+            lang = "ru"
+    }
+
+    private fun getSavedLastSelectedCity() {
+        val currentCity = SettingsOfApp.getSavedLastSelectedCity(this)
+        nameOfCurrentCity = currentCity.nameInfo
+        shortEnglishNameOfCurrentCity = currentCity.shortEnglishNameInfo
+        textCity.text = nameOfCurrentCity
+    }
+
+    private fun getSavedState(savedInstanceState: Bundle?) {
+        /*check for saved state*/
+        if (savedInstanceState == null || !!savedInstanceState.containsKey(CURRENT_CITY_KEY))
+            getSavedLastSelectedCity()
+        else
+            textCity.text = savedInstanceState.getSerializable(CURRENT_CITY_KEY).toString()
+
+        savedInstanceState?.let {
+            if (savedInstanceState.containsKey(PAGE_KEY))
+                page = savedInstanceState.getInt(PAGE_KEY)
+
+            if (savedInstanceState.containsKey(EVENTS_KEY))
+                events = savedInstanceState.getSerializable(EVENTS_KEY) as ArrayList<Event>
+
+            if (savedInstanceState.containsKey(SCROLL_POSITION_KEY))
+                positionOfFirstVisibleItem =
+                    savedInstanceState.getInt(SCROLL_POSITION_KEY) //look where we stopped before the change of orientation
+        }
+    }
+
+    private fun initSwipeRefreshListener() {
+        layout_swipe_events.setColorSchemeResources(R.color.colorRed)
+        layout_swipe_events.setOnRefreshListener {
+            if (isHasInternet) {
+                events = ArrayList()
+                page = 1
+                initData()
+            } else {
+                layout_swipe_events.isRefreshing = false
+            }
         }
     }
 
@@ -159,26 +214,6 @@ class MainActivity : AppCompatActivity() {
         progressBar_events.visibility = View.INVISIBLE
     }
 
-    private fun doWithoutInternet() {
-        val eventsFromDB = serviceDB.getEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
-
-        if (events.size == 0 && eventsFromDB.size == 0)
-            showErrorLayout()
-        else
-            if (events.size == 0 && eventsFromDB.size > 0) {
-                events = eventsFromDB
-                adapter.setItems(events)
-                showEventsLayout()
-                recyclerView_events.adapter = adapter
-                Toast.makeText(this, "Загружены последние сохранённые данные!", Toast.LENGTH_LONG).show()
-            } else
-                showEvents()
-
-        hideProgress()
-        val sbError = ErrorSnackBar(layout_error_internet_events)
-        sbError.show(this)
-    }
-
     private fun showEvents() {
         if (events.size == 0) {
             events = ArrayList()
@@ -192,54 +227,32 @@ class MainActivity : AppCompatActivity() {
         recyclerView_events.scrollToPosition(positionOfFirstVisibleItem)
     }
 
-    private fun setCharacteristicsForRequests() {
-        /*remember the actual time for requests (POSIX time)*/
-        actualSince = System.currentTimeMillis() / 1000L
+    private fun doWithoutInternet() {
+        val eventsFromDB = serviceDB.getEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
 
-        /*getting of current language of system
-        * if Russian language, we will make requests in Russian
-        * else in English*/
-        if (Locale.getDefault().language == "ru") {
-            lang = "ru"
-        }
-    }
-
-    private fun getSavedState(savedInstanceState: Bundle?) {
-        /*check for saved state*/
-        if (savedInstanceState == null || !!savedInstanceState.containsKey(CURRENT_CITY_KEY)) {
-            getSavedLastSelectedCity()
-        } else {
-            textCity.text = savedInstanceState.getSerializable(CURRENT_CITY_KEY).toString()
-        }
-
-        savedInstanceState?.let {
-            if (savedInstanceState.containsKey(EVENTS_KEY)) {
-                events = savedInstanceState.getSerializable(EVENTS_KEY) as ArrayList<Event>
+        if (events.size == 0 && eventsFromDB.size == 0)
+            showErrorLayout()
+        else
+            if (events.size == 0 && eventsFromDB.size > 0) {
+                events = eventsFromDB
+                adapter.setItems(events)
+                showEventsLayout()
+                recyclerView_events.adapter = adapter
+                Toast.makeText(this, "Загружены последние сохранённые данные!", Toast.LENGTH_LONG).show()
+            } else {
+                showEvents()
             }
-            if (savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
-                positionOfFirstVisibleItem =
-                    savedInstanceState.getInt(SCROLL_POSITION_KEY) //look where we stopped before the change of orientation
-            }
-        }
+
+        hideProgress()
+        val sbError = ErrorSnackBar(layout_error_internet_events)
+        sbError.show(this)
     }
 
-    private fun getSavedLastSelectedCity() {
-        val currentCity = SettingsOfApp.getSavedLastSelectedCity(this)
-        nameOfCurrentCity = currentCity.nameInfo
-        shortEnglishNameOfCurrentCity = currentCity.shortEnglishNameInfo
-        textCity.text = nameOfCurrentCity
-    }
-
-    private fun initSwipeRefreshListener() {
-        layout_swipe_events.setColorSchemeResources(R.color.colorRed)
-        layout_swipe_events.setOnRefreshListener {
-            if (isHasInternet) {
-                events = ArrayList()
-                page = 1
-                initData()
-            } else
-                layout_swipe_events.isRefreshing = false
-        }
+    private fun initData() {
+        hideErrorLayout()
+        showProgress()
+        isLoading = true
+        getEvents()
     }
 
     private fun selectCity() {
@@ -254,7 +267,7 @@ class MainActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_MESSAGE -> {
+                REQUEST_CODE_MESSAGE ->
                     data?.let {
                         val selectedCity = data.getSerializableExtra(CITY_KEY) as City
                         nameOfCurrentCity = selectedCity.nameInfo
@@ -264,22 +277,13 @@ class MainActivity : AppCompatActivity() {
                         page = 1
                         hideMainLayout()
                     }
-                }
             }
         }
     }
 
-    private fun initData() {
-        hideErrorLayout()
-        showProgress()
-        isLoading = true
-        getEvents()
-    }
-
     private fun getEvents() {
-        if (page == 1) {
+        if (page == 1)
             serviceDB.deleteOldEventsFromCity(City(nameOfCurrentCity, shortEnglishNameOfCurrentCity))
-        }
 
         /*get actual events on installed language from selected city from necessary page and add it to ArrayList of events*/
         repository.getEvents(
@@ -318,6 +322,17 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private fun initAdapter() {
+        /*Create adapter with listener of click on element*/
+        adapter = EventDataAdapter(events, object : OnClickListener {
+            override fun onCardViewClick(position: Int) {
+                val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
+                intentDetailingEvent.putExtra(EVENT_KEY, events[position])
+                startActivity(intentDetailingEvent)
+            }
+        })
+    }
+
     private fun initRecyclerView() {
         val layoutManagerForRV = LinearLayoutManager(this)
         layoutManagerForRV.orientation = LinearLayout.VERTICAL
@@ -341,25 +356,13 @@ class MainActivity : AppCompatActivity() {
                 positionOfFirstVisibleItem =
                     layoutManagerForRV.findFirstVisibleItemPosition()//position of the 1st element
 
-                if (!isLoading && isHasInternet) {
+                if (!isLoading && isHasInternet)
                     if ((visibleItemsCount + positionOfFirstVisibleItem) >= totalItemsCount) {
                         page++
                         initData()
                     }
-                }
             }
         })
         hideProgress()
-    }
-
-    private fun initAdapter() {
-        /*Create adapter with listener of click on element*/
-        adapter = EventDataAdapter(events, object : OnClickListener {
-            override fun onCardViewClick(position: Int) {
-                val intentDetailingEvent = Intent(this@MainActivity, DetailingEventActivity::class.java)
-                intentDetailingEvent.putExtra(EVENT_KEY, events[position])
-                startActivity(intentDetailingEvent)
-            }
-        })
     }
 }
